@@ -9,6 +9,6 @@ class StudentUserAdmin(UserAdmin):
     add_form = StudentUserCreationForm
     form = StudentUserChangeForm
     model = StudentUser
-    list_display = ['email', 'username', 'first_name', 'last_name']
+    list_display = ['email', 'username', 'first_name', 'last_name', 'is_ta']
 
 admin.site.register(StudentUser, StudentUserAdmin)
