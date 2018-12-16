@@ -51,6 +51,10 @@ INSTALLED_APPS = [
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'users.serializers.UserSerializer',
+}
+
 SITE_ID = 1
 
 AUTH_USER_MODEL = 'users.StudentUser'
