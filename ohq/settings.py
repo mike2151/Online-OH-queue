@@ -52,7 +52,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 SITE_ID = 1
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.StudentUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
