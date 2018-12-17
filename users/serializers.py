@@ -13,10 +13,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.StudentUser
         extra_kwargs = {'password': {'write_only': True}}
-        fields = ('email', 'first_name', 'last_name', 'password')
+        fields = ('email', 'first_name', 'last_name', 'password', )
 
     def create(self, validated_data):
         user =  models.StudentUser.objects.create(**validated_data)
         user.is_active = False
+        user.username = user.email.split("@")[0]
+        user.set_password(user.password)
         user.save()
         return user
