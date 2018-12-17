@@ -16,5 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('email', 'first_name', 'last_name', 'password')
 
     def create(self, validated_data):
-        
-        return models.StudentUser.objects.create(**validated_data)
+        user =  models.StudentUser.objects.create(**validated_data)
+        user.is_active = False
+        user.save()
+        return user
