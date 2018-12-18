@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'users',
     'api',
-    'questionsqueue',
+    'questions',
 ]
 
 
