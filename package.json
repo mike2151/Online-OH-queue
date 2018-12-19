@@ -1,0 +1,33 @@
+{
+  "name": "ohq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development ./ohq-backend/frontend/src/index.js --output ./ohq-backend/frontend/static/frontend/main.js",
+    "build": "webpack --mode production ./ohq-backend/frontend/src/index.js --output ./ohq-backend/frontend/static/frontend/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mike2151/Online-OH-queue.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mike2151/Online-OH-queue/issues"
+  },
+  "homepage": "https://github.com/mike2151/Online-OH-queue#readme",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "webpack": "^4.28.0",
+    "webpack-cli": "^3.1.2"
+  }
+}
