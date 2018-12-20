@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'users',
     'api',
     'questions',
-    'ohqueue'
+    'ohqueue',
+    'frontend'
 ]
 
 
