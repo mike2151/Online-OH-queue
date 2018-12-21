@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+
 class SignUpForm extends React.Component {
     constructor() {
       super();
@@ -36,3 +37,5 @@ class SignUpForm extends React.Component {
       );
     }
   }
+
+  export default SignUpForm;

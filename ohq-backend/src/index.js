@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import SignUpForm from './Signup';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 
@@ -9,7 +10,7 @@ ReactDOM.render((
     <BrowserRouter>
         <Switch>
             <Route exact path='/' component={App} />
-            <Route eaxct path='/aids' component={App} />
+            <Route eaxct path='/signup' component={SignUpForm} />
         </Switch>
     </BrowserRouter>
     ), document.getElementById('root')
