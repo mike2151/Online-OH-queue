@@ -1,7 +1,7 @@
 # Online Office Hours Queue
 ##### Table of Contents 
 [Setup](#Setup) 
-<a name="Setup"/> 
+<a name="Setup"/> <br/>
 [Development](#Development) 
 <a name="Development"/>
 
@@ -14,4 +14,5 @@ To develop for Online-OH-Queue, do the following steps:
 3. Run `npm install`
 4. Run `npm run build`
 5. Run `python manage.py runserver`
-   An instance of Online-OH-Queue should be running in port 8000
+   
+An instance of Online-OH-Queue should be running in port 8000

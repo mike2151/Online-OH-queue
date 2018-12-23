@@ -14,6 +14,11 @@ class OHQueueCreationView(generics.ListCreateAPIView):
     serializer_class = OHQueueSerializer
     permission_classes = (IsAuthenticated,)
 
+class OHQueueListView(generics.ListAPIView):
+    queryset = OHQueue.objects.all()
+    serializer_class = OHQueueSerializer
+    permission_classes = (IsAuthenticated,)
+
 class QuestionCreationView(generics.ListCreateAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
