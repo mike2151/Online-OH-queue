@@ -17,31 +17,21 @@ class LoginForm extends React.Component {
     handleSubmit(event) {
       event.preventDefault();
       const data = new FormData(event.target);
-      console.log('Beginning login API call');
       fetch('/api/v1/users/login/', {
         method: 'POST',
         body: data,
-        headers: {
-          "Content-Type": "application/json"
-        }
       }).then((response) => {
-        console.log('Logging raw response');
-        console.log(response);
         return response.json();
       }).then((body) => {
-        console.log('Logging the response body');
-        console.log(body);
         if (body.error) {
           alert('Invalid login');
         } else {
-          // Logic for adding token to localStorage here
           localStorage.setItem('credentials', body.token);
         }
       });
     }
 
     onChange(event) {
-      console.log(event.target.value);
       this.setState({[event.target.name]: event.target.value});
     }
   

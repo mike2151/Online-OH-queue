@@ -12,7 +12,7 @@ from users.models import StudentUser
 class OHQueueCreationView(generics.ListCreateAPIView):
     queryset = OHQueue.objects.all()
     serializer_class = OHQueueSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
 class QuestionCreationView(generics.ListCreateAPIView):
     queryset = Question.objects.all()
