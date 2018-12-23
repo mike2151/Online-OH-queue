@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import LandingPage from "./landing-page/LandingPage"
+
 
 class App extends Component {
 
@@ -39,9 +41,9 @@ class App extends Component {
       );
     } else {
       return (
-        <div>
-        <a href="/signup">Sign up</a>
-      </div>
+        <div id="root">
+          <LandingPage/>
+        </div>
       );
     }
   }
