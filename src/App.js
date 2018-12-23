@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import LandingPage from "./landing-page/LandingPage"
+import LandingPage from "./landing-page/LandingPage";
+import QueueList from "./queues/QueueList";
 
 
 class App extends Component {
@@ -35,9 +36,7 @@ class App extends Component {
   render() {
     if(this.state.isLoggedIn) {
       return (
-        <div>
-        <h1>Queues!</h1>
-      </div>
+       <QueueList queues={this.state.queues} />
       );
     } else {
       return (
