@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import SignUpForm from './Signup';
-import LoginForm from './Login';
+import SignUpForm from './signup-in/Signup';
+import LoginForm from './signup-in/Login';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 

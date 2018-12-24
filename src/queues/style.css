@@ -1,5 +1,29 @@
 .horizontalList{display:flex; flex-direction:row;}
-.queue{
+.queue-table{
     margin-right: 1vw;
     margin-left: 1vw;
 }
+
+/* Queue Style */
+.queue {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .queue td, .queue th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .queue tr:nth-child(even){background-color: #f2f2f2;}
+  
+  .queue tr:hover {background-color: #ddd;}
+  
+  .queue th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+  }
