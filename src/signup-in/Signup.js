@@ -1,5 +1,7 @@
 import React from "react";
 import "./style.css"
+import swal from 'sweetalert';
+
 
 class SignUpForm extends React.Component {
   
@@ -23,15 +25,15 @@ class SignUpForm extends React.Component {
         violationList.push("Must have a penn email");
         violationExists = true;
       }
-      if (first_name.length() == 0) {
+      if (first_name.length == 0) {
         violationList.push("First name cannot be blank");
         violationExists = true;
       }
-      if (last_name.length() == 0) {
+      if (last_name.length == 0) {
         violationList.push("Last name cannot be blank");
         violationExists = true;
       }
-      if (password.length() < 8) {
+      if (password.length < 8) {
         violationList.push("Password must be at least 8 characters");
         violationExists = true;
       }
@@ -50,6 +52,17 @@ class SignUpForm extends React.Component {
         fetch('/api/v1/users/register/', {
           method: 'POST',
           body: data,
+        }).then((response) => {
+          if (response.ok) {
+            swal("Email Confirmation Sent!", "Please check your email to confirm your account", "success");
+            document.getElementById("email").value = "";
+            document.getElementById("first_name").value = "";
+            document.getElementById("last_name").value = "";
+            document.getElementById("password").value = "";
+          } else {
+            var violationList = ["Email is taken"];
+            this.setState({validationErrors: this.state.validationErrors.concat(violationList)});
+          }
         });
       }
     }

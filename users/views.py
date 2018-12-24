@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view, permission_classes
 from django.utils.encoding import force_bytes, force_text
 from .verify_tokens import account_activation_token
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.shortcuts import redirect
 from django.http import HttpResponse
 from rest_framework.permissions import AllowAny
 from rest_framework.status import (
@@ -33,7 +34,7 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        return redirect('/login')
     else:
         return HttpResponse('Activation link is invalid!')
 

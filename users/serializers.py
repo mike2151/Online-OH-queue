@@ -15,6 +15,16 @@ class UserSerializer(serializers.ModelSerializer):
     def validate_email(self, email):
         if "upenn.edu" not in email:
             raise serializers.ValidationError("Email is not a Penn Email")
+        
+        user = None
+        try:
+            user = models.StudentUser.objects.get(email=email).first()
+        except models.StudentUser.DoesNotExist:
+            user = None
+        if (user != None):
+            if user.is_active:
+                raise serializers.ValidationError("User already exists")
+
         return email
 
     class Meta:
@@ -23,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('email', 'first_name', 'last_name', 'password', )
 
     def create(self, validated_data):
-        user =  models.StudentUser.objects.create(**validated_data)
+        user = models.StudentUser.objects.create(**validated_data)
         user.is_active = False
         user.username = user.email.split("@")[0]
         user.set_password(user.password)
