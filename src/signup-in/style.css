@@ -56,6 +56,10 @@
   display: none;
 }
 
+.validationErrorList {
+  color: red;
+}
+
 .formBg {
   background: #76b852; 
   background: -webkit-linear-gradient(right, #76b852, #8DC26F);

@@ -2,19 +2,56 @@ import React from "react";
 import "./style.css"
 
 class SignUpForm extends React.Component {
-    constructor() {
-      super();
+  
+    constructor(props) {
+      super(props);
+      this.state = {
+        validationErrors: []
+      };
       this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    
+    handleValidation(data) {
+      var violationExists = false;
+      var violationList = [];
+
+      var email = data.get("email");
+      var first_name = data.get("first_name");
+      var last_name = data.get("last_name");
+      var password = data.get("password");
+      if (email.indexOf("upenn.edu") == -1) {
+        violationList.push("Must have a penn email");
+        violationExists = true;
+      }
+      if (first_name.length() == 0) {
+        violationList.push("First name cannot be blank");
+        violationExists = true;
+      }
+      if (last_name.length() == 0) {
+        violationList.push("Last name cannot be blank");
+        violationExists = true;
+      }
+      if (password.length() < 8) {
+        violationList.push("Password must be at least 8 characters");
+        violationExists = true;
+      }
+
+      if (violationExists) {
+        this.setState({validationErrors: this.state.validationErrors.concat(violationList)});
+      }
+      return !violationExists;
     }
   
     handleSubmit(event) {
       event.preventDefault();
       const data = new FormData(event.target);
-      
-      fetch('/api/v1/users/register/', {
-        method: 'POST',
-        body: data,
-      });
+
+      if (this.handleValidation(data)) {
+        fetch('/api/v1/users/register/', {
+          method: 'POST',
+          body: data,
+        });
+      }
     }
   
     render() {
@@ -37,6 +74,12 @@ class SignUpForm extends React.Component {
         
                 <button>Sign Up</button>
               </form>
+              <br />
+              <ul class="validationErrorList">
+                {this.state.validationErrors.map(function(validationError, index){
+                  return <li>{validationError}</li>
+                })}
+              </ul>
             </div>
           </div>
         </div>
