@@ -7,6 +7,11 @@ class Queue extends React.Component {
       return (
         <div>
           <h2>{this.props.queue.name}</h2>
+          <ul>
+             {this.props.queue.questions.map(function(question, index){
+                return <li>{question}</li>;
+            })}
+          </ul>
         </div>
       );
     }

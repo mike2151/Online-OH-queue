@@ -1,1 +1,5 @@
 .horizontalList{display:flex; flex-direction:row;}
+.queue{
+    margin-right: 1vw;
+    margin-left: 1vw;
+}

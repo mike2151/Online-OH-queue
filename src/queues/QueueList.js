@@ -9,7 +9,7 @@ class QueueList extends React.Component {
       return (
           <div class="horizontalList">
             {this.props.queues.map(function(queue, index){
-                return <Queue queue={queue}/>;
+                return <div class="queue"><Queue queue={queue}/></div>;
             })}
           </div>
       );
