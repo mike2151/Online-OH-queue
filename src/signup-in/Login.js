@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import "./style.css"
 
 class LoginForm extends React.Component {
     constructor() {
@@ -37,15 +37,20 @@ class LoginForm extends React.Component {
   
     render() {
       return (
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="email">Penn Email</label>
-          <input id="email" name="email" type="email" value={this.state.email} onChange={this.onChange} />
-  
-          <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" value={this.state.password} onChange={this.onChange} />
-  
-          <button>Log in</button>
-        </form>
+        <div class="formBg">
+          <div class="login-page">
+            <div class="userForm">
+              <form class="login-form" onSubmit={this.handleSubmit}>
+                <label htmlFor="email">Penn Email</label>
+                <input id="email" name="email" type="email" value={this.state.email} onChange={this.onChange} />  
+                <label htmlFor="password">Password</label>
+                <input id="password" name="password" type="password" value={this.state.password} onChange={this.onChange} />
+                <button>login</button>
+                <p class="message">Not registered? <a href="/signup">Create an account</a></p>
+              </form>
+            </div>
+          </div>
+        </div>
       );
     }
   }
