@@ -94,9 +94,11 @@ h6 {
   height: auto;
   padding-top: 8rem;
   padding-bottom: 8rem;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 100%), url("./img/bg-masthead.jpg");
-  background-position: center center;
-  background-repeat: no-repeat;
+  background: #76b852; 
+  background: -webkit-linear-gradient(right, #76b852, #8DC26F);
+  background: -moz-linear-gradient(right, #76b852, #8DC26F);
+  background: -o-linear-gradient(right, #76b852, #8DC26F);
+  background: linear-gradient(to left, #76b852, #8DC26F);background-position: center center;
   background-size: cover; }
   .masthead h1 {
     font-size: 4rem;

@@ -7,7 +7,7 @@ class Queue extends React.Component {
       return (
         <div>
           <h2>{this.props.queue.name}</h2>
-          <a href="/{this.props.queue.name}/ask" >Ask Question</a>
+          <a href={ '/' + this.props.queue.name + "/ask" } >Ask Question</a>
           <table class="queue">
           <tr>
             <th>Name</th>
