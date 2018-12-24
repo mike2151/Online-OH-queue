@@ -8,14 +8,21 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        read_only_fields = ('status', 'answered_by', 'author_email')
-        fields = ( 'status', 'description', 'ask_date', 'author_email')
+        read_only_fields = ('status', 'answered_by', 'author_email', 'author_first_name', 'author_last_name')
+        fields = ( 'status', 'description', 'ask_date', 'author_email', 'author_first_name', 'author_last_name')
     def create(self, validated_data):
         question =  Question.objects.create(**validated_data)
         question.status = "Not answered"
         user_email = (self.context["user"])
+        user_first_name = (self.context["user-first-name"])
+        user_last_name = (self.context["user-last-name"])
+        user_email = (self.context["user"])
         if len(user_email) != 0:
             question.author_email = user_email
+        if len(user_first_name) != 0:
+            question.author_first_name = user_first_name
+        if len(user_last_name) != 0:
+            question.author_last_name = user_last_name
         question.save()
         
         name_of_ohqueue = (self.context["queue"])

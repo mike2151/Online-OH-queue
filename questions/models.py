@@ -2,6 +2,8 @@ from django.db import models
 from users.models import StudentUser
 class Question(models.Model):
     author_email = models.CharField(max_length=512, default='No Account')    
+    author_first_name = models.CharField(max_length=512, default='No first name')    
+    author_last_name = models.CharField(max_length=512, default='No last name')
     answered_by_email = models.CharField(max_length=512, default='No Account') 
     status = models.CharField(max_length=100)
     description = models.CharField(max_length=280)
