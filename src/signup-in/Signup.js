@@ -73,6 +73,7 @@ class SignUpForm extends React.Component {
           <div class="login-page">
             <div class="userForm">
               <form class="login-form" onSubmit={this.handleSubmit}>
+                <h2 class="header-login"><center>Sign Up</center></h2>
                 <label htmlFor="email">Enter Penn Email</label>
                 <input id="email" name="email" type="email" />
         

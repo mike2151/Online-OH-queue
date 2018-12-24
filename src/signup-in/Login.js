@@ -41,6 +41,7 @@ class LoginForm extends React.Component {
           <div class="login-page">
             <div class="userForm">
               <form class="login-form" onSubmit={this.handleSubmit}>
+                <h2 class="header-login"><center>Log in</center></h2>
                 <label htmlFor="email">Penn Email</label>
                 <input id="email" name="email" type="email" value={this.state.email} onChange={this.onChange} />  
                 <label htmlFor="password">Password</label>
