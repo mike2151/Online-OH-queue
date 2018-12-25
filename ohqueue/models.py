@@ -16,6 +16,7 @@ class OHQueue(models.Model):
                 "last_name": question.author_last_name,
                 "email": question.author_email,
                 "question_content": question.description,
+                "id": question.id,
             }
             question_content.append(question_dict)
         return question_content

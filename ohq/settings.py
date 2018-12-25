@@ -1,6 +1,7 @@
 #CONFIGURATION
 COURSE_TITLE = "CIS 121"
 SITE_URL = "localhost:8000"
+START_OF_WEEK = "Monday"
 #END CONFIGURATION
 
 
@@ -37,7 +38,8 @@ INSTALLED_APPS = [
     'api',
     'questions',
     'ohqueue',
-    'frontend'
+    'frontend',
+    'stats'
 ]
 
 

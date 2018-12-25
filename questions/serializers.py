@@ -12,7 +12,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = ( 'status', 'description', 'ask_date', 'author_email', 'author_first_name', 'author_last_name')
     def create(self, validated_data):
         question =  Question.objects.create(**validated_data)
-        question.status = "Not answered"
+        question.is_answered = False
         user_email = (self.context["user"])
         user_first_name = (self.context["user-first-name"])
         user_last_name = (self.context["user-last-name"])

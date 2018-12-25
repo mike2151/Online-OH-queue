@@ -9,6 +9,8 @@ from .serializers import OHQueueSerializer
 from questions.serializers import QuestionSerializer
 from rest_framework.response import Response
 from users.models import StudentUser
+from django.http import JsonResponse
+
 
 class OHQueueCreationView(generics.CreateAPIView):
     queryset = OHQueue.objects.all()
@@ -29,7 +31,7 @@ class QuestionCreationView(generics.ListCreateAPIView):
         ohqueuename = (self.kwargs["name"])
         token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
         if token_header == None:
-            return {'user': '', 'user-first-name': '', 'user-last-name': '', 'queue': ohqueuename}
+            return JsonResponse({"error": "No authentication found"})
         # seperate token from Token xyz
         actual_token = token_header.split(" ")[1]
         user = StudentUser.objects.filter(auth_token=actual_token).first()
