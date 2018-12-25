@@ -13,6 +13,7 @@
   border-style: solid;
   border-width: 1px;
   padding: .4em;
+  min-width: 15vw;
 }
 
 .queue {
@@ -52,8 +53,15 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  margin-bottom: 2vh;
+}
+
+.ask-link:hover {
+  color: #FFF;
+  text-decoration: none;
+  background: #4CAF50;
 }
 
 .wait-time {
-  font-size: 1.2em;
+  font-size: 1.3em;
 }

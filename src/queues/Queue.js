@@ -7,8 +7,9 @@ class Queue extends React.Component {
       return (
         <div>
           <center><h2 class="queue-title">{this.props.queue.name}</h2>
-          <p class="wait-time">Average Wait Time: {this.props.queue.average_wait_time} Minutes</p>
-          <a href={ '/' + this.props.queue.name + "/ask" } class="ask-link">Ask Question</a></center>
+          <p class="wait-time">Average Wait Time: <br />
+           {this.props.queue.average_wait_time} Minutes</p>
+          <a href={ '/' + this.props.queue.name + "/ask" } class="ask-link">Ask Question</a>
           <table class="queue">
           <tr>
             <th>Name</th>
@@ -17,7 +18,7 @@ class Queue extends React.Component {
           {this.props.queue.question_contents.map(function(question, index){
                 return <tr><td>{index+1} - {question.first_name} {question.last_name}</td></tr>
             })}
-          </table>
+          </table></center>
         </div>
       );
     }
