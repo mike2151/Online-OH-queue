@@ -62,6 +62,27 @@
   background: #4CAF50;
 }
 
+.answer-link {
+  font-size: .9em;
+  width: 60%;
+  background-color: #FFF;
+  color: #4CAF50;
+  border-style: solid;
+  border-color: #4CAF50;
+  padding: .6vh .4vw;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: .5vh;
+  margin-bottom: .5vh;
+}
+
+.answer-link:hover {
+  color: #FFF;
+  text-decoration: none;
+  background: #4CAF50;
+}
+
 .wait-time {
   font-size: 1.3em;
 }

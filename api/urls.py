@@ -8,4 +8,5 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('users/', include('users.urls')),
     path('queue/', include('ohqueue.urls')),
+    path('questions/', include('questions.urls')),
 ]

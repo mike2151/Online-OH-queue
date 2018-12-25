@@ -3,27 +3,28 @@ from .models import Question
 from django.http import JsonResponse
 from users.models import StudentUser
 from ohqueue.models import OHQueue
+import json
 
 class QuestionAnswerView(View):
-    def post(self, request):
+    def post(self, request,  *args, **kwargs):
        # get current TA
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
        actual_token = token_header.split(" ")[1]
        user = StudentUser.objects.filter(auth_token=actual_token).first()
        if user == None or not user.is_ta:
-           return JsonResponse({"error": "You are not authenticated"})
+           return JsonResponse({"success": False, "error": "You are not authenticated"})
 
        # get queue
-       queue_name = request.POST["queue"]
+       queue_name = (json.loads(request.body.decode())["queue"])
        queue = None
        try:
             queue = OHQueue.objects.get(name=queue_name)
        except:
             queue = None
        if queue == None:
-            return JsonResponse({"error": "Queue does not exist"})
+            return JsonResponse({"success": False, "error": "Queue does not exist"})
        # get question
-       question_id = request.POST["pk"]
+       question_id = (json.loads(request.body.decode())["question_id"])
        question = None
        try:
             question = Question.objects.get(pk=question_id)
@@ -40,4 +41,4 @@ class QuestionAnswerView(View):
        queue.questions.remove(question)
        queue.save()
 
-       return JsonResponse({"success": "true"})
+       return JsonResponse({"success": True})
