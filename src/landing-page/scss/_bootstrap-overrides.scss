@@ -8,9 +8,9 @@ a {
 }
 
 .btn-primary {
-  background-color: $primary !important;
-  border-color: $primary !important;
-  color: $white !important;
+  background-color: $white !important;
+  border-color: $white !important;
+  color: $primary !important;
   &:hover,
   &:focus,
   &:active {

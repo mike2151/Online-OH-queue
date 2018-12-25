@@ -9,7 +9,7 @@ class LandingPage extends React.Component {
     return (
     <header className="masthead d-flex">
         <div className="container text-center my-auto">
-          <h1 className="mb-1">Office Hours Queue</h1>
+          <h1 className="mb-1 title-text">Office Hours Queue</h1>
           <a className="btn btn-primary btn-margin btn-xl" href="/signup">
             Sign up
           </a>

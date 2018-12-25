@@ -59,36 +59,6 @@ h6 {
   pointer-events: none;
 }
 
-// Scroll to top button
-.scroll-to-top {
-  position: fixed;
-  right: 15px;
-  bottom: 15px;
-
-  opacity: 0;
-  width: 50px;
-  height: 50px;
-
-  text-align: center;
-
-  color: white;
-  background: fade-out($gray-800, 0.5);
-  -webkit-animation-duration: 2s;
-  animation-duration: 2s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-  line-height: 45px;
-  &:focus,
-  &:hover {
-    color: white;
-  }
-  &:hover {
-    background: $gray-800;
-  }
-  i {
-    font-weight: 800;
-  }
-}
 
 @-webkit-keyframes fadeIn {
   0% {
