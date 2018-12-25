@@ -3,7 +3,7 @@ from questions.models import Question
 
 # Create your models here.
 class OHQueue(models.Model):
-    name = models.CharField(max_length=256)
+    name = models.CharField(max_length=256, unique=True)
     questions = models.ManyToManyField(Question, blank=True)
     times_open = models.CharField(max_length=1024)
     average_wait_time = models.FloatField(default=0.0)

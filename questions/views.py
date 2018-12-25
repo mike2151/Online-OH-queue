@@ -2,6 +2,7 @@ from django.views import View
 from .models import Question
 from django.http import JsonResponse
 from users.models import StudentUser
+from ohqueue.models import OHQueue
 
 def QuestionAnswerView(View):
     def post(self, request):
@@ -12,11 +13,20 @@ def QuestionAnswerView(View):
        if not user.is_ta:
            return JsonResponse({"error": "You are not authenticated"})
 
+       # get queue
+       queue_name = request.POST["queue"]
+       queue = None
+       try:
+            queue = OHQueue.objects.get(name=queue_name)
+       except:
+            queue = None
+       if queue == None:
+            return JsonResponse({"error": "Queue does not exist"})
        # get question
        question_id = request.POST["pk"]
        question = None
        try:
-            question = question_id.objects.get(pk=question_id)
+            question = Question.objects.get(pk=question_id)
        except:
             question = None
        if question == None:
@@ -26,4 +36,8 @@ def QuestionAnswerView(View):
        question.is_answered = True
        question.answered_by_email = user.email
        question.save()
+       # remove from the queue
+       queue.questions.remove(question)
+       queue.save()
+
        return JsonResponse({"success": "true"})
