@@ -6,7 +6,8 @@ from django.utils.encoding import force_bytes, force_text
 from .verify_tokens import account_activation_token
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.shortcuts import redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.views import View
 from rest_framework.permissions import AllowAny
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
@@ -55,3 +56,14 @@ def login(request):
     token, _ = Token.objects.get_or_create(user=user)
     return Response({'token': token.key},
                     status=HTTP_200_OK)
+
+class taAuthenticationView(View):
+    def get(self, request):
+       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+       actual_token = token_header.split(" ")[1]
+       user = models.StudentUser.objects.filter(auth_token=actual_token).first()
+       if user == None or not user.is_ta:
+           return JsonResponse({"is_ta": False})
+       else:
+           return JsonResponse({"is_ta": True})
+

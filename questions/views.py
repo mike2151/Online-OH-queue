@@ -4,13 +4,13 @@ from django.http import JsonResponse
 from users.models import StudentUser
 from ohqueue.models import OHQueue
 
-def QuestionAnswerView(View):
+class QuestionAnswerView(View):
     def post(self, request):
        # get current TA
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
        actual_token = token_header.split(" ")[1]
        user = StudentUser.objects.filter(auth_token=actual_token).first()
-       if not user.is_ta:
+       if user == None or not user.is_ta:
            return JsonResponse({"error": "You are not authenticated"})
 
        # get queue
