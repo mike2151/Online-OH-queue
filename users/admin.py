@@ -13,7 +13,12 @@ class StudentUserAdmin(UserAdmin):
     add_form = StudentUserCreationForm
     form = StudentUserChangeForm
     model = StudentUser
-    list_display = ['email', 'first_name', 'last_name', 'is_ta', 'is_active', 'username']
+    list_display = ['email', 'first_name', 'last_name', 'username', 'is_active', 'is_ta', 'is_superuser']
+    fieldsets = (
+        ('User Information', {'fields': ('first_name', 'last_name', 'email')}),
+        ('Permissions', {'fields': ('is_active', 'is_ta', 'is_superuser')}),
+        ('Important Dates', {'fields': ('date_joined',)})
+    )
 
 admin.site.site_header = settings.COURSE_TITLE  + ' Office Hours Admin'
 admin.site.register(StudentUser, StudentUserAdmin)

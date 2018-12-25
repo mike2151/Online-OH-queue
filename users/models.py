@@ -11,7 +11,7 @@ class StudentUser(AbstractUser):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
-    is_ta = models.BooleanField(default=False)
+    is_ta = models.BooleanField(default=False, verbose_name="Teaching Assistant")
 
     USERNAME_FIELD = 'email'
 
