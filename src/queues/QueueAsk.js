@@ -16,18 +16,21 @@ class QueueAsk extends React.Component {
     handleSubmit(event) {
       event.preventDefault();
       const data = new FormData(event.target);
-      fetch('/api/v1/users/login/', {
+      const post_url = '/api/v1/queue/' + this.props.match.params.queue + '/ask'
+      fetch(post_url, {
         method: 'POST',
         body: data,
-      }).then((response) => {
-        return response.json();
-      }).then((body) => {
-        if (body.error) {
-          alert('Invalid login');
-        } else {
-          localStorage.setItem('credentials', body.token);
+        headers: {
+          "Authorization": "Token " + localStorage.getItem('credentials')
         }
-      });
+      }).then((response) => {
+        if (response.ok) {
+          let path = '/';
+          this.props.history.push(path);
+        } else {
+          console.log("failure!");
+        }
+      }); 
     }
 
     onChange(event) {
