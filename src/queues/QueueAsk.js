@@ -6,8 +6,7 @@ class QueueAsk extends React.Component {
       super();
 
       this.state = {
-        email: '',
-        password: ''
+        description: ''
       }
 
       this.onChange = this.onChange.bind(this);
@@ -32,22 +31,24 @@ class QueueAsk extends React.Component {
     }
 
     onChange(event) {
+      var current_length = event.target.value.length;
+      var remaining_chars = 280 - current_length;
+      document.getElementById("description_label").innerHTML =
+       "Question Description (" + remaining_chars.toString() + " Characters Remaining)";
       this.setState({[event.target.name]: event.target.value});
     }
   
     render() {
       return (
         <div class="formBg">
-          <div class="login-page">
-            <div class="userForm">
+          <div class="question-page">
+            <div class="questionForm">
               <form class="login-form" onSubmit={this.handleSubmit}>
-                <h2 class="header-login"><center>Log in</center></h2>
-                <label htmlFor="email">Penn Email</label>
-                <input id="email" name="email" type="email" value={this.state.email} onChange={this.onChange} />  
-                <label htmlFor="password">Password</label>
-                <input id="password" name="password" type="password" value={this.state.password} onChange={this.onChange} />
-                <button>login</button>
-                <p class="message">Not registered? <a href="/signup">Create an account</a></p>
+                <h2 class="header-login"><center>Ask A Question</center></h2>
+                <label htmlFor="description" id="description_label">Question Description (280 Characters Remaining):</label>
+                <textarea maxlength="280" id="description" name="description" 
+                 value={this.state.question} onChange={this.onChange} />  
+                <button class="margin-top-button">submit</button>
               </form>
             </div>
           </div>
