@@ -6,15 +6,16 @@ class Queue extends React.Component {
     render() {
       return (
         <div>
-          <h2>{this.props.queue.name}</h2>
-          <a href={ '/' + this.props.queue.name + "/ask" } >Ask Question</a>
+          <center><h2 class="queue-title">{this.props.queue.name}</h2>
+          <p class="wait-time">Average Wait Time: {this.props.queue.average_wait_time} Minutes</p>
+          <a href={ '/' + this.props.queue.name + "/ask" } class="ask-link">Ask Question</a></center>
           <table class="queue">
           <tr>
             <th>Name</th>
           </tr>
 
           {this.props.queue.question_contents.map(function(question, index){
-                return <tr><td>{question.first_name}</td></tr>
+                return <tr><td>{index+1} - {question.first_name} {question.last_name}</td></tr>
             })}
           </table>
         </div>
