@@ -8,8 +8,8 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        read_only_fields = ('is_answered', 'answered_by', 'author_email', 'author_first_name', 'author_last_name')
-        fields = ( 'is_answered', 'description', 'ask_date', 'author_email', 'author_first_name', 'author_last_name')
+        read_only_fields = ('is_answered', 'answered_by', 'author_email', 'author_first_name', 'author_last_name', 'answered_by_email')
+        fields = ( 'is_answered', 'description', 'ask_date', 'author_email', 'author_first_name', 'author_last_name', 'answered_by_email')
     def create(self, validated_data):
         question =  Question.objects.create(**validated_data)
         question.is_answered = False
