@@ -21,7 +21,7 @@ from rest_framework import generics
 from . import models
 from . import serializers
 
-class UserRegisterView(generics.ListCreateAPIView):
+class UserRegisterView(generics.CreateAPIView):
     queryset = models.StudentUser.objects.all()
     serializer_class = serializers.UserSerializer
     permission_classes = (AllowAny,)
