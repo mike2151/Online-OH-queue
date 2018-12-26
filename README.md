@@ -102,7 +102,7 @@ Logs in a user to the site
         </tr>
         <tr>
             <td>Return</td>
-            <td>Returns `token`, an authentication token for the user on success</td>
+            <td>Returns <code>token</code> , an authentication token for the user on success</td>
         </tr>
         <tr>
             <td>Parameters</td>
