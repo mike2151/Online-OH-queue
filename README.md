@@ -101,6 +101,10 @@ Logs in a user to the site
             <td>JSON</td>
         </tr>
         <tr>
+            <td>Return</td>
+            <td>Returns `token`, an authentication token for the user on success</td>
+        </tr>
+        <tr>
             <td>Parameters</td>
             <td>
                 <table>
