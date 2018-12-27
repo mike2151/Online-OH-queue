@@ -27,6 +27,7 @@ class LoginForm extends React.Component {
           alert('Invalid login');
         } else {
           localStorage.setItem('credentials', body.token);
+          this.props.history.push('/summary');
         }
       });
     }

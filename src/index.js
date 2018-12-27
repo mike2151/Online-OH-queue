@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import QueueAsk from './queues/QueueAsk';
-import QueueTaList from './queues/QueueTaList';
+import QueueTaList from './queues/QueueTAList';
 import SignUpForm from './signup-in/Signup';
 import LoginForm from './signup-in/Login';
 import Summary from './stats/Summary'
