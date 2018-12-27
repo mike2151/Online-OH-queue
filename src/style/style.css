@@ -1,3 +1,10 @@
+:root {
+    --primary-color: #76b852;
+  }
+
+
+
+
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic%22");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css");
@@ -73,11 +80,11 @@ h6 {
   height: auto;
   padding-top: 8rem;
   padding-bottom: 8rem;
-  background: #76b852; 
-  background: -webkit-linear-gradient(right, #76b852, #8DC26F);
-  background: -moz-linear-gradient(right, #76b852, #8DC26F);
-  background: -o-linear-gradient(right, #76b852, #8DC26F);
-  background: linear-gradient(to left, #76b852, #8DC26F);background-position: center center;
+  background: var(--primary-color); 
+  background: -webkit-linear-gradient(right, var(--primary-color), var(--primary-color));
+  background: -moz-linear-gradient(right, var(--primary-color), var(--primary-color));
+  background: -o-linear-gradient(right, var(--primary-color), var(--primary-color));
+  background: linear-gradient(to left, var(--primary-color), var(--primary-color));background-position: center center;
   background-size: cover; }
   .masthead h1 {
     font-size: 4rem;
@@ -111,9 +118,9 @@ h6 {
 .btn-primary {
   background-color: #FFF !important;
   border-color: #FFF !important;
-  color: #76b852 !important; }
+  color: var(--primary-color) !important; }
   .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-    background-color: #76b852 !important;
+    background-color: var(--primary-color) !important;
     border-color: #FFF !important;
     color: #FFF !important }
 
@@ -227,7 +234,7 @@ textarea {
 
 
 .header-login {
-  color: #8DC26F;
+  color: var(--primary-color);
 }
 
 .login-page {
@@ -295,11 +302,11 @@ textarea {
 }
 
 .formBg {
-  background: #76b852; 
-  background: -webkit-linear-gradient(right, #76b852, #8DC26F);
-  background: -moz-linear-gradient(right, #76b852, #8DC26F);
-  background: -o-linear-gradient(right, #76b852, #8DC26F);
-  background: linear-gradient(to left, #76b852, #8DC26F);
+  background: var(--primary-color); 
+  background: -webkit-linear-gradient(right, var(--primary-color), var(--primary-color));
+  background: -moz-linear-gradient(right, var(--primary-color), var(--primary-color));
+  background: -o-linear-gradient(right, var(--primary-color), var(--primary-color));
+  background: linear-gradient(to left, var(--primary-color), var(--primary-color));
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;     
