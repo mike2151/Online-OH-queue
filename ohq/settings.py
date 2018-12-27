@@ -2,6 +2,7 @@
 COURSE_TITLE = "CIS 121"
 SITE_URL = "localhost:8000"
 START_OF_WEEK = "Monday"
+TIME_ZONE = "America/New_York"
 #END CONFIGURATION
 
 
