@@ -2,6 +2,8 @@
 ##### Table of Contents 
 [Setup](#Setup) 
 <a name="Setup"/> <br/>
+[Office Hours Queue Setup](#OHQueueSetUp) 
+<a name="OHQueueSetUp"/> <br/>
 [Theme Configuration](#Theme) 
 <a name="Theme"/> <br/>
 [Development](#Development) 
@@ -10,6 +12,26 @@
 <a name="API"/>
 
 ## Setup
+
+## OHQueueSetUp
+Online-OH-Queue supports the creation of multiple queues. To create a queue, navigate to `/admin`, log in with the superuser credentials you created earlier or with another admin account.
+
+Then, click on `+ Add` in the `OHQUEUE` section. <br />
+Enter a name for the queue. This name will be visibile to all students. <br />
+Do not enter any questions. Ignore this field <br />
+Do not enter the average wait time. Ignore this field. This will be automatically done by the server <br /><br />
+Times Open Section: <br />
+This field is used to specify when the queue is open for students to ask questions. You must enter a string in the following format: <br />
+Example: `Monday:2:00pm-4:00pm;5:00pm-7:00pm Tuesday:11:30am-5:00pm Wednesday:11:30am-5:00pm Thursday:11:30am-5:00pm Friday:11:30am-5:00pm Saturday: Sunday: ` <br />
+In the queue above, office hours are held 2pm to 4pm and 5pm to 7pm on Monday. On Tuesday to Friday, office hours are held  11:30 am to 5pm. There are no office hours held on Saturday or Sunday. <br />
+Notes on the format: <br />
+You must include **ALL** days of the week in the times open field. If there no office hours being held on that day, then leave a space after the colon. <br />
+When specifing times, use the format above: hour:minuteam/pm. First indicate the hour. Next, a colon followed by the minutes. Next, either am or pm. The dash indicates a time range. So in the case of `2:00pm-4:00pm` the queue remains open from 2pm to 4pm. <br />
+A semicolon followed by another time range is used if the queue is not open during a continuous time interval. See Monday for an example <br />
+A space is followed after specifing a day of open times. <br />
+**Failure to adhere to the time convention will make the Office Hours Queue not appear or may even bring up a failure error on the office hours page!**
+
+
 
 ## Theme
 By default, the Online-OH-Queue comes with a green color theme. This can be changed. Navigate to the `style.css` file located in `src/style/style.css`. 

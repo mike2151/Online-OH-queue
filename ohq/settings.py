@@ -2,7 +2,7 @@
 COURSE_TITLE = "CIS 121"
 SITE_URL = "localhost:8000"
 START_OF_WEEK = "Monday"
-TIME_ZONE = "America/New_York"
+QUEUE_TIME_ZONE = "America/New_York"
 #END CONFIGURATION
 
 
@@ -22,6 +22,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+USE_TZ = True
+TIME_ZONE = "UTC"
 
 # Application definition
 
