@@ -79,11 +79,11 @@ class OHQueue(models.Model):
                 break
             else:
                 if current_hour == start_time_int_hour:
-                    if current_minute > start_time_int_minute:
+                    if current_minute >= start_time_int_minute:
                         isValidTime = True
                         break
                 elif current_hour == end_time_int_hour:
-                    if (current_minute < end_time_int_minute):
+                    if (current_minute <= end_time_int_minute):
                         isValidTime = True
                         break
         return isValidTime
