@@ -36,12 +36,16 @@ def isQueueActive(times_open):
     day_times = s.split(";")
     isValidTime = False
     current_hour = today.hour
+    current_minute = today.minute
     for time_slot in day_times:
         start_time = time_slot.split("-")[0]
         end_time = time_slot.split("-")[1]
-        start_time_int = int((datetime.datetime.strptime(start_time, '%I%p')).strftime("%H"))
-        end_time_int = int((datetime.datetime.strptime(end_time, '%I%p')).strftime("%H"))
-        if (current_hour >= start_time_int and current_hour <= end_time_int):
+        start_time_int_hour = int((datetime.datetime.strptime(start_time, '%I:%M%p')).strftime("%H"))
+        end_time_int_hour = int((datetime.datetime.strptime(end_time, '%I:%M%p')).strftime("%H"))
+        start_time_int_minute = int((datetime.datetime.strptime(start_time, '%I:%M%p')).strftime("%M"))
+        end_time_int_minute = int((datetime.datetime.strptime(end_time, '%I:%M%p')).strftime("%M"))
+        if (current_hour >= start_time_int_hour and current_hour <= end_time_int_hour
+        and current_minute >= start_time_int_minute and current_minute <= end_time_int_minute):
             isValidTime = True
             break
     return isValidTime
