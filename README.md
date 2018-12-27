@@ -14,8 +14,8 @@
 ## Theme
 By default, the Online-OH-Queue comes with a green color theme. This can be changed. Navigate to the `style.css` file located in `src/style/style.css`. 
 
-At the top of the file are theme variables which you can edit to change the theme of the website.
-Theme variables:
+At the top of the file are theme variables which you can edit to change the theme of the website. 
+Theme variables: <br />
 `primary-color`: This is the main color of the website. By default it is the green color.
 
 ## Development
