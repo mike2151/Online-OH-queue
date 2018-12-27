@@ -293,3 +293,98 @@ Returns all of the active office hours queues along with their question
     </tbody>
 </table>
 
+### Answer a question
+Answers a question
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/questions/answer</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>POST</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>TA</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+       <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          <td><tt>queue</tt></td>
+                          <td><strong>Required</strong></td>
+                          <td>Name of the office hours queue that the question is in</td>
+                          <td><tt>2-minute-office-hours-queue</tt></td>
+                      </tr>
+                      <tr>
+                          <td><tt>question_id</tt></td>
+                          <td><strong>Required</strong></td>
+                          <td>Primary key of the question</td>
+                          <td><tt>5</tt></td>
+                      </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+### Current Week's Questions
+Gets the current week's questions at office hours to help TA's prepare for office hours
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/summary/</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>TA</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Return</td>
+            <td>Returns list of questions</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
