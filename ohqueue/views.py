@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 
 from .models import OHQueue
 from questions.models import Question
@@ -15,7 +15,7 @@ from django.http import JsonResponse
 class OHQueueCreationView(generics.CreateAPIView):
     queryset = OHQueue.objects.all()
     serializer_class = OHQueueSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAdminUser,)
 
 class OHQueueListView(generics.ListAPIView):
     queryset = OHQueue.objects.all()
@@ -25,7 +25,7 @@ class OHQueueListView(generics.ListAPIView):
 class QuestionCreationView(generics.ListCreateAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def get_serializer_context(self):
         ohqueuename = (self.kwargs["name"])
