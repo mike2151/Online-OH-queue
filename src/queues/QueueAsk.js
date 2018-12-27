@@ -1,5 +1,5 @@
 import React from "react";
-import "../signup-in/style.css"
+import "../style/style.css"
 
 class QueueAsk extends React.Component {
     constructor() {

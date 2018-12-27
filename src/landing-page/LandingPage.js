@@ -1,8 +1,7 @@
 import React from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./scss/stylish-portfolio.css";
-import "./styles.css"
+import "../style/style.css"
 
 class LandingPage extends React.Component {
   render() {

@@ -1,5 +1,6 @@
 import React from "react";
 import $ from 'jquery'
+import "../style/style.css"
 
 class Queue extends React.Component {
 

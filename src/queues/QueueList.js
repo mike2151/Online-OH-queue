@@ -1,6 +1,6 @@
 import React from "react";
 import Queue from "./Queue";
-import "./style.css"
+import "../style/style.css"
 
 
 class QueueList extends React.Component {

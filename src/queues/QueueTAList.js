@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import QueueTA from "./QueueTA";
-import "./style.css"
+import "../style/style.css"
 
 class QueueTaList extends Component {
 
