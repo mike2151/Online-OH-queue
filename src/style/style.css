@@ -120,7 +120,7 @@ textarea {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  background: var(--primary-color);
   width: 100%;
   border: 0;
   padding: 15px;
@@ -139,7 +139,7 @@ textarea {
   font-size: 12px;
 }
 .questionForm .message a {
-  color: #4CAF50;
+  color: var(--primary-color);
   text-decoration: none;
 }
 .questionForm .register-form {
@@ -180,7 +180,7 @@ textarea {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #4CAF50;
+  background: var(--primary-color);
   width: 100%;
   border: 0;
   padding: 15px;
@@ -199,7 +199,7 @@ textarea {
   font-size: 12px;
 }
 .userForm .message a {
-  color: #4CAF50;
+  color: var(--primary-color);
   text-decoration: none;
 }
 .userForm .register-form {
@@ -265,7 +265,7 @@ textarea {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #4CAF50;
+    background-color: var(--primary-color);
     color: white;
   }
   
@@ -276,9 +276,9 @@ textarea {
   .ask-link {
     font-size: 1.3em;
     background-color: #FFF;
-    color: #4CAF50;
+    color: var(--primary-color);
     border-style: solid;
-    border-color: #4CAF50;
+    border-color: var(--primary-color);
     padding: 14px 25px;
     text-align: center;
     text-decoration: none;
@@ -289,16 +289,16 @@ textarea {
   .ask-link:hover {
     color: #FFF;
     text-decoration: none;
-    background: #4CAF50;
+    background: var(--primary-color);
   }
   
   .answer-link {
     font-size: .9em;
     width: 60%;
     background-color: #FFF;
-    color: #4CAF50;
+    color: var(--primary-color);
     border-style: solid;
-    border-color: #4CAF50;
+    border-color: var(--primary-color);
     padding: .6vh .4vw;
     text-align: center;
     text-decoration: none;
@@ -310,7 +310,7 @@ textarea {
   .answer-link:hover {
     color: #FFF;
     text-decoration: none;
-    background: #4CAF50;
+    background: var(--primary-color);
   }
   
   .wait-time {
@@ -356,6 +356,6 @@ textarea {
     padding-top: 1vh;
     padding-bottom: 1vh;
     text-align: left;
-    background-color: #4CAF50;
+    background-color: var(--primary-color);
     color: white;
   }
