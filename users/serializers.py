@@ -8,6 +8,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
+from django.contrib.sites.models import Site
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -40,7 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
 
         # email verification
-        current_site = settings.SITE_URL
+        current_site = Site.objects.get(pk=1).domain
         mail_subject = 'Activate your office hours account'
         message = "Hi {username}, \n Please click on the link to confirm your registration, \n{domain}/activate/{uid}/{token} \n".format(username=user.username, domain=current_site, uid=urlsafe_base64_encode(force_bytes(user.pk)).decode(), token=account_activation_token.make_token(user))
         to_email = user.email

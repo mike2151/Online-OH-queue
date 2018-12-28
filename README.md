@@ -13,6 +13,8 @@
 
 ## Setup
 
+domain in admin
+
 ## OHQueueSetUp
 Online-OH-Queue supports the creation of multiple queues. To create a queue, navigate to `/admin`, log in with the superuser credentials you created earlier or with another admin account.
 

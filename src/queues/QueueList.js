@@ -1,9 +1,20 @@
 import React from "react";
 import Queue from "./Queue";
 import "../static/css/style.css"
+import { Route , withRouter}  from 'react-router-dom';
 
 
 class QueueList extends React.Component {
+
+  constructor(props) {
+    super(props); 
+    this.logout = this.logout.bind(this);
+  }
+
+  logout() {
+    localStorage.removeItem('credentials');
+    this.props.history.push('/login');
+   }
   
     render() {
       return (
@@ -21,4 +32,4 @@ class QueueList extends React.Component {
     }
   }
 
-  export default QueueList;
+  export default withRouter(QueueList);

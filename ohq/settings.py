@@ -1,6 +1,5 @@
 #CONFIGURATION
 COURSE_TITLE = "CIS 121"
-SITE_URL = "http://localhost:8000"
 START_OF_WEEK = "Monday"
 QUEUE_TIME_ZONE = "America/New_York"
 #END CONFIGURATION

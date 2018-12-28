@@ -14,8 +14,6 @@ class App extends Component {
       isLoggedIn: false,
       queues: []
     };
-
-    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
@@ -36,11 +34,6 @@ class App extends Component {
         this.setState({queues: body});
       }
     });
-  }
-
-  logout() {
-    localStorage.removeItem('credentials');
-    this.props.history.push('/login');
   }
 
   render() {
