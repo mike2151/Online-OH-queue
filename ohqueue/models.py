@@ -14,7 +14,7 @@ class OHQueue(models.Model):
 
     def question_contents(self):
         question_content = []
-        for question in self.questions.all():
+        for question in self.questions.order_by('ask_date'):
             question_dict = {
                 "first_name": question.author_first_name, 
                 "last_name": question.author_last_name,
