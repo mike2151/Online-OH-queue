@@ -1,6 +1,6 @@
 #CONFIGURATION
 COURSE_TITLE = "CIS 121"
-SITE_URL = "localhost:8000"
+SITE_URL = "http://localhost:8000"
 START_OF_WEEK = "Monday"
 QUEUE_TIME_ZONE = "America/New_York"
 #END CONFIGURATION
@@ -25,6 +25,15 @@ ALLOWED_HOSTS = []
 USE_TZ = True
 TIME_ZONE = "UTC"
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,7 +51,7 @@ INSTALLED_APPS = [
     'questions',
     'ohqueue',
     'frontend',
-    'stats'
+    'stats',
 ]
 
 
@@ -77,7 +86,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-        os.path.join(BASE_DIR, 'build')
+        os.path.join(BASE_DIR, 'build'),
+        os.path.join(BASE_DIR, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {

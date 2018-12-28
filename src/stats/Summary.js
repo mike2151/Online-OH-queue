@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "../style/style.css"
+import "../static/css/style.css"
 
 class Summary extends Component {
 

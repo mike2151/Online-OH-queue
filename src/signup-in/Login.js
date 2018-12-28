@@ -1,5 +1,5 @@
 import React from "react";
-import "../style/style.css"
+import "../static/css/style.css"
 
 class LoginForm extends React.Component {
     constructor() {
@@ -49,6 +49,7 @@ class LoginForm extends React.Component {
                 <input id="password" name="password" type="password" value={this.state.password} onChange={this.onChange} />
                 <button>login</button>
                 <p class="message">Not registered? <a href="/signup">Create an account</a></p>
+                <p class="message">Forget your password? <a href="/password_reset">Reset your password</a></p>
               </form>
             </div>
           </div>

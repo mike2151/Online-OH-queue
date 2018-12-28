@@ -1,7 +1,7 @@
 import React from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../style/style.css"
+import "../static/css/style.css"
 
 class LandingPage extends React.Component {
   render() {

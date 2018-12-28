@@ -1,5 +1,5 @@
 import React from "react";
-import "../style/style.css"
+import "../static/css/style.css"
 
 class Queue extends React.Component {
   

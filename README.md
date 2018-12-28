@@ -34,7 +34,7 @@ A space is followed after specifing a day of open times. <br />
 
 
 ## Theme
-By default, the Online-OH-Queue comes with a green color theme. This can be changed. Navigate to the `style.css` file located in `src/style/style.css`. 
+By default, the Online-OH-Queue comes with a green color theme. This can be changed. Navigate to the `style.css` file located in `src/static/css/style.css` and in `frontend/static/style.css`. You must make changes to both files!
 
 At the top of the file are theme variables which you can edit to change the theme of the website. 
 Theme variables: <br />
