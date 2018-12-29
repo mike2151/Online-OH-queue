@@ -37,6 +37,9 @@ class QuestionAnswerView(View):
        question.is_answered = True
        question.answered_by_email = user.email
        question.save()
+
+       # edit average wait time
+
        # remove from the queue
        queue.questions.remove(question)
        queue.save()

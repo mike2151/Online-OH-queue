@@ -10,10 +10,13 @@ class OHQueue(models.Model):
     name = models.CharField(max_length=256, unique=True)
     questions = models.ManyToManyField(Question, blank=True)
     times_open = models.CharField(max_length=1024)
-    average_wait_time = models.FloatField(default=0.0)
     is_open_extended = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
     is_in_time = models.BooleanField(default=False)
+    # average wait time fields
+    average_wait_time = models.FloatField(default=0.0)
+    num_questions_answered = models.IntegerField(default=0)
+    last_answer_time = models.DateField(default=datetime.date.today)
 
     def question_contents(self):
         question_content = []
