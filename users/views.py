@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
 from django.utils.encoding import force_bytes, force_text
 from .verify_tokens import account_activation_token
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -17,6 +17,7 @@ from rest_framework.status import (
 from rest_framework.response import Response
 
 from rest_framework import generics
+from rest_framework.throttling import AnonRateThrottle
 
 from . import models
 from . import serializers
@@ -43,6 +44,7 @@ def activate(request, uidb64, token):
 @csrf_exempt
 @api_view(["POST"])
 @permission_classes((AllowAny,))
+@throttle_classes([AnonRateThrottle,])
 def login(request):
     email = request.data.get("email")
     password = request.data.get("password")
