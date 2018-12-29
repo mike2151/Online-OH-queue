@@ -48,13 +48,45 @@ class QueueTaList extends Component {
 
   render() {
     if(this.state.isTA) {
-      return (
-        <div class="horizontalList">
-            {this.state.queues.map(function(queue, index){
-                return <div class="queue-table"><QueueTA queue={queue}/></div>;
-            })}
+      let screenWidth = window.innerWidth;
+
+      var numQueues = this.state.queues.length;
+      if (numQueues == 0 || screenWidth < 800) {
+        numQueues = 1;
+      }
+      var widthOfEachQueue = 100.0 / numQueues;
+      var widthStr = widthOfEachQueue.toString() + "vw";
+      var queueTableStyle = {
+        width: widthStr
+      };
+      
+      if (screenWidth < 800) {
+        return (
+          <div>
+            <div class="top-right">
+              <button className="btn btn-primary" onClick={this.logout}>Log out</button>
+            </div>
+            <div class="verticalList">
+              {this.state.queues.map(function(queue, index){
+                  return <div style={queueTableStyle} class="queue-table" ><QueueTA queue={queue}/></div>;
+              })}
+            </div>
           </div>
-      )
+        );
+      } else {
+        return (
+          <div>
+            <div class="top-right">
+              <button className="btn btn-primary btn-xl" onClick={this.logout}>Log out</button>
+            </div>
+            <div class="horizontalList">
+              {this.state.queues.map(function(queue, index){
+                  return <div style={queueTableStyle} class="queue-table" ><QueueTA queue={queue}/></div>;
+              })}
+            </div>
+          </div>
+        );
+      }
     } else {
       return (
         <p>You do not have appropriate permissions to access this page</p>
@@ -64,3 +96,4 @@ class QueueTaList extends Component {
 }
 
 export default QueueTaList;
+
