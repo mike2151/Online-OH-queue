@@ -303,6 +303,11 @@ height: 100vh;
   font-size: 2em;
 }
 
+.queue-status {
+  color: red;
+  size: 1.2em;
+}
+
 .ask-link {
   font-size: 1.3em;
   background-color: #FFF;

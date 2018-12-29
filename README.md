@@ -279,8 +279,8 @@ Keeps Office Hours Queue Open
     </tbody>
 </table>
 
-### Closes Office Hours Queue Early
-Closes Office Hours Queue Early
+### Closes Office Hours Queue 
+Closes Office Hours Queue 
 
 <table>
     <tbody>

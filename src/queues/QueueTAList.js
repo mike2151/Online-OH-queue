@@ -25,7 +25,7 @@ class QueueTaList extends Component {
         if (body["is_ta"]) {
             this.setState({isTA: true});
 
-            fetch('/api/v1/queue/list/', {
+            fetch('/api/v1/queue/list_ta/', {
               method: 'GET',
               headers: {
                   "Authorization": "Token " + localStorage.getItem('credentials')

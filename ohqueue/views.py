@@ -29,6 +29,23 @@ class OHQueueListView(generics.ListAPIView):
        queues = all_queues.filter(id__in=active_queues_id)
        return queues
 
+class OHQueueTAListView(generics.ListAPIView):
+    queryset = OHQueue.objects.all()
+    serializer_class = OHQueueSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+       actual_token = token_header.split(" ")[1]
+       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       if user == None or not user.is_ta:
+           return OHQueue.objects.none()
+
+       all_queues = OHQueue.objects.all()
+       active_queues_id = [o.id for o in all_queues if o.updateTime()]
+       queues = all_queues.filter(id__in=active_queues_id)
+       return queues
+
 class QuestionCreationView(generics.ListCreateAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
@@ -66,12 +83,12 @@ class OpenQueueExtended(View):
            queue.is_open_extended = False
        else:
            queue.is_open_extended = True
-           queue.is_closed_early = False
+           queue.is_closed = False
        queue.save()
 
        return JsonResponse({"success": True})
 
-class CloseQueueEarly(View):
+class CloseQueue(View):
     def post(self, request,  *args, **kwargs):
        # get current TA
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
@@ -89,10 +106,10 @@ class CloseQueueEarly(View):
             queue = None
        if queue == None:
             return JsonResponse({"success": False, "error": "Queue does not exist"})
-       if queue.is_closed_early:
-          queue.is_closed_early = False
+       if queue.is_closed:
+          queue.is_closed = False
        else:
-          queue.is_closed_early = True
+          queue.is_closed = True
           queue.is_open_extended = False
        queue.save()
 
