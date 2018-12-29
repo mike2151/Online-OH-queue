@@ -26,11 +26,17 @@ font-weight: 700; }
 .fas {
 line-height: inherit; }
 
+
 .top-right {
 position: absolute;
 top: 0px;
 right: 0px;
 }  
+
+.landing-page {
+  width: 100vw !important;
+  height: 100vh !important;
+}
 
 .paragraph-text {
   line-height: 1.4em;
@@ -75,7 +81,10 @@ box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.1);
 font-weight: 700; }
 
 .btn-margin {
-margin-right: 5vw;
+margin-right: 1vw;
+margin-left: 1vw;
+margin-top: 1vh;
+margin-bottom: 1vh;
 }
 
 .title-text {
@@ -246,11 +255,21 @@ height: 100vh;
   margin-right: 2vw;
 }
 
+.verticallList {
+  display:flex; 
+  flex-direction:column;
+  margin-top: 3vh;
+  margin-left: 2vw;
+  margin-right: 2vw;
+}
+
+
 /* Queue Style */
 
 .queue-table{
   margin-right: 1vw;
   margin-left: 1vw;
+  margin-top: 2vh;
   border-style: solid;
   border-width: 1px;
   padding: .4em;

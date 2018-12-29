@@ -12,7 +12,7 @@ class LandingPage extends React.Component {
           <a className="btn btn-primary btn-margin btn-xl" href="/signup">
             Sign up
           </a>
-          <a className="btn btn-primary btn-xl" href="/login">
+          <a className="btn btn-primary btn-margin btn-xl" href="/login">
             Log in
           </a>
         </div>

@@ -45,7 +45,7 @@ class App extends Component {
       );
     } else {
       return (
-        <div id="root">
+        <div id="landing-page">
           <LandingPage/>
         </div>
       );
