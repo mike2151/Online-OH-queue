@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mike2151/Online-OH-queue.svg?branch=master)](https://travis-ci.org/mike2151/Online-OH-queue)
+
 # Online Office Hours Queue
 ##### Table of Contents 
 [Setup](#Setup) 
