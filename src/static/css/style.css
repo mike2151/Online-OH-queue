@@ -337,6 +337,21 @@ height: 100vh;
   margin-bottom: .5vh;
 }
 
+.answer-link-selected {
+  font-size: .9em;
+  width: 60%;
+  background: var(--primary-color);
+  color: #FFF;
+  border-style: solid;
+  border-color: var(--primary-color);
+  padding: .6vh .4vw;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: .5vh;
+  margin-bottom: .5vh;
+}
+
 .answer-link:hover {
   color: #FFF;
   text-decoration: none;

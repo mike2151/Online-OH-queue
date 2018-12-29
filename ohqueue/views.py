@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
-
+from django.views import View
 from .models import OHQueue
 from questions.models import Question
 from .serializers import OHQueueSerializer
@@ -10,6 +10,7 @@ from questions.serializers import QuestionSerializer
 from rest_framework.response import Response
 from users.models import StudentUser
 from django.http import JsonResponse
+import json
 
 
 class OHQueueCreationView(generics.CreateAPIView):
@@ -42,3 +43,57 @@ class QuestionCreationView(generics.ListCreateAPIView):
         actual_token = token_header.split(" ")[1]
         user = StudentUser.objects.filter(auth_token=actual_token).first()
         return {'user': user.email, 'user-first-name': user.first_name, 'user-last-name': user.last_name, 'queue': ohqueuename}
+
+class OpenQueueExtended(View):
+    def post(self, request,  *args, **kwargs):
+       # get current TA
+       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+       actual_token = token_header.split(" ")[1]
+       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       if user == None or not user.is_ta:
+           return JsonResponse({"success": False, "error": "You are not authenticated"})
+
+       # get queue
+       queue_name = (json.loads(request.body.decode())["queue"])
+       queue = None
+       try:
+            queue = OHQueue.objects.get(name=queue_name)
+       except:
+            queue = None
+       if queue == None:
+            return JsonResponse({"success": False, "error": "Queue does not exist"})
+       if queue.is_open_extended:
+           queue.is_open_extended = False
+       else:
+           queue.is_open_extended = True
+           queue.is_closed_early = False
+       queue.save()
+
+       return JsonResponse({"success": True})
+
+class CloseQueueEarly(View):
+    def post(self, request,  *args, **kwargs):
+       # get current TA
+       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+       actual_token = token_header.split(" ")[1]
+       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       if user == None or not user.is_ta:
+           return JsonResponse({"success": False, "error": "You are not authenticated"})
+
+       # get queue
+       queue_name = (json.loads(request.body.decode())["queue"])
+       queue = None
+       try:
+            queue = OHQueue.objects.get(name=queue_name)
+       except:
+            queue = None
+       if queue == None:
+            return JsonResponse({"success": False, "error": "Queue does not exist"})
+       if queue.is_closed_early:
+          queue.is_closed_early = False
+       else:
+          queue.is_closed_early = True
+          queue.is_open_extended = False
+       queue.save()
+
+       return JsonResponse({"success": True})

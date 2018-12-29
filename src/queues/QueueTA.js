@@ -7,6 +7,8 @@ class Queue extends React.Component {
     constructor() {
       super();
       this.answerQuestion = this.answerQuestion.bind(this);
+      this.extendQueue = this.extendQueue.bind(this);
+      this.closeQueue = this.closeQueue.bind(this);
       this.state = {
         csrftoken: ""
       };
@@ -25,6 +27,48 @@ class Queue extends React.Component {
           }
       }
       this.setState({csrftoken: cookieValue});
+    }
+
+    extendQueue(queueName) {
+      var post_name = "/api/v1/queue/open/";
+      fetch(post_name, {
+        method: 'POST',
+        body: JSON.stringify({
+          "queue": this.props.queue.name
+        }),
+        headers: {
+          "Authorization": "Token " + localStorage.getItem('credentials'),
+          "X-CSRFToken": this.state.csrftoken
+        }
+      }).then((response) => {
+        return response.json();
+      }).then((body) => {
+        console.log(body);
+        if (!body["success"]) {
+          // handle non success
+        }
+      });
+    }
+
+    closeQueue(queueName) {
+      var post_name = "/api/v1/queue/close/";
+      fetch(post_name, {
+        method: 'POST',
+        body: JSON.stringify({
+          "queue": this.props.queue.name
+        }),
+        headers: {
+          "Authorization": "Token " + localStorage.getItem('credentials'),
+          "X-CSRFToken": this.state.csrftoken
+        }
+      }).then((response) => {
+        return response.json();
+      }).then((body) => {
+        console.log(body);
+        if (!body["success"]) {
+          // handle non success
+        }
+      });
     }
     
   
@@ -52,11 +96,33 @@ class Queue extends React.Component {
 
     render() {
       var answerQuestionFunc = this.answerQuestion;
+      var extendQueueFunc = this.extendQueue;
+      var closeQueueFunc = this.closeQueue;
+      var classNames = require('classnames');
+    
+      var btnGroupClassOpen = classNames(
+        {
+          'answer-link': !this.props.queue.is_open_extended,
+          'answer-link-selected': this.props.queue.is_open_extended,
+        }
+      );
+
+      var btnGroupClassClose = classNames(
+        {
+          'answer-link': !this.props.queue.is_closed_early,
+          'answer-link-selected': this.props.queue.is_closed_early,
+        }
+      );
+
       return (
         <div>
           <center><h2 class="queue-title">{this.props.queue.name}</h2>
           <p class="wait-time">Average Wait Time: <br />
            {this.props.queue.average_wait_time} Minutes</p>
+           <button onClick={() => extendQueueFunc(this.props.queue.name)}
+                 className={btnGroupClassOpen}>Keep Queue Open</button>
+           <button onClick={() => closeQueueFunc(this.props.queue.name)}
+                 className={btnGroupClassClose}>Close Queue</button>
           <table class="queue">
           <tr>
             <th>Student</th>

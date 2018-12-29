@@ -11,6 +11,8 @@ class OHQueue(models.Model):
     questions = models.ManyToManyField(Question, blank=True)
     times_open = models.CharField(max_length=1024)
     average_wait_time = models.FloatField(default=0.0)
+    is_open_extended = models.BooleanField(default=False)
+    is_closed_early = models.BooleanField(default=False)
 
     def question_contents(self):
         question_content = []
@@ -30,6 +32,12 @@ class OHQueue(models.Model):
     
     # takes in the current time and the times specified by the OHqueue and sees if it is active 
     def isQueueActive(self):
+        if self.is_open_extended: 
+            return True
+        
+        if self.is_closed_early:
+            return False
+        
         s = str(self.times_open)
         curr_time_zone = pytz.timezone(settings.QUEUE_TIME_ZONE)
         today = datetime.datetime.now(curr_time_zone)        

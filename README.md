@@ -232,6 +232,100 @@ Creates an Office Hours Queue
     </tbody>
 </table>
 
+### Keeps Office Hours Queue Open
+Keeps Office Hours Queue Open
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/queue/open/</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>POST</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>TA</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          <td><tt>queue</tt></td>
+                          <td><strong>Required</strong></td>
+                          <td>Name of the office hours queue</td>
+                          <td><tt>2 Minute Question Queue</tt></td>
+                      </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+### Closes Office Hours Queue Early
+Closes Office Hours Queue Early
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/queue/close/</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>POST</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>TA</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          <td><tt>queue</tt></td>
+                          <td><strong>Required</strong></td>
+                          <td>Name of the office hours queue</td>
+                          <td><tt>2 Minute Question Queue</tt></td>
+                      </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
 ### Ask A Question 
 Creates a question for the office hours queue
 

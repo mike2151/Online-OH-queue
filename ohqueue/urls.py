@@ -6,4 +6,6 @@ urlpatterns = [
     path('create/', views.OHQueueCreationView.as_view()),
     path('list/', views.OHQueueListView.as_view()),
     path('<name>/ask', views.QuestionCreationView.as_view(), name='ask'),
+    path('open/', views.OpenQueueExtended.as_view(), name='open'),
+    path('close/', views.CloseQueueEarly.as_view(), name='close'),
 ]
