@@ -17,6 +17,18 @@ class QueueList extends React.Component {
    }
   
     render() {
+
+      var numQueues = this.props.queues.length;
+      if (numQueues == 0) {
+        numQueues = 1;
+      }
+      var widthOfEachQueue = 100.0 / numQueues;
+      var widthStr = widthOfEachQueue.toString() + "vw";
+      var queueTableStyle = {
+        width: widthStr
+      };
+      
+
       return (
         <div>
           <div class="top-right">
@@ -24,7 +36,7 @@ class QueueList extends React.Component {
           </div>
           <div class="horizontalList">
             {this.props.queues.map(function(queue, index){
-                return <div class="queue-table"><Queue queue={queue}/></div>;
+                return <div style={queueTableStyle} class="queue-table" ><Queue queue={queue}/></div>;
             })}
           </div>
         </div>

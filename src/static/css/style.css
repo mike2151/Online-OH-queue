@@ -242,7 +242,8 @@ height: 100vh;
   display:flex; 
   flex-direction:row;
   margin-top: 3vh;
-  margin-left: 3vw;
+  margin-left: 2vw;
+  margin-right: 2vw;
 }
 
 /* Queue Style */
@@ -253,7 +254,7 @@ height: 100vh;
   border-style: solid;
   border-width: 1px;
   padding: .4em;
-  min-width: 15vw;
+  min-width: 15vw !important;
 }
 
 .queue {
