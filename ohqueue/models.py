@@ -143,24 +143,25 @@ class OHQueue(models.Model):
         current_hour = today.hour
         current_minute = today.minute 
         for time_slot in day_times:
-            start_time = time_slot.split("-")[0]
-            end_time = time_slot.split("-")[1]
-            start_time_int_hour = int((datetime.datetime.strptime(start_time, '%I:%M%p')).strftime("%H"))
-            end_time_int_hour = int((datetime.datetime.strptime(end_time, '%I:%M%p')).strftime("%H"))
-            start_time_int_minute = int((datetime.datetime.strptime(start_time, '%I:%M%p')).strftime("%M"))
-            end_time_int_minute = int((datetime.datetime.strptime(end_time, '%I:%M%p')).strftime("%M"))
-            if (current_hour > start_time_int_hour and current_hour < end_time_int_hour):
-                isValidTime = True
-                break
-            else:
-                if current_hour == start_time_int_hour:
-                    if current_minute >= start_time_int_minute:
-                        isValidTime = True
-                        break
-                elif current_hour == end_time_int_hour:
-                    if (current_minute <= end_time_int_minute):
-                        isValidTime = True
-                        break
+            if "-" in time_slot:
+                start_time = time_slot.split("-")[0]
+                end_time = time_slot.split("-")[1]
+                start_time_int_hour = int((datetime.datetime.strptime(start_time, '%I:%M%p')).strftime("%H"))
+                end_time_int_hour = int((datetime.datetime.strptime(end_time, '%I:%M%p')).strftime("%H"))
+                start_time_int_minute = int((datetime.datetime.strptime(start_time, '%I:%M%p')).strftime("%M"))
+                end_time_int_minute = int((datetime.datetime.strptime(end_time, '%I:%M%p')).strftime("%M"))
+                if (current_hour > start_time_int_hour and current_hour < end_time_int_hour):
+                    isValidTime = True
+                    break
+                else:
+                    if current_hour == start_time_int_hour:
+                        if current_minute >= start_time_int_minute:
+                            isValidTime = True
+                            break
+                    elif current_hour == end_time_int_hour:
+                        if (current_minute <= end_time_int_minute):
+                            isValidTime = True
+                            break
         if self.is_in_time != isValidTime:
             self.is_in_time = isValidTime
             self.save()

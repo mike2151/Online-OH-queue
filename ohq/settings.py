@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'rest_framework',
     'rest_framework.authtoken',
+    'channels',
     'users',
     'api',
     'questions',
@@ -52,6 +53,8 @@ INSTALLED_APPS = [
     'frontend',
     'stats',
 ]
+
+ASGI_APPLICATION = 'ohqueue.routing.application'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

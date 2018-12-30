@@ -5,6 +5,8 @@ import QueueList from "./queues/QueueList";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './static/css/style.css'
 
+import WebSocketInstance from './sockets/WebSocket'
+
 
 class App extends Component {
 
@@ -14,6 +16,7 @@ class App extends Component {
       isLoggedIn: false,
       queues: []
     };
+    WebSocketInstance.connect();
   }
 
   componentDidMount() {

@@ -3,6 +3,9 @@ from .models import Question
 from django.contrib.auth import get_user_model
 from ohqueue.models import OHQueue
 
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+
 
 class QuestionSerializer(serializers.ModelSerializer):
 
@@ -33,4 +36,14 @@ class QuestionSerializer(serializers.ModelSerializer):
                 # add the question
                 ohqueue.questions.add(question)
                 ohqueue.save()
+        
+        layer = get_channel_layer()
+        async_to_sync(layer.group_send)(
+            'ohqueue',
+            {
+                'type': 'message',
+                'message': 'update'
+            }
+        )
+
         return question
