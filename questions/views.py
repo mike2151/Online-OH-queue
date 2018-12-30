@@ -48,14 +48,14 @@ class QuestionAnswerView(View):
        old_average = queue.average_wait_time
 
        # see if one hour ago so we reset
-       if (time_since_last_answer.hours >= 1) {
+       if (time_since_last_answer.hours >= 1):
           new_num_answered = 1
           old_average = 0
-       }
+     
 
        old_sum = old_average * (new_num_answered - 1)
        new_sum = old_sum + time_diff_question_answered_ask.minutes
-       new_average = round((float(new_sum) / float(new_num_answered), 1)
+       new_average = round((float(new_sum) / float(new_num_answered), 1))
        
        queue.average_wait_time = new_average
        queue.num_questions_answered = new_num_answered
