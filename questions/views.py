@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from users.models import StudentUser
 from ohqueue.models import OHQueue
 import json
+import datetime
 
 class QuestionAnswerView(View):
     def post(self, request,  *args, **kwargs):
@@ -39,6 +40,26 @@ class QuestionAnswerView(View):
        question.save()
 
        # edit average wait time
+       
+       time_diff_question_answered_ask = datetime.datetime.now() - quesiton.ask_date
+       time_since_last_answer = datetime.datetime.now() - queue.last_answer_time
+
+       new_num_answered = queue.num_questions_answered + 1
+       old_average = queue.average_wait_time
+
+       # see if one hour ago so we reset
+       if (time_since_last_answer.hours >= 1) {
+          new_num_answered = 1
+          old_average = 0
+       }
+
+       old_sum = old_average * (new_num_answered - 1)
+       new_sum = old_sum + time_diff_question_answered_ask.minutes
+       new_average = round((float(new_sum) / float(new_num_answered), 1)
+       
+       queue.average_wait_time = new_average
+       queue.num_questions_answered = new_num_answered
+       queue.last_answer_time = datetime.datetime.now()
 
        # remove from the queue
        queue.questions.remove(question)
