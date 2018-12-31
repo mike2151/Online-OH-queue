@@ -18,6 +18,8 @@
 ## Setup
 
 domain in admin site
+Environment variables -
+secret key
 
 ## OHQueueSetUp
 Online-OH-Queue supports the creation of multiple queues. To create a queue, navigate to `/admin`, log in with the superuser credentials you created earlier or with another admin account.
@@ -48,11 +50,15 @@ Theme variables: <br />
 
 ## Development
 To develop for Online-OH-Queue, do the following steps:
-1. Clone the repository
-2. Run `pip install -r requirements.txt`
-3. Run `npm install`
-4. Run `npm run build`
-5. Run `python manage.py runserver`
+1. Install redis and run redis 
+2. Install postgresql: https://tutorial-extensions.djangogirls.org/en/optional_postgresql_installation/
+3. Clone the repository
+4. Run `pip install -r requirements.txt`
+5. Run `npm install`
+6. Run `npm run build`
+7. Run `python manage.py makemigrations`
+8. Run `python manage.py migrate`
+9. Run `python manage.py runserver`
    
 An instance of Online-OH-Queue should be running in port 8000
 
