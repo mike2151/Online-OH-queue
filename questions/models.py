@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import StudentUser
+
 class Question(models.Model):
     author_email = models.CharField(max_length=512, default='No Account')    
     author_first_name = models.CharField(max_length=512, default='No first name')    

@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from users.models import StudentUser
 from django.http import JsonResponse
 import json
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 
 class OHQueueCreationView(generics.CreateAPIView):
@@ -86,6 +88,15 @@ class OpenQueueExtended(View):
            queue.is_closed = False
        queue.save()
 
+       layer = get_channel_layer()
+       async_to_sync(layer.group_send)(
+            'ohqueue',
+            {
+                'type': 'ohqueue.update',
+                'message': 'update'
+            }
+        )
+
        return JsonResponse({"success": True})
 
 class CloseQueue(View):
@@ -112,5 +123,14 @@ class CloseQueue(View):
           queue.is_closed = True
           queue.is_open_extended = False
        queue.save()
+
+       layer = get_channel_layer()
+       async_to_sync(layer.group_send)(
+            'ohqueue',
+            {
+                'type': 'ohqueue.update',
+                'message': 'update'
+            }
+        )
 
        return JsonResponse({"success": True})

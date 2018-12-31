@@ -43,10 +43,9 @@ class Queue extends React.Component {
       }).then((response) => {
         return response.json();
       }).then((body) => {
-        console.log(body);
         if (!body["success"]) {
           // handle non success
-        }
+        } 
       });
     }
 
@@ -64,10 +63,9 @@ class Queue extends React.Component {
       }).then((response) => {
         return response.json();
       }).then((body) => {
-        console.log(body);
         if (!body["success"]) {
           // handle non success
-        }
+        } 
       });
     }
     
@@ -87,7 +85,6 @@ class Queue extends React.Component {
       }).then((response) => {
         return response.json();
       }).then((body) => {
-        console.log(body);
         if (!body["success"]) {
           // handle non success
         }
@@ -114,7 +111,6 @@ class Queue extends React.Component {
         }
       );
 
-      console.log(this.props.queue);
       var closed_message;
       if (this.props.queue.is_closed) {
         closed_message =  <p class="queue-status">Queue Closed Manually</p>;

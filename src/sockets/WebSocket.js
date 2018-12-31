@@ -23,7 +23,6 @@ class WebSocketService {
     };
 
     this.socketRef.onerror = e => {
-      console.log(e.message);
     };
     this.socketRef.onclose = () => {
       this.connect();
@@ -45,14 +44,12 @@ class WebSocketService {
     setTimeout(
       function () {
         if (socket.readyState === 1) {
-          console.log("Connection is made")
           if(callback != null){
             callback();
           }
           return;
 
         } else {
-          console.log("wait for connection...")
           recursion(callback);
         }
       }, 1); 

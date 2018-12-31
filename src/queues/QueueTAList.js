@@ -2,48 +2,78 @@ import React, { Component } from 'react';
 import QueueTA from "./QueueTA";
 import "../static/css/style.css"
 
+import WebSocketInstance from '../sockets/WebSocket'
+
+
 class QueueTaList extends Component {
 
   constructor(props) {
     super(props);
+    this.fetchData = this.fetchData.bind(this);
     this.state = {
       isTA: false,
       queues: []
     };
+
+    WebSocketInstance.connect();
+    this.waitForSocketConnection(() => {
+      WebSocketInstance.addCallbacks(this.update.bind(this))
+    });
+  }
+
+  waitForSocketConnection(callback) {
+    const component = this;
+    setTimeout(
+      function () {
+        if (WebSocketInstance.state() === 1) {
+          callback();
+          return;
+        } else {
+          component.waitForSocketConnection(callback);
+        }
+    }, 100); 
+  }
+
+  fetchData() {
+    // see if TA
+    fetch('/api/v1/users/is_ta', {
+      method: 'GET',
+      headers: {
+          "Authorization": "Token " + localStorage.getItem('credentials')
+        }
+    }).then((response) => {
+      return response.json();
+    }).then((body) => {
+      if (body["is_ta"]) {
+          this.setState({isTA: true});
+
+          fetch('/api/v1/queue/list_ta/', {
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('credentials')
+              }
+          }).then((response) => {
+            return response.json();
+          }).then((body) => {
+            if (body.detail) {
+            } else {
+              this.setState({queues: body});
+            }
+          });
+
+      } else {
+          this.setState({isTA: false});
+      }
+    });
+  }
+
+  update(message) {
+    this.fetchData();
+    this.forceUpdate();
   }
 
   componentDidMount() {
-    // see if TA
-    fetch('/api/v1/users/is_ta', {
-        method: 'GET',
-        headers: {
-            "Authorization": "Token " + localStorage.getItem('credentials')
-          }
-      }).then((response) => {
-        return response.json();
-      }).then((body) => {
-        if (body["is_ta"]) {
-            this.setState({isTA: true});
-
-            fetch('/api/v1/queue/list_ta/', {
-              method: 'GET',
-              headers: {
-                  "Authorization": "Token " + localStorage.getItem('credentials')
-                }
-            }).then((response) => {
-              return response.json();
-            }).then((body) => {
-              if (body.detail) {
-              } else {
-                this.setState({queues: body});
-              }
-            });
-
-        } else {
-            this.setState({isTA: false});
-        }
-      });
-
+    this.fetchData()
   }
 
   render() {
