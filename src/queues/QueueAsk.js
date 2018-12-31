@@ -28,9 +28,14 @@ class QueueAsk extends React.Component {
           let path = '/';
           this.props.history.push(path);
         } else {
-          console.log("failure!");
+          return response.json();
         }
-      }); 
+      }).then((body) => {
+        if (typeof body === "undefined") {}
+        else {
+          document.getElementById("validationError").innerHTML = body;
+        }
+      });
     }
 
     onChange(event) {
@@ -52,6 +57,7 @@ class QueueAsk extends React.Component {
                 <textarea maxlength="280" id="description" name="description" 
                  value={this.state.question} onChange={this.onChange} />  
                 <button class="margin-top-button">submit</button>
+                <p id="validationError" class="validationErrorText"></p>
               </form>
             </div>
           </div>

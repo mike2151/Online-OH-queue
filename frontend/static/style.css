@@ -26,11 +26,17 @@ font-weight: 700; }
 .fas {
 line-height: inherit; }
 
+
 .top-right {
 position: absolute;
 top: 0px;
 right: 0px;
 }  
+
+.landing-page {
+  width: 100vw !important;
+  height: 100vh !important;
+}
 
 .paragraph-text {
   line-height: 1.4em;
@@ -75,7 +81,10 @@ box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.1);
 font-weight: 700; }
 
 .btn-margin {
-margin-right: 5vw;
+margin-right: 1vw;
+margin-left: 1vw;
+margin-top: 1vh;
+margin-bottom: 1vh;
 }
 
 .title-text {
@@ -220,6 +229,10 @@ display: none;
 color: red;
 }
 
+.validationErrorText {
+  color: red;
+}
+
 .margin-top-button {
 margin-top: 3vh;
 }
@@ -246,11 +259,21 @@ height: 100vh;
   margin-right: 2vw;
 }
 
+.verticallList {
+  display:flex; 
+  flex-direction:column;
+  margin-top: 3vh;
+  margin-left: 2vw;
+  margin-right: 2vw;
+}
+
+
 /* Queue Style */
 
 .queue-table{
   margin-right: 1vw;
   margin-left: 1vw;
+  margin-top: 2vh;
   border-style: solid;
   border-width: 1px;
   padding: .4em;
@@ -284,6 +307,11 @@ height: 100vh;
   font-size: 2em;
 }
 
+.queue-status {
+  color: red;
+  size: 1.2em;
+}
+
 .ask-link {
   font-size: 1.3em;
   background-color: #FFF;
@@ -308,6 +336,21 @@ height: 100vh;
   width: 60%;
   background-color: #FFF;
   color: var(--primary-color);
+  border-style: solid;
+  border-color: var(--primary-color);
+  padding: .6vh .4vw;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: .5vh;
+  margin-bottom: .5vh;
+}
+
+.answer-link-selected {
+  font-size: .9em;
+  width: 60%;
+  background: var(--primary-color);
+  color: #FFF;
   border-style: solid;
   border-color: var(--primary-color);
   padding: .6vh .4vw;

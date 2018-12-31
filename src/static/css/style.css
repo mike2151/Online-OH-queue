@@ -229,6 +229,10 @@ display: none;
 color: red;
 }
 
+.validationErrorText {
+  color: red;
+}
+
 .margin-top-button {
 margin-top: 3vh;
 }
