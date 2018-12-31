@@ -2,15 +2,15 @@ language: python
 python: 
   - "3.6"
 services: 
-  - mysql
+  - postgresql
 env: 
-  -DJANGO=2.1 DB=mysql
+  -DJANGO=2.1 DB=postgresql
 install: 
   - pip install -r requirements.txt
   - pip install coverage 
   - pip install codecov
 before_script: 
-  - mysql -e 'create database test;' -u root
+  - psql -c "CREATE DATABASE test;" -U postgres
 script: 
   - coverage run --source='.' --omit='manage.py' manage.py test
 after_success:
