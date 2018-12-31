@@ -19,18 +19,20 @@ SECRET_KEY = os.environ.get('SECREY_KEY', '9^*+s+=^vg17!!4q5l!n*#9(i1+65(x9)k1@z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['ohqueue121-test.herokuapp.com','127.0.0.1', 'localhost']
 
 USE_TZ = True
 TIME_ZONE = "UTC"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+if DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+    )
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 
 # Application definition
@@ -65,8 +67,14 @@ CHANNEL_LAYERS = {
     }
 }
 
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_USE_TLS = True
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.sendgrid.net')
+    EMAIL_HOST_USER = os.environ.get('EMAIL_USERNAME', 'username')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD', 'password')
+    EMAIL_PORT = 587
 
 SITE_ID = 1
 

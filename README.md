@@ -50,6 +50,7 @@ Theme variables: <br />
 
 ## Development
 To develop for Online-OH-Queue, do the following steps:
+Turn Debug = True
 1. Install redis and run redis 
 2. Install postgresql: https://tutorial-extensions.djangogirls.org/en/optional_postgresql_installation/
 3. Clone the repository
