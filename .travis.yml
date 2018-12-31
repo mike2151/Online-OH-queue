@@ -3,8 +3,10 @@ python:
   - "3.6"
 services: 
   - postgresql
+addons:
+  postgresql: "9.6"
 env: 
-  -DJANGO=2.1 DB=postgresql
+  -DJANGO=2.1 
 install: 
   - pip install -r requirements.txt
   - pip install coverage 
