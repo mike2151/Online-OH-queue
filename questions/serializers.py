@@ -41,7 +41,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         async_to_sync(layer.group_send)(
             'ohqueue',
             {
-                'type': 'message',
+                'type': 'ohqueue.update',
                 'message': 'update'
             }
         )

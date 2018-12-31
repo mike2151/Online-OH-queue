@@ -2,7 +2,7 @@ import React from "react";
 import Queue from "./Queue";
 import "../static/css/style.css"
 import { Route , withRouter}  from 'react-router-dom';
-import WebSocketInstance from '../sockets/WebSocket'
+
 
 
 class QueueList extends React.Component {
@@ -10,29 +10,6 @@ class QueueList extends React.Component {
   constructor(props) {
     super(props); 
     this.logout = this.logout.bind(this);
-
-    this.waitForSocketConnection(() => {
-      WebSocketInstance.addCallbacks(this.update.bind(this))
-    });
-  }
-
-  waitForSocketConnection(callback) {
-    const component = this;
-    setTimeout(
-      function () {
-        if (WebSocketInstance.state() === 1) {
-          console.log("Connection is made")
-          callback();
-          return;
-        } else {
-          console.log("wait for connection...")
-          component.waitForSocketConnection(callback);
-        }
-    }, 100); 
-  }
-
-  update() {
-    this.forceUpdate();
   }
 
   logout() {

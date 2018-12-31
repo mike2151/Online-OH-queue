@@ -56,6 +56,15 @@ INSTALLED_APPS = [
 
 ASGI_APPLICATION = 'ohqueue.routing.application'
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+    }
+}
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

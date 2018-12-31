@@ -12,14 +12,32 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    this.fetchData = this.fetchData.bind(this);
     this.state = {
       isLoggedIn: false,
       queues: []
     };
+
     WebSocketInstance.connect();
+    this.waitForSocketConnection(() => {
+      WebSocketInstance.addCallbacks(this.update.bind(this))
+    });
   }
 
-  componentDidMount() {
+  waitForSocketConnection(callback) {
+    const component = this;
+    setTimeout(
+      function () {
+        if (WebSocketInstance.state() === 1) {
+          callback();
+          return;
+        } else {
+          component.waitForSocketConnection(callback);
+        }
+    }, 100); 
+  }
+
+  fetchData() {
     fetch('/api/v1/queue/list/', {
       method: 'GET',
       headers: {
@@ -37,6 +55,15 @@ class App extends Component {
         this.setState({queues: body});
       }
     });
+  }
+
+  update(message) {
+    this.fetchData();
+    this.forceUpdate();
+  }
+
+  componentDidMount() {
+    this.fetchData()
   }
 
   render() {
