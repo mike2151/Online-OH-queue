@@ -1,10 +1,3 @@
-#CONFIGURATION
-COURSE_TITLE = "CIS 121"
-START_OF_WEEK = "Monday"
-QUEUE_TIME_ZONE = "America/New_York"
-#END CONFIGURATION
-
-
 import os
 import dj_database_url
 

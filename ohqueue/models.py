@@ -1,7 +1,7 @@
 from django.db import models
 from questions.models import Question
 import datetime
-from django.conf import settings
+import os
 import pytz
 from django.utils.timezone import activate
 
@@ -36,7 +36,7 @@ class OHQueue(models.Model):
 
     def updateTime(self):
         s = str(self.times_open)
-        curr_time_zone = pytz.timezone(settings.QUEUE_TIME_ZONE)
+        curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
         today = datetime.datetime.now(curr_time_zone)        
         current_weekday = today.weekday()
         if current_weekday == 0:
@@ -106,7 +106,7 @@ class OHQueue(models.Model):
             return False
 
         s = str(self.times_open)
-        curr_time_zone = pytz.timezone(settings.QUEUE_TIME_ZONE)
+        curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
         today = datetime.datetime.now(curr_time_zone)        
         current_weekday = today.weekday()
         if current_weekday == 0:
