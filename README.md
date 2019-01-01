@@ -66,6 +66,45 @@ An instance of Online-OH-Queue should be running in port 8000
 ## API
 The following describes the endpoints for the API:
 
+### Get Website Theme
+Gets the theme for the website
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/theme/</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>Any</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
 ### Register User
 Register a user for the site
 

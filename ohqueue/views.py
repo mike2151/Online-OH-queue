@@ -13,6 +13,7 @@ from django.http import JsonResponse
 import json
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+import os
 
 
 class OHQueueCreationView(generics.CreateAPIView):
@@ -134,3 +135,4 @@ class CloseQueue(View):
         )
 
        return JsonResponse({"success": True})
+

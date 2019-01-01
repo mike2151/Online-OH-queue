@@ -150,7 +150,7 @@ transition: all 0.3 ease;
 cursor: pointer;
 }
 .questionForm button:hover,.questionForm button:active,.questionForm button:focus {
-background: #43A047;
+background: var(--primary-color);
 }
 .questionForm .message {
 margin: 15px 0 0;
@@ -210,7 +210,7 @@ transition: all 0.3 ease;
 cursor: pointer;
 }
 .userForm button:hover,.userForm button:active,.userForm button:focus {
-background: #43A047;
+background: var(--primary-color);
 }
 .userForm .message {
 margin: 15px 0 0;
