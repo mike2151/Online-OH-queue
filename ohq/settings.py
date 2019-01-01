@@ -5,7 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Make this variable True if you wish to develop
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECREY_KEY', '9^*+s+=^vg17!!4q5l!n*#9(i1+65(x9)k1@zl&ub+=@$!b-#2')
@@ -61,9 +61,9 @@ if DEBUG:
 else:
     CHANNEL_LAYERS = {
         'default': {
-            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'BACKEND': 'asgi_redis.RedisChannelLayer',
             'CONFIG': {
-                "hosts": [os.environ.get('REDIS_URL', 'localhost:6379')],
+                "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
             },
         }
     }
