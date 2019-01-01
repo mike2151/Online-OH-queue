@@ -2,6 +2,10 @@ import React from "react";
 import "../static/css/style.css"
 
 class Queue extends React.Component {
+
+    componentDidMount() {
+      document.title = "Online OH Queue";
+    }
   
     render() {
       return (

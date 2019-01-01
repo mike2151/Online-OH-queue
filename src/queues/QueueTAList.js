@@ -73,6 +73,7 @@ class QueueTaList extends Component {
   }
 
   componentDidMount() {
+    document.title = "Online OH Queue";
     this.fetchData()
   }
 

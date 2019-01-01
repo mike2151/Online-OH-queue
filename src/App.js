@@ -63,7 +63,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.fetchData()
+    document.title = "Online OH Queue";
+    this.fetchData();
   }
 
   render() {

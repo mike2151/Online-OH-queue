@@ -13,6 +13,10 @@ class LoginForm extends React.Component {
       this.onChange = this.onChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    componentDidMount() {
+      document.title = "Online OH Queue";
+    }
   
     handleSubmit(event) {
       event.preventDefault();

@@ -12,6 +12,10 @@ class SignUpForm extends React.Component {
       };
       this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    componentDidMount() {
+      document.title = "Online OH Queue";
+    }
     
     handleValidation(data) {
       var violationExists = false;

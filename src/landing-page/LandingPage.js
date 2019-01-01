@@ -4,6 +4,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../static/css/style.css"
 
 class LandingPage extends React.Component {
+
+  componentDidMount() {
+    document.title = "Online OH Queue";
+  }
+
   render() {
     return (
     <header className="masthead d-flex">

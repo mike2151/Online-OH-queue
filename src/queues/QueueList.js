@@ -12,6 +12,10 @@ class QueueList extends React.Component {
     this.logout = this.logout.bind(this);
   }
 
+  componentDidMount() {
+    document.title = "Online OH Queue";
+  }
+
   logout() {
     localStorage.removeItem('credentials');
     this.props.history.push('/login');
