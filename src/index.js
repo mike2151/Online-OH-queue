@@ -18,7 +18,7 @@ ReactDOM.render((
             <Route exact path='/login' component={LoginForm} />
             <Route exact path='/answer' component={QueueTaList} />
             <Route exact path='/summary' component={Summary} />
-            <Route exact path='/stats' component={Stats} />
+            <Route exact path='/statistics' component={Stats} />
             <Route path="/:queue/ask" component={QueueAsk}/> 
         </Switch>
     </BrowserRouter>

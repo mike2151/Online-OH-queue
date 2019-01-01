@@ -13,6 +13,7 @@ urlpatterns = [
     path('login/', TemplateView.as_view(template_name='index.html')),
     path('answer/', TemplateView.as_view(template_name='index.html')),
     path('summary/', TemplateView.as_view(template_name='index.html')),
+    path('statistics/', TemplateView.as_view(template_name='index.html')),
     path('<queuename>/ask', TemplateView.as_view(template_name='index.html')),
 
 
