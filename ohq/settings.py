@@ -6,6 +6,7 @@ QUEUE_TIME_ZONE = "America/New_York"
 
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -138,28 +139,28 @@ WSGI_APPLICATION = 'ohq.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-if 'TRAVIS' in os.environ:
+if DEBUG:
     DATABASES = {
         'default': {
-            'ENGINE':   'django.db.backends.postgresql_psycopg2',
-            'NAME':     'travisci',
-            'USER':     'postgres',
-            'PASSWORD': '',
-            'HOST':     'localhost',
-            'PORT':     '',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DATABASE_NAME', 'ohqueue'),
-            'USER': os.environ.get('DATABASE_USER', 'mike'),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
-            'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-            'PORT': os.environ.get('DATABASE_PORT', ''),
+else: 
+    if 'TRAVIS' in os.environ:
+        DATABASES = {
+            'default': {
+                'ENGINE':   'django.db.backends.postgresql_psycopg2',
+                'NAME':     'travisci',
+                'USER':     'postgres',
+                'PASSWORD': '',
+                'HOST':     'localhost',
+                'PORT':     '',
+            }
         }
-    }
+    else:
+        db_url = os.environ.get('DATABASE_URL', 'postgres://...')
+        DATABASES['default'] = dj_database_url.config(default=db_url)
 
 
 # Password validation
