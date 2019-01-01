@@ -23,6 +23,9 @@ if DEBUG:
     )
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+    ]
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 
@@ -128,10 +131,6 @@ TEMPLATES = [
             ],
         },
     },
-]
-
-STATICFILES_DIRS = [
-  os.path.join(BASE_DIR, 'build/static'),
 ]
 
 WSGI_APPLICATION = 'ohq.wsgi.application'
