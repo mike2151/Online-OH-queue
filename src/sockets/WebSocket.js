@@ -15,7 +15,10 @@ class WebSocketService {
 
   connect() {
     const domain = document.location.host;
-    const path = "ws://" + domain + "/ws/ohqueue";
+    var path = "wss://" + domain + "/ws/ohqueue";
+    if (window.location.protocol !== "https:") {
+      path = "ws://" + domain + "/ws/ohqueue";
+    }
     this.socketRef = new WebSocket(path);
     this.socketRef.onopen = () => {
     };
