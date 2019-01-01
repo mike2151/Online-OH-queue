@@ -1,0 +1,60 @@
+{
+    "name": "Online OH Queue",
+    "description": "A website for online office hours",
+    "repository": "https://github.com/mike2151/Online-OH-queue",
+    "keywords": ["django", "python", "office hours", "queue", "online"],
+    "addons": [
+        {
+            "plan": "heroku-postgresql"
+        },
+        {
+            "plan": "heroku-redis"
+        }
+    ],
+    "buildpacks": [
+        {
+          "url": "heroku/nodejs"
+        }, 
+        {
+            "url": "heroku/python"
+        }
+    ],
+    "env": {
+        "COURSE_TITLE": {
+            "description": "Title of the course",
+            "value": "CIS 121"
+        },
+        "DOMAIN_NAME": {
+            "description": "Domain of the website. Should be just the name of the site followed by the top level domain (ex. .com)",
+            "value": "test-ohqueue.herokuapp.com"
+        },
+        "EMAIL_HOST": {
+            "description": "The email host for sending emails",
+            "value": "smtp.sendgrid.net"
+        },
+        "EMAIL_PASSWORD": {
+            "description": "Password for the email hosint",
+            "value": "password"
+        },
+        "EMAIL_USERNAME": {
+            "description": "Username for the email hosting",
+            "value": "apikey"
+        },
+        "PRIMARY_THEME_COLOR": {
+            "description": "The primary color for the website. By default, it is green.",
+            "value": "#76b852"
+        },
+        "QUEUE_TIME_ZONE": {
+            "description": "Time zone of the office hour queues. All time zones: https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568",
+            "value": "America/New_York"
+        },
+        "SECRET_KEY": {
+            "description": "A secret key for making hashes",
+            "generator": "secret"
+        },
+        "START_OF_WEEK": {
+            "description": "Start of the office hours week cycle",
+            "value": "Monday"
+        } 
+      }
+  }
