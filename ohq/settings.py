@@ -160,7 +160,7 @@ else:
         }
     else:
         db_url = os.environ.get('DATABASE_URL', 'postgres://...')
-        DATABASES['default'] = dj_database_url.config(default=db_url)
+        DATABASES = {"default": dj_database_url.config(default=db_url)}
 
 
 # Password validation
