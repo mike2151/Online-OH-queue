@@ -20,7 +20,7 @@ SECRET_KEY = os.environ.get('SECREY_KEY', '9^*+s+=^vg17!!4q5l!n*#9(i1+65(x9)k1@z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['ohqueue121-test.herokuapp.com','127.0.0.1', 'localhost']
+ALLOWED_HOSTS = (['127.0.0.1', 'localhost'] + [os.environ.get('DOMAIN_NAME','')])
 
 USE_TZ = True
 TIME_ZONE = "UTC"
