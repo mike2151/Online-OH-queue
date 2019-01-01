@@ -36,6 +36,8 @@ class FrequentUserView(View):
             print(question)
 
         df = pd.DataFrame(list(all_questions.values()))
-        results = df.groupby(by='author_email').count()
+        results = df.groupby(by='author_email').author_email.count()
         print results
-        return JSONResponse({"json": "true"})
+        response = results.to_json()
+        #return JSONResponse({"json": "true"})
+        return JSONResponse(response)
