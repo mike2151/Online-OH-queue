@@ -12,6 +12,8 @@ Online-OH-Queue is a web app for hosting online office hours. Students have the 
 <a name="OHQueueSetUp"/> <br/>
 [Admin Panel](#Admin-Panel) 
 <a name="Admin-Panel"/> <br/>
+[Teaching Assistants](#Teaching-Assistants) 
+<a name="Teaching-Assistants"/> <br/>
 [Pages](#Pages) 
 <a name="Pages"/> <br/>
 [Development](#Development) 
@@ -26,6 +28,7 @@ Online-OH-Queue is a web app for hosting online office hours. Students have the 
 * Real time updates to office hours queues
 * Summaries for TAs preparing for their office hours
 * Statistics
+* Mobile and desktop displays
 * DDOS protection
 
 
@@ -116,15 +119,56 @@ Example: `Monday:2:00pm-4:00pm;5:00pm-7:00pm Tuesday:11:30am-5:00pm Wednesday:11
 In the queue above, office hours are held 2pm to 4pm and 5pm to 7pm on Monday. On Tuesday to Friday, office hours are held  11:30 am to 5pm. There are no office hours held on Saturday or Sunday. <br />
 Notes on the format: <br />
 You must include **ALL** days of the week in the times open field. If there no office hours being held on that day, then leave a space after the colon. <br />
-When specifing times, use the format above: hour:minuteam/pm. First indicate the hour. Next, a colon followed by the minutes. Next, either am or pm. The dash indicates a time range. So in the case of `2:00pm-4:00pm` the queue remains open from 2pm to 4pm. <br />
+When specifying times, use the format above: hour:minuteam/pm. First indicate the hour. Next, a colon followed by the minutes. Next, either am or pm. The dash indicates a time range. So in the case of `2:00pm-4:00pm` the queue remains open from 2pm to 4pm. Simply typing `2pm-4pm` will crash the app. You must include the minutes.<br />
 A semicolon followed by another time range is used if the queue is not open during a continuous time interval. See Monday for an example <br />
-A space is followed after specifing a day of open times. <br />
+A space is followed after specifying a day of open times. <br />
 **Failure to adhere to the time convention will make the Office Hours Queue not appear or may even bring up a failure error on the office hours page!**
 
+Ignore all other fields.
+
 ## Admin-Panel
+In `/admin` you can also do the following:
+#### Make users TAs and Admins
+To that, navigate to the `users` section. Select the user who you wish to be a TA. Click the checkbox that says `Teaching Assistant` then click save in the bottom right corner. 
+
+To make a user an admin, you do the same process except check the `superuser_status` box.
+
+**Note**: Admins have to make themselves TAs. Just because you are an Admin does not mean you are a TA by default.
+
+## Teaching-Assistants
+As a teaching assistant, you will have two main pages to visit: `/summary` and `/answer`. <br />
+The summary page gives you all the questions asked in the weekly office hours cycle. You can use this to better prepare for office hours. <br />
+The answer page allows you to view all the queues in the queues. Answer questions in the queue which means to remove students from the queue. Finally, you have the power to manually open and close queues. 
 
 ## Pages
-This section describes each page and what it offers
+This section describes each page and what it offers.
+
+`/` <br />
+The root directory is either a landing page for users to sign up or log in if the user is not authenticated. Or the page serves as a listing of available office hour queues if the user is authenticated.
+<br />
+`/login` <br />
+Where the user logs in.
+<br />
+
+`/signup` <br />
+Where the user makes an account
+<br />
+
+`/admin` <br />
+Administrative portal. Only admins can see the portal. Here admins can create and manage office hours queues and change the permissions of users.
+<br />
+
+`/summary` <br />
+This page will display all the questions asked in the office hours cycle week. If you are a TA, questions will appear. If you are not a TA, no questions will be populated.
+<br />
+
+`/<queuename>/ask` <br />
+Ask a question for the given queue. Only authenticated users can do this. In addition, users can only ask one question at a time across all queues.
+<br />
+
+`/answer` <br />
+This page is only visible to TAs. It allows you to view all queues in a queue and "answer" questions which will remove students from the queue. You also have the option to close and open queues manually. 
+<br />
 
 
 ## Development
@@ -145,6 +189,11 @@ To develop and debug Online-OH-Queue, do the following steps:
 14. Run `python manage.py runserver`
    
 An instance of Online-OH-Queue should be running in port 8000
+
+**Notes About Development:**
+In development, emails are sent in the terminal so do not expect any emails to end up in your inbox.
+
+If you make any changes to the UI, you must run `npm run build` in order for the changes to be visible. The app compiles react and then serves the compiled react.
 
 ## API
 The following describes the endpoints for the API:
