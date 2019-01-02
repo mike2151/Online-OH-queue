@@ -361,6 +361,49 @@ Logs in a user to the site
     </tbody>
 </table>
 
+### Is User a TA
+Returns whether or not the user is a TA
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/users/is_ta/</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>Any</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Return</td>
+            <td>Returns whether or not the current authenticated user is a TA</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
 ### Create Office Hours Queue
 Creates an Office Hours Queue
 

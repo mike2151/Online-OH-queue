@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LandingPage from "./landing-page/LandingPage";
 import QueueList from "./queues/QueueList";
+import { Redirect } from 'react-router-dom'
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import './static/css/style.css'
@@ -51,8 +52,22 @@ class App extends Component {
           // invalid token
         }
       } else {
-        this.setState({isLoggedIn: true});
-        this.setState({queues: body});
+        // see if user is a TA
+        fetch('/api/v1/users/is_ta', {
+          method: 'GET',
+          headers: {
+              "Authorization": "Token " + localStorage.getItem('credentials')
+            }
+        }).then((response) => {
+          return response.json();
+        }).then((body) => {
+          if (body["is_ta"]) {
+            this.props.history.push('/answer');
+          } else {
+            this.setState({isLoggedIn: true});
+            this.setState({queues: body});
+          }
+        });
       }
     });
   }
