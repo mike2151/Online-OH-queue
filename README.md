@@ -6,26 +6,86 @@
 <a name="Setup"/> <br/>
 [Office Hours Queue Setup](#OHQueueSetUp) 
 <a name="OHQueueSetUp"/> <br/>
-[Theme Configuration](#Theme) 
-<a name="Theme"/> <br/>
 [Development](#Development) 
 <a name="Development"/><br/>
 [API](#API) 
 <a name="API"/>
 
 ## Setup
-
+### Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+To setup Online-OH-Queue, press the button above that will create a heroku application. Make sure you have a heroku account so you can make the website.
 
-domain in admin site
-Environment variables -
-secret key
+Upon clicking on the button, you will be prompted to enter information about the instance of Online-OH-Queue. Below are the highlighted areas of interest for setting up the office hours queue:
+
+
+#### App Name
+Enter the name of the heroku app. This will become your domain for the herokuapp. For example, if your app name is `cisohqueue`, then your website will be `cisohqueue.herokuapp.com`. 
+
+
+#### Configuration Variables
+These variables will make your instance of Online-OH-Queue unique to your course. You must enter information for each field. Enter reasonable values for each field. This web app is not prepared to handle ridiculous inputs to its configuration variables. Each field is described below:
+
+
+##### COURSE_TITLE
+This is the name of the corse. <br/>
+Example: `CIS 121`
+
+##### DOMAIN_NAME
+This is the name of the website URL you will be running the website on. Include the full name as if you were entering it into a web browser. Exclude any http or https<br/>
+Example: `cisohqueue.herokuapp.com` or `ohqueue.com`
+
+##### EMAIL_HOST
+This is the mame of the email host you will be using. Email hosting is important because password reset and account activation emails are all sent through an email host. The default value is the host for sendgrid.<br/>
+Example: `smtp.sendgrid.net`
+
+**NOTE**: If you choose to use sendgrid, which we recommend, once you create an account, navigate to [app.sendgrid.com/guide/integrate/langs/smtp](https://app.sendgrid.com/guide/integrate/langs/smtp) and you will see the fields `Server`, `Username`, and `Password` which all correspond to the three email configuration variables that you will have to set. 
+
+##### EMAIL_USERNAME
+Username for your email provider <br/>
+Example: `apikey`
+
+##### EMAIL_PASSWORD
+Password for your email provider <br/>
+
+##### PRIMARY_THEME_COLOR
+By default, the Online-OH-Queue comes with a green color theme. This can be changed. This configuration variable represents the main color of the website. You must enter a valid hex color with the hashtag. If you do not want to deal with this, then leave it to the default value (the green). <br />
+Example: `#76b852`
+
+##### QUEUE_TIME_ZONE
+This field tells the server which timezone it should operate in. The default value is `America/New_York` which represents New York time. A full list of all the timezones can be found here: [Time Zones](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568) <br/>
+Example: `America/New_York`
+
+##### SECRET_KEY
+This is automatically generated so you do not need to worry about it.
+
+##### START_OF_WEEK
+This is the day of the week that starts the office hours weekly cycle. In other words, this value represents the day of the week when office hours start getting questions about a different homework or problem set. An example would be if homeworks were due on a weekly basis on Sunday, then Monday would be the start of the week with respect to office hours. <br/>
+Example: `Monday`
+<br />
+
+#### Deploying the Application
+When you enter everything, click `Deploy App`. Then click `Manage App` to do some additional set up.
+<br />
+
+#### Create the superuser
+Each instance of the application needs to have a superuser or an admin to make other users admins and other users TAs. To create the first superuser, navigate to the drop down menu in the top right labeled `more`. Select the `run console` option and enter the following command: <br />
+`python manage.py createsuperuser` <br />
+You will then be prompted to enter the information for this account. The username can be whatever you want. Usually, it is a good idea to make it the same as your email. Once it says that the superuser was created successfully, you can exit the console window. **Do not lose this information**. 
+
+#### Changing the Site Name
+We need to tell the server what domain we are using so it can properly send password reset and account confirmation emails. First, navigate to `/admin` and enter the credentials of the superuser you just created. <br />
+Next, on the left hand side, click on `Sites`. Then, click on `example.com`. Change both fields to match what you put for the `DOMAIN_NAME` configuration variable from earlier. Finally, click `Save`
+
+Next, you will need to set up Office Hours Queues. See the next section regarding that set up.
+
+
 
 ## OHQueueSetUp
 Online-OH-Queue supports the creation of multiple queues. To create a queue, navigate to `/admin`, log in with the superuser credentials you created earlier or with another admin account.
 
 Then, click on `+ Add` in the `OHQUEUE` section. <br />
-Enter a name for the queue. This name will be visibile to all students. <br />
+Enter a name for the queue. This name will be visible to all students. <br />
 Do not enter any questions. Ignore this field <br />
 Do not enter the average wait time. Ignore this field. This will be automatically done by the server <br /><br />
 Times Open Section: <br />
@@ -38,15 +98,6 @@ When specifing times, use the format above: hour:minuteam/pm. First indicate the
 A semicolon followed by another time range is used if the queue is not open during a continuous time interval. See Monday for an example <br />
 A space is followed after specifing a day of open times. <br />
 **Failure to adhere to the time convention will make the Office Hours Queue not appear or may even bring up a failure error on the office hours page!**
-
-
-
-## Theme
-By default, the Online-OH-Queue comes with a green color theme. This can be changed. Navigate to the `style.css` file located in `src/static/css/style.css` and in `frontend/static/style.css`. You must make changes to both files!
-
-At the top of the file are theme variables which you can edit to change the theme of the website. 
-Theme variables: <br />
-`primary-color`: This is the main color of the website. By default it is the green color.
 
 ## Development
 To develop for Online-OH-Queue, do the following steps:

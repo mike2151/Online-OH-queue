@@ -32,13 +32,13 @@
             "description": "The email host for sending emails",
             "value": "smtp.sendgrid.net"
         },
-        "EMAIL_PASSWORD": {
-            "description": "Password for the email hosint",
-            "value": "password"
-        },
         "EMAIL_USERNAME": {
             "description": "Username for the email hosting",
             "value": "apikey"
+        },
+        "EMAIL_PASSWORD": {
+            "description": "Password for the email hosting",
+            "value": "password"
         },
         "PRIMARY_THEME_COLOR": {
             "description": "The primary color for the website. By default, it is green.",
