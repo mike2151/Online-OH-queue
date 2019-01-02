@@ -127,7 +127,8 @@ class QueueTaList extends Component {
       }
     } else {
       return (
-        <p>You do not have appropriate permissions to access this page</p>
+        <h3 class="center-screen">You do not have appropriate permissions to access this page.
+        <br /> <a href="/login">Login here</a></h3>
       )
     }
   }

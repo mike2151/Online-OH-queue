@@ -133,6 +133,9 @@ To that, navigate to the `users` section. Select the user who you wish to be a T
 
 To make a user an admin, you do the same process except check the `superuser_status` box.
 
+#### Extra Notes
+Do not worry about the Auth Token section.
+
 ## Teaching-Assistants
 As a teaching assistant, you will have two main pages to visit: `/summary` and `/answer`. <br />
 The summary page gives you all the questions asked in the weekly office hours cycle. You can use this to better prepare for office hours. <br />
