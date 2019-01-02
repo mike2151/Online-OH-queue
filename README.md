@@ -195,6 +195,8 @@ In development, emails are sent in the terminal so do not expect any emails to e
 
 If you make any changes to the UI, you must run `npm run build` in order for the changes to be visible. The app compiles react and then serves the compiled react.
 
+When you push to github, make sure that the `.keep` files remain in `build/static/css` and `build/static/js`
+
 ## API
 The following describes the endpoints for the API:
 
