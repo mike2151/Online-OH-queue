@@ -87,6 +87,15 @@ margin-top: 1vh;
 margin-bottom: 1vh;
 }
 
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
 .title-text {
 color: #FFF;
 }

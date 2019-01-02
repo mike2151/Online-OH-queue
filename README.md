@@ -133,8 +133,6 @@ To that, navigate to the `users` section. Select the user who you wish to be a T
 
 To make a user an admin, you do the same process except check the `superuser_status` box.
 
-**Note**: Admins have to make themselves TAs. Just because you are an Admin does not mean you are a TA by default.
-
 ## Teaching-Assistants
 As a teaching assistant, you will have two main pages to visit: `/summary` and `/answer`. <br />
 The summary page gives you all the questions asked in the weekly office hours cycle. You can use this to better prepare for office hours. <br />
@@ -187,6 +185,7 @@ To develop and debug Online-OH-Queue, do the following steps:
 12. Run `python manage.py makemigrations`
 13. Run `python manage.py migrate`
 14. Run `python manage.py runserver`
+15. Create a super user: `python manage.py createsuperuser` and then navigate to `/admin`. See the instructions in set up above.
    
 An instance of Online-OH-Queue should be running in port 8000
 
@@ -196,6 +195,7 @@ In development, emails are sent in the terminal so do not expect any emails to e
 If you make any changes to the UI, you must run `npm run build` in order for the changes to be visible. The app compiles react and then serves the compiled react.
 
 When you push to github, make sure that the `.keep` files remain in `build/static/css` and `build/static/js`
+You should run `touch build/static/css/.keep ; touch build/static/js/.keep` before you commit to make sure the files are there. Deleting the .keep files will cause the production version of the app to fail.
 
 ## API
 The following describes the endpoints for the API:
