@@ -72,84 +72,64 @@ class Stats extends Component {
         this.setState({'mode': event.target.id}, () => {
             console.log(this.state.mode);
             if (this.state.mode == 'ask') {
-                this.getAskData();
+                //this.getAskData();
             } else if (this.state.mode == 'answer') {
-                this.getAnswerData();
+                //this.getAnswerData();
             }
         });
     }
 
     componentDidMount() {
-        this.getAskData();
+        //this.getAskData();
     }
 
     render() {
-        /* var dataHTML;
-        if (this.state['mode'] == 'ask') {
-            var askData = this.getAskData();
-            var tableRowHtml = askData.map((email) => {
-                return (
-                    <tr>
-                        <td>{email}</td>
-                        <td>{askData[email]}</td>
-                    </tr>
-                )
-            });
-            dataHTML = (
-                <div>
-                    <table>
-                        <tr>
-                            <th>Email</th>
-                            <th>Number of Questions</th>
-                        </tr>
-                        {tableRowHtml}
-                    </table>
-                </div>
-            )
-        } */
+        
         const activeRadio = "btn btn-secondary active";
         const passiveRadio = "btn btn-secondary";
         return (
-            <div className="text-center">
-                <p>Hi there</p>
-
-                <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label className={this.state.mode == 'ask' ? activeRadio : passiveRadio}>
-                        <input type="radio" name="options" id="ask" autocomplete="off" checked onClick={this.radioClick} /> Questions per Student
-                    </label>
-                    <label className={this.state.mode == 'answer' ? activeRadio : passiveRadio}>
-                        <input type="radio" name="options" id="answer" autocomplete="off" onClick={this.radioClick} /> Answers per TA
-                    </label>
-                    <label className={this.state.mode == 'traffic' ? activeRadio : passiveRadio}>
-                        <input type="radio" name="options" id="traffic" autocomplete="off" onClick={this.radioClick} /> Traffic at Each Slot
-                    </label>
+            <div className="container-fluid">
+                <div className="d-flex justify-content-center">
+                    <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label className={this.state.mode == 'ask' ? activeRadio : passiveRadio}>
+                            <input type="radio" name="options" id="ask" autocomplete="off" checked onClick={this.radioClick} /> Questions per Student
+                        </label>
+                        <label className={this.state.mode == 'answer' ? activeRadio : passiveRadio}>
+                            <input type="radio" name="options" id="answer" autocomplete="off" onClick={this.radioClick} /> Answers per TA
+                        </label>
+                        <label className={this.state.mode == 'traffic' ? activeRadio : passiveRadio}>
+                            <input type="radio" name="options" id="traffic" autocomplete="off" onClick={this.radioClick} /> Traffic at Each Slot
+                        </label>
+                    </div>
                 </div>
-
-                <Bar 
-                    labels={["Red", "Blue"]}
-                    data={{
-                        labels: this.state.labels,
-                        datasets: [{
-                            label: '# of Questions',
-                            data: this.state.counts,
-                            backgroundColor: 'rgba(75, 192, 192, 1)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    }}
-                    width={100}
-                    height={50}
-                    options={{
-                        maintainAspectRatio: false,
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true
-                                }
+                
+                <div className="d-flex flex-grow-1">
+                    <Bar 
+                        labels={["Red", "Blue"]}
+                        data={{
+                            labels: this.state.labels,
+                            datasets: [{
+                                label: '# of Questions',
+                                data: this.state.counts,
+                                backgroundColor: 'rgba(75, 192, 192, 1)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
                             }]
-                        }
-                    }}
-                />
+                        }}
+                        width={100}
+                        height={50}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                </div>
             </div>
         )
     }
