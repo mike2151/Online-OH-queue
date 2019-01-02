@@ -1,15 +1,33 @@
 [![Build Status](https://travis-ci.org/mike2151/Online-OH-queue.svg?branch=master)](https://travis-ci.org/mike2151/Online-OH-queue) [![codecov](https://codecov.io/gh/mike2151/Online-OH-queue/branch/master/graph/badge.svg)](https://codecov.io/gh/mike2151/Online-OH-queue)
 
 # Online Office Hours Queue
-##### Table of Contents 
+## About
+Online-OH-Queue is a web app for hosting online office hours. Students have the ability to sign up with a question and TAs can view the order of students signed up and answer their questions in a first in first out basis. 
+## Table of Contents 
+[Features](#Features) 
+<a name="Features"/> <br/>
 [Setup](#Setup) 
 <a name="Setup"/> <br/>
 [Office Hours Queue Setup](#OHQueueSetUp) 
 <a name="OHQueueSetUp"/> <br/>
+[Admin Panel](#Admin-Panel) 
+<a name="Admin-Panel"/> <br/>
+[Pages](#Pages) 
+<a name="Pages"/> <br/>
 [Development](#Development) 
 <a name="Development"/><br/>
 [API](#API) 
 <a name="API"/>
+
+
+## Features
+* Email verification
+* Support for emails only in a school domain
+* Real time updates to office hours queues
+* Summaries for TAs preparing for their office hours
+* Statistics
+* DDOS protection
+
 
 ## Setup
 ### Heroku
@@ -74,6 +92,9 @@ Each instance of the application needs to have a superuser or an admin to make o
 `python manage.py createsuperuser` <br />
 You will then be prompted to enter the information for this account. The username can be whatever you want. Usually, it is a good idea to make it the same as your email. Once it says that the superuser was created successfully, you can exit the console window. **Do not lose this information**. 
 
+#### Changing the Heroku Plan
+You will likely need at least a hobby plan to be able to handle the traffic of your course. You can do so by going in the resources tab and clicking `Change Dyno Type` to `Hobby`. It will cost 7 dollars a month.
+
 #### Changing the Site Name
 We need to tell the server what domain we are using so it can properly send password reset and account confirmation emails. First, navigate to `/admin` and enter the credentials of the superuser you just created. <br />
 Next, on the left hand side, click on `Sites`. Then, click on `example.com`. Change both fields to match what you put for the `DOMAIN_NAME` configuration variable from earlier. Finally, click `Save`
@@ -99,6 +120,12 @@ When specifing times, use the format above: hour:minuteam/pm. First indicate the
 A semicolon followed by another time range is used if the queue is not open during a continuous time interval. See Monday for an example <br />
 A space is followed after specifing a day of open times. <br />
 **Failure to adhere to the time convention will make the Office Hours Queue not appear or may even bring up a failure error on the office hours page!**
+
+## Admin-Panel
+
+## Pages
+This section describes each page and what it offers
+
 
 ## Development
 To develop and debug Online-OH-Queue, do the following steps:
