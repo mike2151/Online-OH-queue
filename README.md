@@ -14,6 +14,7 @@
 ## Setup
 ### Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+<br />
 To setup Online-OH-Queue, press the button above that will create a heroku application. Make sure you have a heroku account so you can make the website.
 
 Upon clicking on the button, you will be prompted to enter information about the instance of Online-OH-Queue. Below are the highlighted areas of interest for setting up the office hours queue:
