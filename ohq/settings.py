@@ -23,7 +23,9 @@ if DEBUG:
     )
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATIC_URL = '/staticfiles/'
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'build/static'),
+    ]
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 
