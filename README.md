@@ -101,17 +101,21 @@ A space is followed after specifing a day of open times. <br />
 **Failure to adhere to the time convention will make the Office Hours Queue not appear or may even bring up a failure error on the office hours page!**
 
 ## Development
-To develop for Online-OH-Queue, do the following steps:
-Turn Debug = True
-1. Install redis and run redis 
-2. Install postgresql: https://tutorial-extensions.djangogirls.org/en/optional_postgresql_installation/
-3. Clone the repository
-4. Run `pip install -r requirements.txt`
-5. Run `npm install`
-6. Run `npm run build`
-7. Run `python manage.py makemigrations`
-8. Run `python manage.py migrate`
-9. Run `python manage.py runserver`
+To develop and debug Online-OH-Queue, do the following steps:
+1. Install Redis: [Redis install guide](https://redis.io/topics/quickstart)
+2. In a separate terminal window run: `redis-server`. It should be running on port 6379. The app will not work if it is not running on port 6379
+3. Make sure you have node and npm installed
+4. Make sure you have a python 3 version installed
+5. Clone the repository: `git clone https://github.com/mike2151/Online-OH-queue.git`
+6. Go into the directory: `cd Online-OH-queue`
+7. Optionally set up a [virtualenv](https://virtualenv.pypa.io/en/latest/) to develop this app
+8. Run `pip install -r requirements.txt`
+9. Run `npm install`
+10. Navigate to `ohq/settings.py` and set the DEBUG variable at the top of the file to `True`
+11. Run `npm run build`
+12. Run `python manage.py makemigrations`
+13. Run `python manage.py migrate`
+14. Run `python manage.py runserver`
    
 An instance of Online-OH-Queue should be running in port 8000
 
