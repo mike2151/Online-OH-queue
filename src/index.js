@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import QueueAsk from './queues/QueueAsk';
+import QueueEdit from './queues/QueueEdit';
 import QueueTaList from './queues/QueueTAList';
 import SignUpForm from './signup-in/Signup';
 import LoginForm from './signup-in/Login';
@@ -20,6 +21,7 @@ ReactDOM.render((
             <Route exact path='/summary' component={Summary} />
             <Route exact path='/statistics' component={Stats} />
             <Route path="/:queue/ask" component={QueueAsk}/> 
+            <Route path="/:questionid/edit" component={QueueEdit}/> 
         </Switch>
     </BrowserRouter>
     ), document.getElementById('root')

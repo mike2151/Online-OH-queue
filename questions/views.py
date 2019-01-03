@@ -11,6 +11,46 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 import os
 
+class QuestionInformation(View):
+     def get(self, request, *args, **kwargs):
+       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+       actual_token = token_header.split(" ")[1]
+       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       if user == None:
+           return JsonResponse({"success": False, "error": "You are not authenticated"})
+       question_id = (self.kwargs["questionid"])
+       question = Question.objects.filter(id=question_id).first()
+       if question == None:
+            return JsonResponse({"success": False, "error": "Not a valid question"})
+       if question.author_email != user.email:
+            return JsonResponse({"success": False, "error": "Not the author of the question"})
+       return JsonResponse({"success": True, "description": question.description})
+
+class QuestionDeleteView(View):
+     def post(self, request,  *args, **kwargs):
+       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+       actual_token = token_header.split(" ")[1]
+       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       if user == None:
+           return JsonResponse({"success": False, "error": "You are not authenticated"}) 
+       question_id = (json.loads(request.body.decode())["question_id"])
+       question = None
+       question = Question.objects.get(id=question_id)
+       if question == None:
+            return JsonResponse({"error": "Question does not exist"})
+       if question.author_email != user.email:
+            return JsonResponse({"success": False, "error": "You are not authenticated"}) 
+       question.delete()
+       layer = get_channel_layer()
+       async_to_sync(layer.group_send)(
+            'ohqueue',
+            {
+                'type': 'ohqueue.update',
+                'message': 'update'
+            }
+        )
+       return JsonResponse({"success": True})
+
 class QuestionAnswerView(View):
    
     def convert_timedelta_to_hours(self, duration):

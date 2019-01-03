@@ -333,6 +333,7 @@ height: 100vh;
   text-decoration: none;
   display: inline-block;
   margin-bottom: 1vh;
+  border-width: thin;
 }
 
 .delete-link:hover {
