@@ -20,3 +20,8 @@ class StudentUser(AbstractUser):
     def __str__(self):
         pennkey = self.email.split("@")[0]
         return pennkey
+
+    def save(self, *args, **kwargs):
+       if self.is_superuser:
+           self.is_ta = True
+       return super(StudentUser, self).save(*args, **kwargs)

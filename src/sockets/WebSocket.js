@@ -14,7 +14,11 @@ class WebSocketService {
   }
 
   connect() {
-    const path = "ws://localhost:8000/ws/ohqueue";
+    const domain = document.location.host;
+    var path = "wss://" + domain + "/ws/ohqueue";
+    if (window.location.protocol !== "https:") {
+      path = "ws://" + domain + "/ws/ohqueue";
+    }
     this.socketRef = new WebSocket(path);
     this.socketRef.onopen = () => {
     };

@@ -2,6 +2,17 @@ import React from "react";
 import "../static/css/style.css"
 
 class Queue extends React.Component {
+
+    componentDidMount() {
+      document.title = "Online OH Queue";
+      fetch('/api/v1/theme/', {
+        method: 'GET',
+      }).then((response) => {
+        return response.json();
+      }).then((body) => {
+        document.body.style.setProperty('--primary-color', body['primary_theme_color']);
+      });
+    }
   
     render() {
       return (

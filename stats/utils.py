@@ -1,10 +1,10 @@
-from django.conf import settings
 from datetime import date
 from datetime import timedelta
+import os
 
 def dateLastStartOfWeek():
     today = date.today()
-    day_of_week = settings.START_OF_WEEK.lower()
+    day_of_week = os.environ.get('START_OF_WEEK','Monday').lower()
 
     day_offset = 0
     if day_of_week == "tuesday":

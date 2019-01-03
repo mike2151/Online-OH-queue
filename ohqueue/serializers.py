@@ -8,7 +8,7 @@ class OHQueueSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.OHQueue
         read_only_fields = ('average_wait_time',)
-        fields = ('name', 'times_open', 'average_wait_time', 'is_open_extended', 'is_closed', 'is_in_time', 'question_contents')
+        fields = ('name', 'average_wait_time', 'is_open_extended', 'is_closed', 'is_in_time', 'question_contents')
     def create(self, validated_data):
         ohqueue =  models.OHQueue.objects.create(**validated_data)
         return ohqueue

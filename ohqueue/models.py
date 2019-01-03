@@ -1,7 +1,7 @@
 from django.db import models
 from questions.models import Question
 import datetime
-from django.conf import settings
+import os
 import pytz
 from django.utils.timezone import activate
 
@@ -9,10 +9,17 @@ from django.utils.timezone import activate
 class OHQueue(models.Model):
     name = models.CharField(max_length=256, unique=True)
     questions = models.ManyToManyField(Question, blank=True)
-    times_open = models.CharField(max_length=1024)
     is_open_extended = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
     is_in_time = models.BooleanField(default=False)
+    # scheduling
+    monday_times = models.CharField(max_length=50, default="")
+    tuesday_times = models.CharField(max_length=50, default="")
+    wednesday_times = models.CharField(max_length=50, default="")
+    thursday_times = models.CharField(max_length=50, default="")
+    friday_times = models.CharField(max_length=50, default="")
+    saturday_times = models.CharField(max_length=50, default="")
+    sunday_times = models.CharField(max_length=50, default="")
     # average wait time fields
     average_wait_time = models.FloatField(default=0.0)
     num_questions_answered = models.IntegerField(default=0)
@@ -35,38 +42,25 @@ class OHQueue(models.Model):
         return self.name
 
     def updateTime(self):
-        s = str(self.times_open)
-        curr_time_zone = pytz.timezone(settings.QUEUE_TIME_ZONE)
+        s = ""
+        curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
         today = datetime.datetime.now(curr_time_zone)        
         current_weekday = today.weekday()
         if current_weekday == 0:
-            # get string between "Monday" and "Tuesday"
-            s = s[s.index("Monday"):]
-            s = s[:s.index(" Tuesday")]
+            s = self.monday_times
         elif current_weekday == 1:
-            # get string between "Tuesday" and "Wednesday"
-            s = s[s.index("Tuesday"):]
-            s = s[:s.index(" Wednesday")]
+            s = self.tuesday_times
         elif current_weekday == 2:
-            # get string between "Wednesday" and "Thursday"
-            s = s[s.index("Wednesday"):]
-            s = s[:s.index(" Thursday")]
+            s = self.wednesday_times
         elif current_weekday == 3:
-            # get string between "Thursday" and "Friday"
-            s = s[s.index("Thursday"):]
-            s = s[:s.index(" Friday")]
+            s = self.thursday_times
         elif current_weekday == 4:
-            # get string between "Friday" and "Saturday"
-            s = s[s.index("Friday"):]
-            s = s[:s.index(" Saturday")]
+            s = self.friday_times
         elif current_weekday == 5:
-            # get string between "Saturday" and "Sunday"
-            s = s[s.index("Saturday"):]
-            s = s[:s.index(" Sunday")]
+            s = self.saturday_times
         elif current_weekday == 6:
-            # get string between "Sunday" and end
-            s = s[s.index("Sunday"):]
-        s = s[s.index(":")+1:]
+            s = self.sunday_times
+        s = s.replace(" ", "")
         # split using deliminator ;
         day_times = s.split(";")
         isValidTime = False
@@ -105,38 +99,25 @@ class OHQueue(models.Model):
         if self.is_closed:
             return False
 
-        s = str(self.times_open)
-        curr_time_zone = pytz.timezone(settings.QUEUE_TIME_ZONE)
+        s = ""
+        curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
         today = datetime.datetime.now(curr_time_zone)        
         current_weekday = today.weekday()
         if current_weekday == 0:
-            # get string between "Monday" and "Tuesday"
-            s = s[s.index("Monday"):]
-            s = s[:s.index(" Tuesday")]
+            s = self.monday_times
         elif current_weekday == 1:
-            # get string between "Tuesday" and "Wednesday"
-            s = s[s.index("Tuesday"):]
-            s = s[:s.index(" Wednesday")]
+            s = self.tuesday_times
         elif current_weekday == 2:
-            # get string between "Wednesday" and "Thursday"
-            s = s[s.index("Wednesday"):]
-            s = s[:s.index(" Thursday")]
+            s = self.wednesday_times
         elif current_weekday == 3:
-            # get string between "Thursday" and "Friday"
-            s = s[s.index("Thursday"):]
-            s = s[:s.index(" Friday")]
+            s = self.thursday_times
         elif current_weekday == 4:
-            # get string between "Friday" and "Saturday"
-            s = s[s.index("Friday"):]
-            s = s[:s.index(" Saturday")]
+            s = self.friday_times
         elif current_weekday == 5:
-            # get string between "Saturday" and "Sunday"
-            s = s[s.index("Saturday"):]
-            s = s[:s.index(" Sunday")]
+            s = self.saturday_times
         elif current_weekday == 6:
-            # get string between "Sunday" and end
-            s = s[s.index("Sunday"):]
-        s = s[s.index(":")+1:]
+            s = self.sunday_times
+        s = s.replace(" ", "")
         # split using deliminator ;
         day_times = s.split(";")
         isValidTime = False

@@ -9,6 +9,7 @@ from django.conf import settings
 import pytz
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+import os
 
 class QuestionAnswerView(View):
    
@@ -58,7 +59,7 @@ class QuestionAnswerView(View):
        question.save()
 
        # edit average wait time
-       curr_time_zone = pytz.timezone(settings.QUEUE_TIME_ZONE)
+       curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
 
        question_ask_date_local = question.ask_date.astimezone(curr_time_zone)
 

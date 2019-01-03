@@ -7,6 +7,7 @@ from django.conf import settings
 
 from .forms import StudentUserCreationForm, StudentUserChangeForm
 from .models import StudentUser
+import os
 
 class StudentUserAdmin(UserAdmin):
     add_form = StudentUserCreationForm
@@ -19,6 +20,6 @@ class StudentUserAdmin(UserAdmin):
         ('Important Dates', {'fields': ('date_joined',)})
     )
 
-admin.site.site_header = settings.COURSE_TITLE  + ' Office Hours Admin'
+admin.site.site_header = os.environ.get('COURSE_TITLE','')  + ' Office Hours Admin'
 admin.site.register(StudentUser, StudentUserAdmin)
 admin.site.unregister(Group)

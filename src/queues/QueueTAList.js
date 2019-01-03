@@ -73,7 +73,15 @@ class QueueTaList extends Component {
   }
 
   componentDidMount() {
+    document.title = "Online OH Queue";
     this.fetchData()
+    fetch('/api/v1/theme/', {
+      method: 'GET',
+    }).then((response) => {
+      return response.json();
+    }).then((body) => {
+      document.body.style.setProperty('--primary-color', body['primary_theme_color']);
+    });
   }
 
   render() {
@@ -119,7 +127,8 @@ class QueueTaList extends Component {
       }
     } else {
       return (
-        <p>You do not have appropriate permissions to access this page</p>
+        <h3 class="center-screen">You do not have appropriate permissions to access this page.
+        <br /> <a href="/login">Login here</a></h3>
       )
     }
   }

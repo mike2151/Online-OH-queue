@@ -1,26 +1,16 @@
-#CONFIGURATION
-COURSE_TITLE = "CIS 121"
-START_OF_WEEK = "Monday"
-QUEUE_TIME_ZONE = "America/New_York"
-#END CONFIGURATION
-
-
 import os
 import dj_database_url
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
+# Make this variable True if you wish to develop
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECREY_KEY', '9^*+s+=^vg17!!4q5l!n*#9(i1+65(x9)k1@zl&ub+=@$!b-#2')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['ohqueue121-test.herokuapp.com','127.0.0.1', 'localhost']
+ALLOWED_HOSTS = (['127.0.0.1', 'localhost'] + [os.environ.get('DOMAIN_NAME','')])
 
 USE_TZ = True
 TIME_ZONE = "UTC"
@@ -29,11 +19,15 @@ if DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     STATIC_URL = '/static/'
     STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'static'),
+        os.path.join(BASE_DIR, 'build/static'),
     )
 else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'build/static')
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static'),
+    ]
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Application definition
@@ -59,14 +53,24 @@ INSTALLED_APPS = [
 
 ASGI_APPLICATION = 'ohqueue.routing.application'
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [('localhost', 6379)],
+if DEBUG:
+    CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
         },
-    }
+    },
 }
+else:
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+            },
+        }
+    }
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -100,6 +104,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -129,10 +134,6 @@ TEMPLATES = [
     },
 ]
 
-STATICFILES_DIRS = [
-  os.path.join(BASE_DIR, 'build/static'),
-]
-
 WSGI_APPLICATION = 'ohq.wsgi.application'
 
 
@@ -160,7 +161,7 @@ else:
         }
     else:
         db_url = os.environ.get('DATABASE_URL', 'postgres://...')
-        DATABASES['default'] = dj_database_url.config(default=db_url)
+        DATABASES = {"default": dj_database_url.config(default=db_url)}
 
 
 # Password validation
@@ -194,9 +195,3 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
-STATIC_URL = '/static/'
