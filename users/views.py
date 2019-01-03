@@ -60,14 +60,16 @@ def login(request):
                     status=HTTP_200_OK)
 
 class taAuthenticationView(View):
+    # return the email because some views also need the email of the TA
     def get(self, request):
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
        if " " not in token_header:
-           return JsonResponse({"is_ta": False})
+           return JsonResponse({"is_ta": False, "email": ""})
        actual_token = token_header.split(" ")[1]
        user = models.StudentUser.objects.filter(auth_token=actual_token).first()
-       if user == None or not user.is_ta:
-           return JsonResponse({"is_ta": False})
-       else:
-           return JsonResponse({"is_ta": True})
+       if user == None:
+           return JsonResponse({"is_ta": False, "email": ""})
+       if not user.is_ta:
+           return JsonResponse({"is_ta": False, "email": user.email})
+       return JsonResponse({"is_ta": True})
 

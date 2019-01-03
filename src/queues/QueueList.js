@@ -30,6 +30,8 @@ class QueueList extends React.Component {
   
   render() {
 
+    var user_email = this.props.user_email;
+
     let screenWidth = window.innerWidth;
 
     var numQueues = this.props.queues.length;
@@ -61,7 +63,8 @@ class QueueList extends React.Component {
           </div>
           <div class="verticalList">
             {this.props.queues.map(function(queue, index){
-                return <div style={queueTableStyle} class="queue-table" ><Queue queue={queue}/></div>;
+                return <div style={queueTableStyle} class="queue-table" >
+                <Queue queue={queue} user_email={user_email}/></div>;
             })}
           </div>
         </div>
@@ -74,7 +77,8 @@ class QueueList extends React.Component {
           </div>
           <div class="horizontalList">
             {this.props.queues.map(function(queue, index){
-                return <div style={queueTableStyle} class="queue-table" ><Queue queue={queue}/></div>;
+                return <div style={queueTableStyle} class="queue-table" >
+                <Queue queue={queue} user_email={user_email}/></div>;
             })}
           </div>
         </div>
