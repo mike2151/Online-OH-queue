@@ -15,12 +15,6 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 import os
 
-
-class OHQueueCreationView(generics.CreateAPIView):
-    queryset = OHQueue.objects.all()
-    serializer_class = OHQueueSerializer
-    permission_classes = (IsAdminUser,)
-
 class OHQueueListView(generics.ListAPIView):
     queryset = OHQueue.objects.all()
     serializer_class = OHQueueSerializer

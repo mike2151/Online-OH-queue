@@ -110,21 +110,19 @@ Next, you will need to set up Office Hours Queues. See the next section regardin
 Online-OH-Queue supports the creation of multiple queues. To create a queue, navigate to `/admin`, log in with the superuser credentials you created earlier or with another admin account.
 
 Then, click on `+ Add` in the `OHQUEUE` section. <br />
+Ignore all fields except the ones mentioned below:<br />
 Enter a name for the queue. This name will be visible to all students. <br />
-Do not enter any questions. Ignore this field <br />
-Do not enter the average wait time. Ignore this field. This will be automatically done by the server <br /><br />
 Times Open Section: <br />
-This field is used to specify when the queue is open for students to ask questions. You must enter a string in the following format: <br />
-Example: `Monday:2:00pm-4:00pm;5:00pm-7:00pm Tuesday:11:30am-5:00pm Wednesday:11:30am-5:00pm Thursday:11:30am-5:00pm Friday:11:30am-5:00pm Saturday: Sunday: ` <br />
-In the queue above, office hours are held 2pm to 4pm and 5pm to 7pm on Monday. On Tuesday to Friday, office hours are held  11:30 am to 5pm. There are no office hours held on Saturday or Sunday. <br />
+These fields are used to specify when the queue is open for students to ask questions. You must enter a string in the following format for each field: <br />
+Example: `2:00pm-4:00pm;5:00pm-8:00pm` <br />
+In the queue above, office hours are held 2pm to 4pm and 5pm to 8pm on the day that the value is entered. <br />
 Notes on the format: <br />
-You must include **ALL** days of the week in the times open field. If there no office hours being held on that day, then leave a space after the colon. <br />
+If you are not holding office hours on a day, then leave the field blank.<br />
 When specifying times, use the format above: hour:minuteam/pm. First indicate the hour. Next, a colon followed by the minutes. Next, either am or pm. The dash indicates a time range. So in the case of `2:00pm-4:00pm` the queue remains open from 2pm to 4pm. Simply typing `2pm-4pm` will crash the app. You must include the minutes.<br />
-A semicolon followed by another time range is used if the queue is not open during a continuous time interval. See Monday for an example <br />
-A space is followed after specifying a day of open times. <br />
+A semicolon followed by another time range is used if the queue is not open during a continuous time interval. See the value abovw for an example <br />
 **Failure to adhere to the time convention will make the Office Hours Queue not appear or may even bring up a failure error on the office hours page!**
 
-Ignore all other fields.
+Click save in the bottom right corner when done.
 
 ## Admin-Panel
 In `/admin` you can also do the following:
@@ -401,59 +399,6 @@ Returns whether or not the user is a TA
                             <th>Example Values</th>
                         </tr>
                     </thead>
-                </table>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-### Create Office Hours Queue
-Creates an Office Hours Queue
-
-<table>
-    <tbody>
-        <tr>
-            <td>URL</td>
-            <td><code>/api/v1/queue/create/</td>
-        </tr>
-        <tr>
-            <td>HTTP Methods</td>
-            <td>POST</td>
-        </tr>
-        <tr>
-            <td>Response Formats</td>
-            <td>JSON</td>
-        </tr>
-        <tr>
-            <td>Permission</td>
-            <td>Admin</td>
-        </tr>
-        <tr>
-            <td>Parameters</td>
-            <td>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                            <th>Example Values</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                          <td><tt>name</tt></td>
-                          <td><strong>Required</strong></td>
-                          <td>Name of the office hours queue</td>
-                          <td><tt>2 Minute Question Queue</tt></td>
-                      </tr>
-                      <tr>
-                          <td><tt>times_open</tt></td>
-                          <td><strong>Required</strong></td>
-                          <td>Times that the queue is open</td>
-                          <td>See section regarding hours</td>
-                      </tr>
-                    </tbody>
                 </table>
             </td>
         </tr>
