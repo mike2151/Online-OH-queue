@@ -569,3 +569,46 @@ Gets the number of questions asked by each student
         </tr>
     </tbody>
 </table>
+
+### Number of Answers per TA
+Gets the number of questions answered by each TA
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/stats/frequentanswer</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>Admin</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Return</td>
+            <td>Returns JSON, key=TA email, value=#answers</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
