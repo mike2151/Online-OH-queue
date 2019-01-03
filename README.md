@@ -550,7 +550,7 @@ Gets the number of questions asked by each student
         </tr>
         <tr>
             <td>Return</td>
-            <td>Returns JSON, key=student email, value=#questions</td>
+            <td>Returns JSON, keys are student emails, values are #questions</td>
         </tr>
         <tr>
             <td>Parameters</td>
@@ -593,7 +593,7 @@ Gets the number of questions answered by each TA
         </tr>
         <tr>
             <td>Return</td>
-            <td>Returns JSON, key=TA email, value=#answers</td>
+            <td>Returns JSON, keys are TA emails, values are #answers</td>
         </tr>
         <tr>
             <td>Parameters</td>
