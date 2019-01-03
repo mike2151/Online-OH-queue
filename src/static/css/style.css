@@ -381,6 +381,26 @@ height: 100vh;
 }
 
 /*
+  Stats page styles
+*/
+
+.stats-page {
+  height: 100%;
+  width: 100%;
+  padding: .4em;
+}
+
+.stats-nav {
+  padding: .4em;
+  text-align: center;
+}
+
+.stats-chart {
+  height: 90vh !important;
+  padding: .4em;
+}
+
+/*
   Summary page styles
 */  
 

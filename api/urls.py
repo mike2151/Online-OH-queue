@@ -11,5 +11,6 @@ urlpatterns = [
     path('queue/', include('ohqueue.urls')),
     path('questions/', include('questions.urls')),
     path('summary/', SummaryList.as_view(), name="summary"),
+    path('stats/', include('stats.urls')),
     path('theme/', GetThemeVariablesView.as_view() ,name="theme"),
 ]
