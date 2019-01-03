@@ -31,25 +31,34 @@ class SummaryList(generics.ListAPIView):
 
 class FrequentUserView(View):
     def get(self, request,  *args, **kwargs):
-        all_questions = Question.objects.all()
-        for question in all_questions:
-            print(question)
 
+        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+        if " " not in token_header:
+            return JsonResponse({"authenticated": False})
+        actual_token = token_header.split(" ")[1]
+        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        if user == None or not user.is_superuser:
+            return JsonResponse({"authenticated": False})
+
+        all_questions = Question.objects.all()
         df = pd.DataFrame(list(all_questions.values()))
         results = df.groupby(by='author_email').author_email.count()
-        print(results)
         response = results.to_dict()
-        #return JsonResponse({"json": "true"})
         return JsonResponse(response)
 
 class FrequentAnswerView(View):
     def get(self, request, *args, **kwargs):
-        all_questions = Question.objects.all()
-        for question in all_questions:
-            print(question)
 
+        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+        if " " not in token_header:
+            return JsonResponse({"authenticated": False})
+        actual_token = token_header.split(" ")[1]
+        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        if user == None or not user.is_superuser:
+            return JsonResponse({"authenticated": False})
+
+        all_questions = Question.objects.all()
         df = pd.DataFrame(list(all_questions.values()))
         results = df.groupby(by='answered_by_email').answered_by_email.count()
-        print(results)
         response = results.to_dict()
         return JsonResponse(response)

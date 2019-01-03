@@ -169,6 +169,10 @@ Ask a question for the given queue. Only authenticated users can do this. In add
 This page is only visible to TAs. It allows you to view all queues in a queue and "answer" questions which will remove students from the queue. You also have the option to close and open queues manually. 
 <br />
 
+`/statistics` <br />
+This page is only visible to admins. It displays statistics regarding queues, students, and TAs. 
+<br />
+
 
 ## Development
 To develop and debug Online-OH-Queue, do the following steps:
