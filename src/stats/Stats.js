@@ -72,15 +72,15 @@ class Stats extends Component {
         this.setState({'mode': event.target.id}, () => {
             console.log(this.state.mode);
             if (this.state.mode == 'ask') {
-                //this.getAskData();
+                this.getAskData();
             } else if (this.state.mode == 'answer') {
-                //this.getAnswerData();
+                this.getAnswerData();
             }
         });
     }
 
     componentDidMount() {
-        //this.getAskData();
+        this.getAskData();
     }
 
     render() {
@@ -88,8 +88,8 @@ class Stats extends Component {
         const activeRadio = "btn btn-secondary active";
         const passiveRadio = "btn btn-secondary";
         return (
-            <div className="container-fluid">
-                <div className="d-flex justify-content-center">
+            <div className="stats-page">
+                <div className="stats-nav">
                     <div className="btn-group btn-group-toggle" data-toggle="buttons">
                         <label className={this.state.mode == 'ask' ? activeRadio : passiveRadio}>
                             <input type="radio" name="options" id="ask" autocomplete="off" checked onClick={this.radioClick} /> Questions per Student
@@ -103,7 +103,7 @@ class Stats extends Component {
                     </div>
                 </div>
                 
-                <div className="d-flex flex-grow-1">
+                <div className="stats-chart">
                     <Bar 
                         labels={["Red", "Blue"]}
                         data={{
