@@ -86,13 +86,13 @@ class SignUpForm extends React.Component {
               <form class="login-form" onSubmit={this.handleSubmit}>
                 <h2 class="header-login"><center>Sign Up</center></h2>
                 <label htmlFor="email">Enter Penn Email</label>
-                <input id="email" name="email" type="email" />
+                <input id="email" maxLength={64} name="email" type="email" />
         
                 <label htmlFor="first_name">First Name</label>
-                <input id="first_name" name="first_name" type="text" />
+                <input id="first_name" maxLength={32} name="first_name" type="text" />
         
                 <label htmlFor="last_name">Last Name</label>
-                <input id="last_name" name="last_name" type="text" />
+                <input id="last_name" maxLength={32} name="last_name" type="text" />
 
                 <label htmlFor="password">Password</label>
                 <input id="password" name="password" type="password" />

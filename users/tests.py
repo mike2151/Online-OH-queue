@@ -57,24 +57,57 @@ class UserRegistrationTest(TestCase):
         self.assertEqual(400, response.status_code)
         self.assertIn("user with this Penn Email Address already exists.", ((json.loads(response.content))["email"]))
 
+    def test_cannot_login_until_activated(self):
+        self.client.post('/api/v1/users/register/', {"email": "test@upenn.edu", "first_name": "mike", 
+        "last_name": "hello", "password": "testing123"}, format='json')
+
+        response = self.client.post('/api/v1/users/login/', 
+        {"email": "test@upenn.edu", "password": "testing123"}, format='json')
+        self.assertEquals(404, response.status_code)
+
 class EmailRegistrationTest(TestCase):
-    def test_email_sent_registration(self):
+    def setUp(self):
         client = APIClient()
-        client.post('/api/v1/users/register/', {"email": "mike@upenn.edu", 
+
+    def test_email_sent_registration(self):
+        self.client.post('/api/v1/users/register/', {"email": "mike@upenn.edu", 
         "first_name": "mike", "last_name": "smith", "password": "passdogyo"}, format='json')
         self.assertEqual(len(mail.outbox), 1)
     def test_confirmed_emailed_twice(self):
-        client = APIClient()
-        client.post('/api/v1/users/register/', {"email": "mike@upenn.edu", 
+        self.client.post('/api/v1/users/register/', {"email": "mike@upenn.edu", 
         "first_name": "imposter", "last_name": "smith", "password": "passdogyo"}, format='json')
         self.assertEqual(len(mail.outbox), 1)
-        client.post('/api/v1/users/register/', {"email": "mike@upenn.edu", 
+        self.client.post('/api/v1/users/register/', {"email": "mike@upenn.edu", 
         "first_name": "mike", "last_name": "smith", "password": "diffpassdogyo"}, format='json')
         self.assertEqual(len(mail.outbox), 2)
     def test_trying_to_reg_already_reg_user(self):
-        client = APIClient()
         StudentUser.objects.create(email="test@upenn.edu", first_name="tester", last_name="smith", password="yodogyoo")
-        client.post('/api/v1/users/register/', {"email": "test@upenn.edu", 
+        self.client.post('/api/v1/users/register/', {"email": "test@upenn.edu", 
         "first_name": "mike", "last_name": "smith", "password": "diffpassdogyo"}, format='json')
         self.assertEqual(len(mail.outbox), 0)
+        
+
+class LoginTests(TestCase):
+    def setUp(self):
+        client = APIClient()
+        user = StudentUser.objects.create(email="test@upenn.edu", first_name="tester", last_name="smith", password="testing123")
+        user.set_password("testing123")
+        user.is_active = True
+        user.save()
+
+    def test_valid_login(self):
+        response = self.client.post('/api/v1/users/login/', 
+        {"email": "test@upenn.edu", "password": "testing123"}, format='json')
+        self.assertEquals(200, response.status_code)
+
+    def test_missing_field_login(self):
+        response = self.client.post('/api/v1/users/login/', 
+        {"email": "test@upenn.edu"}, format='json')
+        self.assertEquals(400, response.status_code)
+
+    def test_user_does_not_exist(self):
+        response = self.client.post('/api/v1/users/login/', 
+        {"email": "bill@upenn.edu", "password": "testing123"}, format='json')
+        self.assertEquals(404, response.status_code)
+
         
