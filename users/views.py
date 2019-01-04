@@ -18,6 +18,8 @@ from rest_framework.response import Response
 
 from rest_framework import generics
 from rest_framework.throttling import AnonRateThrottle
+from django.core.mail import EmailMessage
+from django.contrib.sites.models import Site
 
 from . import models
 from . import serializers
@@ -26,6 +28,32 @@ class UserRegisterView(generics.CreateAPIView):
     queryset = models.StudentUser.objects.all()
     serializer_class = serializers.UserSerializer
     permission_classes = (AllowAny,)
+
+    def create(self, request, *args, **kwargs):
+        # see if inactive account. If so, resend email
+        attempt_email = request.data.get("email")
+        user = None
+        try:
+            user = (models.StudentUser.objects.get(email=attempt_email))
+        except models.StudentUser.DoesNotExist:
+            user = None
+        if user != None:
+            if not user.is_active:
+                # resend confirmation email
+                current_site = Site.objects.get(pk=1).domain
+                mail_subject = 'Activate your office hours account'
+                message = "Hi {username}, \n Please click on the link to confirm your registration, \n{domain}/activate/{uid}/{token} \n".format(username=user.username, domain=current_site, uid=urlsafe_base64_encode(force_bytes(user.pk)).decode(), token=account_activation_token.make_token(user))
+                to_email = user.email
+                email = EmailMessage(
+                            mail_subject, message, to=[to_email]
+                )
+                email.send()
+                return HttpResponse(status=201)
+            else:
+                return super(UserRegisterView, self).create(request, *args, **kwargs)
+        else:
+            return super(UserRegisterView, self).create(request, *args, **kwargs)
+
 
 def activate(request, uidb64, token):
     try:
