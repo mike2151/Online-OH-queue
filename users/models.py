@@ -5,11 +5,11 @@ from django.db import models
 class StudentUser(AbstractUser):
     email = models.EmailField(
         verbose_name='Penn Email Address',
-        max_length=255,
+        max_length=64,
         unique=True,
     )
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=32)
+    last_name = models.CharField(max_length=32)
 
     is_ta = models.BooleanField(default=False, verbose_name="Teaching Assistant")
 

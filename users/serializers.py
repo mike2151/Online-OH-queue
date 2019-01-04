@@ -28,6 +28,10 @@ class UserSerializer(serializers.ModelSerializer):
 
         return email
 
+    def validate_password(self, password):
+        if len(password) < 8:
+            raise serializers.ValidationError('Password too short')
+
     class Meta:
         model = models.StudentUser
         extra_kwargs = {'password': {'write_only': True}}
