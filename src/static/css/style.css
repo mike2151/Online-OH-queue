@@ -321,6 +321,29 @@ height: 100vh;
   size: 1.2em;
 }
 
+.delete-link {
+  font-size: .9em;
+  background-color: #FFF;
+  color: var(--primary-color);
+  border-style: solid;
+  border-color: var(--primary-color);
+  padding: .4vh .6vw;
+  margin-left: 1vw;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 1vh;
+  border-width: thin;
+}
+
+.delete-link:hover {
+  color: #FFF;
+  text-decoration: none;
+  background: var(--primary-color);
+}
+
+
+
 .ask-link {
   font-size: 1.3em;
   background-color: #FFF;

@@ -16,7 +16,7 @@ urlpatterns = [
     path('summary/', TemplateView.as_view(template_name='index.html')),
     path('statistics/', TemplateView.as_view(template_name='index.html')),
     path('<queuename>/ask', TemplateView.as_view(template_name='index.html')),
-
+    path('<questionid>/edit', TemplateView.as_view(template_name='index.html')),
 
     re_path(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         userviews.activate, name='activate'),

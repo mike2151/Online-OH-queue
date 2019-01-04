@@ -91,7 +91,12 @@ class OHQueue(models.Model):
         return True
 
     # takes in the current time and the times specified by the OHqueue and sees if it is active 
-    def isQueueActive(self):
+    def isQueueActive(self, user):
+
+        if user != None:
+            for question in self.questions.all():
+                if question.author_email == user.email:
+                    return True
 
         if self.is_open_extended: 
             return True
