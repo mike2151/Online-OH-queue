@@ -7,7 +7,7 @@ from django.utils.timezone import activate
 
 # Create your models here.
 class OHQueue(models.Model):
-    name = models.CharField(max_length=256, unique=True)
+    name = models.CharField(max_length=32, unique=True)
     questions = models.ManyToManyField(Question, blank=True)
     is_open_extended = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)

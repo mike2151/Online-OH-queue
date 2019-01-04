@@ -22,6 +22,8 @@ class OHQueueListView(generics.ListAPIView):
 
     def get_queryset(self):
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+       if token_header == None or " " not in token_header:
+           return OHQueue.objects.none()
        actual_token = token_header.split(" ")[1]
        user = StudentUser.objects.filter(auth_token=actual_token).first()
 
@@ -56,7 +58,7 @@ class QuestionCreationView(generics.CreateAPIView):
         ohqueuename = (self.kwargs["name"])
         token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
         if token_header == None:
-            return JsonResponse({"error": "No authentication found"})
+            return JsonResponse({"success": False, "error": "No authentication found"})
         # seperate token from Token xyz
         actual_token = token_header.split(" ")[1]
         user = StudentUser.objects.filter(auth_token=actual_token).first()
@@ -100,6 +102,8 @@ class OpenQueueExtended(View):
     def post(self, request,  *args, **kwargs):
        # get current TA
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+       if token_header == None or " " not in token_header:
+           return JsonResponse({"success": False, "error": "You are not authenticated"})
        actual_token = token_header.split(" ")[1]
        user = StudentUser.objects.filter(auth_token=actual_token).first()
        if user == None or not user.is_ta:
@@ -136,6 +140,8 @@ class CloseQueue(View):
     def post(self, request,  *args, **kwargs):
        # get current TA
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+       if token_header == None or " " not in token_header:
+           return JsonResponse({"success": False, "error": "You are not authenticated"})
        actual_token = token_header.split(" ")[1]
        user = StudentUser.objects.filter(auth_token=actual_token).first()
        if user == None or not user.is_ta:
