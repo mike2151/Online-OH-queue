@@ -38,6 +38,24 @@ class UserRegistrationTest(TestCase):
     
     def test_successful_creation(self):
         client = APIClient()
-        response = client.post('/api/v1/users/register/', {'email': 'mike@upenn.edu',
-         "first_name": "mike", "last_name": "smith", "password": "passdogyo"}, format='json')
+        response = client.post('/api/v1/users/register/', {"email": "mike@upenn.edu", "first_name": "mike", "last_name": "smith", "password": "passdogyo"}, format='json')
         self.assertEqual(201, response.status_code)
+
+    def test_pass_too_short(self):
+        client = APIClient()
+        response = client.post('/api/v1/users/register/', {'email': 'mike@upenn.edu',
+         "first_name": "mike", "last_name": "smith", "password": "1"}, format='json')
+        self.assertEqual(400, response.status_code)
+        self.assertIn("Password too short. Should be at least 8 characters.", ((json.loads(response.content))["password"]))
+
+    def test_account_already_made(self):   
+        client = APIClient()
+        StudentUser.objects.create(email="test@upenn.edu", first_name="tester", last_name="smith", password="yodogyoo")
+        test_user = StudentUser.objects.get(email="test@upenn.edu")
+        self.assertTrue(test_user.is_active)
+        response = client.post('/api/v1/users/register/', {'email': 'test@upenn.edu',
+         "first_name": "mike", "last_name": "smith", "password": "1"}, format='json')
+        self.assertEqual(400, response.status_code)
+        self.assertIn("user with this Penn Email Address already exists.", ((json.loads(response.content))["email"]))
+
+    

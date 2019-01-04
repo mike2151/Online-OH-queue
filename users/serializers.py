@@ -30,7 +30,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate_password(self, password):
         if len(password) < 8:
-            raise serializers.ValidationError('Password too short')
+            raise serializers.ValidationError('Password too short. Should be at least 8 characters.')
+        return password
 
     class Meta:
         model = models.StudentUser
