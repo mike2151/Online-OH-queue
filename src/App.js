@@ -88,7 +88,7 @@ class App extends Component {
     if(this.state.isLoggedIn) {
       return (
         <div>
-          <QueueList queues={this.state.queues} user_email={this.state.email}/>
+          <QueueList queues={this.state.queues} user_email={this.state.user_email}/>
         </div>
       );
     } else {

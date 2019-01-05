@@ -35,7 +35,7 @@ class LoginForm extends React.Component {
         return response.json();
       }).then((body) => {
         if (body.error) {
-          alert('Invalid login');
+          document.getElementById("errorText").innerHTML = "Invalid credentials";
         } else {
           localStorage.setItem('credentials', body.token);
           this.props.history.push('/');
@@ -61,6 +61,7 @@ class LoginForm extends React.Component {
                 <button>login</button>
                 <p class="message">Not registered? <a href="/signup">Create an account</a></p>
                 <p class="message">Forget your password? <a href="/password_reset">Reset your password</a></p>
+                <p id="errorText" class="validationErrorText"></p>
               </form>
             </div>
           </div>

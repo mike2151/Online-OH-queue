@@ -72,7 +72,7 @@ class Queue extends React.Component {
           </tr>
 
           {this.props.queue.question_contents.map(function(question, index){
-                return user_email === question.author_email ?
+                return user_email === question.email ?
                   <tr><td>{index+1} - {question.first_name} {question.last_name} 
                   <button onClick={() => deleteQuestionFunc(question.id)}
                   class="delete-link">Delete</button>

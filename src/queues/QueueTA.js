@@ -147,11 +147,11 @@ class Queue extends React.Component {
           </tr>
 
           {this.props.queue.question_contents.map(function(question, index){
-                return <tr><td>
+                return <tr><td><p class="queue-text">
                 {index+1} - {question.first_name} {question.last_name} ({question.student_id})
                 <br/> Question: {question.question_content}
                 <br/> Time Asked: {question.time_asked}
-                <br/><center><button onClick={() => answerQuestionFunc(question.id)}
+                <br/></p><center><button onClick={() => answerQuestionFunc(question.id)}
                  class="answer-link">Answer</button></center> 
                 </td></tr>
             })}
