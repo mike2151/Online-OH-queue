@@ -276,9 +276,10 @@ class OHQuestions(TestCase):
         self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
         self.assertEquals("my question", self.queue.questions.values()[0]["description"])
 
-        print(self.queue.questions.values()[0]["id"])
+        question_id = str(self.queue.questions.values()[0]["id"])
 
-        response = self.client.put('/api/v1/queue/question/1/edit', {"description": "new question"}, format="json")
+        response = self.client.put('/api/v1/queue/question/' + question_id + '/edit',
+         {"description": "new question"}, format="json")
         self.assertTrue(json.loads(response.content)["success"])
         self.assertEquals("new question", self.queue.questions.values()[0]["description"])
 
@@ -286,9 +287,11 @@ class OHQuestions(TestCase):
         self.generate_header(self.student_user)
         self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
         self.assertEquals("my question", self.queue.questions.values()[0]["description"])
+
+        question_id = str(self.queue.questions.values()[0]["id"])
         
         self.client.credentials()
-        response = self.client.put('/api/v1/queue/question/1/edit', {"description": "new question"}, format="json")
+        response = self.client.put('/api/v1/queue/question/' + question_id +'/edit', {"description": "new question"}, format="json")
         self.assertTrue(401, response.status_code)
         self.assertEquals("my question", self.queue.questions.values()[0]["description"])
 
@@ -296,9 +299,11 @@ class OHQuestions(TestCase):
         self.generate_header(self.student_user)
         self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
         self.assertEquals("my question", self.queue.questions.values()[0]["description"])
+
+        question_id = str(self.queue.questions.values()[0]["id"])
         
         self.generate_header(self.student_user_two)
-        response = self.client.put('/api/v1/queue/question/1/edit', {"description": "new question"}, format="json")
+        response = self.client.put('/api/v1/queue/question/' + question_id + '/edit', {"description": "new question"}, format="json")
         self.assertFalse(json.loads(response.content)["success"])
         self.assertEquals("my question", self.queue.questions.values()[0]["description"])
 
@@ -312,8 +317,10 @@ class OHQuestions(TestCase):
         self.generate_header(self.student_user)
         self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
         self.assertEquals(1, len(self.queue.questions.values()))
+
+        question_id = self.queue.questions.values()[0]["id"]
         
-        response = self.client.post('/api/v1/questions/delete/', {"question_id": 1}, format="json")
+        response = self.client.post('/api/v1/questions/delete/', {"question_id": question_id}, format="json")
         self.assertTrue(json.loads(response.content)["success"])
         self.assertEquals(0, len(self.queue.questions.values()))
     
@@ -321,9 +328,11 @@ class OHQuestions(TestCase):
         self.generate_header(self.student_user)
         self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
         self.assertEquals(1, len(self.queue.questions.values()))
+
+        question_id = self.queue.questions.values()[0]["id"]
         
         self.client.credentials()
-        response = self.client.post('/api/v1/questions/delete/', {"question_id": 1}, format="json")
+        response = self.client.post('/api/v1/questions/delete/', {"question_id": question_id}, format="json")
         self.assertFalse(json.loads(response.content)["success"])
         self.assertEquals(1, len(self.queue.questions.values()))
     
@@ -331,9 +340,11 @@ class OHQuestions(TestCase):
         self.generate_header(self.student_user)
         self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
         self.assertEquals(1, len(self.queue.questions.values()))
+
+        question_id = self.queue.questions.values()[0]["id"]
         
         self.generate_header(self.student_user_two)
-        response = self.client.post('/api/v1/questions/delete/', {"question_id": 1}, format="json")
+        response = self.client.post('/api/v1/questions/delete/', {"question_id": question_id}, format="json")
         self.assertFalse(json.loads(response.content)["success"])
         self.assertEquals(1, len(self.queue.questions.values()))
     
@@ -345,8 +356,10 @@ class OHQuestions(TestCase):
         response = self.client.post('/api/v1/queue/main/ask', {"description": "my question 2"}, format="json")
         self.assertEquals(2, len(self.queue.questions.values()))
 
+        question_id = self.queue.questions.values()[0]["id"]
+
         self.generate_header(self.student_user)
-        response = self.client.post('/api/v1/questions/delete/', {"question_id": 1}, format="json")
+        response = self.client.post('/api/v1/questions/delete/', {"question_id": question_id}, format="json")
         self.assertEquals(1, len(self.queue.questions.values()))
 
         self.assertEquals("my question 2", self.queue.questions.values()[0]["description"])
