@@ -15,6 +15,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.views.decorators.csrf import csrf_exempt
 import os
+from api.permissions import TAPermission
 
 class OHQueueListView(generics.ListAPIView):
     queryset = OHQueue.objects.all()
@@ -36,15 +37,9 @@ class OHQueueListView(generics.ListAPIView):
 class OHQueueTAListView(generics.ListAPIView):
     queryset = OHQueue.objects.all()
     serializer_class = OHQueueSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (TAPermission,)
 
     def get_queryset(self):
-       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-       actual_token = token_header.split(" ")[1]
-       user = StudentUser.objects.filter(auth_token=actual_token).first()
-       if user == None or not user.is_ta:
-           return OHQueue.objects.none()
-
        all_queues = OHQueue.objects.all()
        active_queues_id = [o.id for o in all_queues if o.updateTime()]
        queues = all_queues.filter(id__in=active_queues_id)

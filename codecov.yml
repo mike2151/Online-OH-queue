@@ -7,3 +7,4 @@ ignore:
   - "questions/apps.py"
   - "stats/apps.py"
   - "users/apps.py"
+  - "users/forms.py"
