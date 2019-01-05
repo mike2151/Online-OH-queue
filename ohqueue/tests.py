@@ -3,7 +3,7 @@ from .models import OHQueue
 from freezegun import freeze_time
 from users.models import StudentUser
 import datetime
-from rest_framework.test import force_authenticate, APIClient
+from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
 import json
 

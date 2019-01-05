@@ -33,7 +33,7 @@ class FrequentUserView(View):
     def get(self, request,  *args, **kwargs):
 
         token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-        if " " not in token_header:
+        if token_header == None or " " not in token_header:
             return JsonResponse({"authenticated": False})
         actual_token = token_header.split(" ")[1]
         user = StudentUser.objects.filter(auth_token=actual_token).first()
@@ -42,15 +42,18 @@ class FrequentUserView(View):
 
         all_questions = Question.objects.all()
         df = pd.DataFrame(list(all_questions.values()))
-        results = df.groupby(by='author_email').author_email.count()
-        response = results.to_dict()
+        response = {}
+        if 'author_email' in df.keys():
+            results = df.groupby(by='author_email').author_email.count()
+            response = results.to_dict()
+        response["authenticated"] = True
         return JsonResponse(response)
 
 class FrequentAnswerView(View):
     def get(self, request, *args, **kwargs):
 
         token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-        if " " not in token_header:
+        if token_header == None or " " not in token_header:
             return JsonResponse({"authenticated": False})
         actual_token = token_header.split(" ")[1]
         user = StudentUser.objects.filter(auth_token=actual_token).first()
@@ -59,6 +62,9 @@ class FrequentAnswerView(View):
 
         all_questions = Question.objects.all()
         df = pd.DataFrame(list(all_questions.values()))
-        results = df.groupby(by='answered_by_email').answered_by_email.count()
-        response = results.to_dict()
+        response = {}
+        if 'answered_by_email' in df.keys():
+            results = df.groupby(by='answered_by_email').answered_by_email.count()
+            response = results.to_dict()
+        response["authenticated"] = True
         return JsonResponse(response)
