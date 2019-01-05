@@ -275,10 +275,8 @@ class OHQuestions(TestCase):
         self.generate_header(self.student_user)
         self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
         self.assertEquals("my question", self.queue.questions.values()[0]["description"])
-        
-        response = self.client.put('/api/v1/queue/question/1/edit', {"description": "new question"}, format="json")
-        print(response.content)
-        print(response.status_code)
+
+        response = self.client.put('/api/v1/queue/question/0/edit', {"description": "new question"}, format="json")
         self.assertTrue(json.loads(response.content)["success"])
         self.assertEquals("new question", self.queue.questions.values()[0]["description"])
 
