@@ -27,8 +27,8 @@ class QuestionInformation(View):
             return JsonResponse({"success": False, "error": "Not the author of the question"})
        return JsonResponse({"success": True, "description": question.description})
 
-@csrf_exempt
 class QuestionDeleteView(View):
+     @csrf_exempt
      def post(self, request,  *args, **kwargs):
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
        if token_header == None or " " not in token_header:
@@ -58,7 +58,6 @@ class QuestionDeleteView(View):
         )
        return JsonResponse({"success": True})
 
-@csrf_exempt
 class QuestionAnswerView(View):
    
     def convert_timedelta_to_hours(self, duration):
@@ -74,6 +73,7 @@ class QuestionAnswerView(View):
      seconds = (seconds % 60)
      return minutes 
 
+    @csrf_exempt
     def post(self, request,  *args, **kwargs):
        # get current TA
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))

@@ -99,8 +99,8 @@ class QuestionEditView(generics.UpdateAPIView):
         )
         return JsonResponse({"success": True})
 
-@csrf_exempt
 class OpenQueueExtended(View):
+    @csrf_exempt
     def post(self, request,  *args, **kwargs):
        # get current TA
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
@@ -138,8 +138,8 @@ class OpenQueueExtended(View):
 
        return JsonResponse({"success": True})
 
-@csrf_exempt
 class CloseQueue(View):
+    @csrf_exempt
     def post(self, request,  *args, **kwargs):
        # get current TA
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
