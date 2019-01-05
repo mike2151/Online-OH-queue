@@ -277,6 +277,8 @@ class OHQuestions(TestCase):
         self.assertEquals("my question", self.queue.questions.values()[0]["description"])
         
         response = self.client.put('/api/v1/queue/question/1/edit', {"description": "new question"}, format="json")
+        print(response.content)
+        print(response.status_code)
         self.assertTrue(json.loads(response.content)["success"])
         self.assertEquals("new question", self.queue.questions.values()[0]["description"])
 
