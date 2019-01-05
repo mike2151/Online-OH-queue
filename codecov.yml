@@ -1,4 +1,4 @@
 ignore:
   - "ohq/.*"
   - "wsgi.py"
-  - "*apps.py*"
+  - "*apps.py"
