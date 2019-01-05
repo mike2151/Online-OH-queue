@@ -1,4 +1,9 @@
 ignore:
   - "ohq/.*"
   - "wsgi.py"
-  - "*apps.py"
+  - "frontend/apps.py"
+  - "api/apps.py"
+  - "ohqueue/apps.py"
+  - "questions/apps.py"
+  - "stats/apps.py"
+  - "users/apps.py"
