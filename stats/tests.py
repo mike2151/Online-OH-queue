@@ -3,6 +3,8 @@ import json
 from users.models import StudentUser
 from rest_framework.test import  APIClient
 from rest_framework.authtoken.models import Token
+from freezegun import freeze_time
+from .utils import dateLastStartOfWeek
 
 class PermissionsTests(TestCase):
     def setUp(self):
@@ -88,3 +90,11 @@ class PermissionsTests(TestCase):
         self.generate_header(self.ta_user)
         response = self.client.get('/api/v1/summary/')
         self.assertEquals(200, response.status_code)
+
+class UtilsTests(TestCase):
+    # Jan 1 2019 is a tuesday
+    @freeze_time("2019-1-1 21:00:01")
+    def test_dateLastStartOfWeek(self):
+        # should say that the last monday was dec 31 2018
+        last_monday = dateLastStartOfWeek()
+        self.assertEquals(0, last_monday.weekday())
