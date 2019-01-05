@@ -6,13 +6,35 @@ import datetime
 from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
 import json
+import string, random
 
 class OHCreation(TestCase):
-    def test_ohqueue_created(self):
-        queue = OHQueue.objects.create(name="main", monday_times="4:00pm-6:00pm")
-        self.assertEquals("main", queue.name)
-        self.assertEquals("4:00pm-6:00pm", queue.monday_times)
+    def setUp(self):
+        self.queue = OHQueue.objects.create(name="main", monday_times="4:00pm-6:00pm")
+        self.student_user = StudentUser.objects.create(username="test", email="test@upenn.edu", first_name="tester", 
+        last_name="smith", password="testing123")
+        self.student_user.set_password("testing123")
+        self.student_user.is_active = True
+        self.student_user.save()
 
+    @freeze_time("2018-12-31 21:00:01")
+    def test_ohqueue_created(self):
+        self.assertEquals("main", self.queue.name)
+        self.assertEquals("4:00pm-6:00pm", self.queue.monday_times)
+        self.assertTrue(self.queue.isQueueActive(self.student_user))
+    
+    @freeze_time("2018-12-31 16:00:01")
+    def test_is_queue_inactive(self):
+        self.assertFalse(self.queue.isQueueActive(self.student_user))
+
+    @freeze_time("2018-12-31 21:00:01")
+    def test_update_time(self):
+        self.assertTrue(self.queue.isQueueActive(self.student_user))
+        freezer = freeze_time("2018-12-31 16:00:01")
+        freezer.start()
+        self.queue.updateTime()
+        self.assertFalse(self.queue.is_in_time)
+        
 # These tests assume New York Time zone!
 class OHQuestions(TestCase):
     def setUp(self):
@@ -140,6 +162,21 @@ class OHQuestions(TestCase):
         response = self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, len(self.queue.questions.values()))
+
+    def test_queue_is_open_if_student_still_has_question(self):
+        self.generate_header(self.student_user)
+        response = self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+
+        self.generate_header(self.ta_user)
+        response = self.client.post('/api/v1/queue/close/', {"queue": "main"}, format="json")
+
+        self.generate_header(self.student_user)
+        response = self.client.get('/api/v1/queue/list/')
+        self.assertEquals(1, len(json.loads(response.content)))
+
+        self.generate_header(self.student_user_two)
+        response = self.client.get('/api/v1/queue/list/')
+        self.assertEquals(0, len(json.loads(response.content)))
 
     def test_student_cannot_ask_two_question(self):
         self.generate_header(self.student_user)
@@ -369,3 +406,51 @@ class OHQuestions(TestCase):
         self.assertEquals(1, len(self.queue.questions.values()))
 
         self.assertEquals("my question 2", self.queue.questions.values()[0]["description"])
+
+class LoadHandlingTests(TestCase):
+    @freeze_time("2018-12-31 21:00:01", tick=True)
+    def setUp(self):
+        self.client = APIClient()
+        
+        self.queue = OHQueue.objects.create(name="main", monday_times="4:00pm-6:00pm")
+
+        for i in range(50):
+            self.new_student_ask_question()
+       
+
+    def gen_random_string(self, l):
+        return ''.join(random.choice(string.ascii_lowercase) for x in range(l))    
+
+    def generate_header(self, user):
+        token, _ = Token.objects.get_or_create(user=user)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+    
+    def new_student_ask_question(self):
+        username = self.gen_random_string(8)
+        first_name = self.gen_random_string(8)
+        last_name = self.gen_random_string(8)
+        password = self.gen_random_string(10)
+        student_user = StudentUser.objects.create(
+            username=username,
+            email= username + "@upenn.edu", 
+            first_name=first_name, 
+            last_name=last_name, 
+            password=password
+        )
+        student_user.set_password(password)
+        student_user.is_active = True
+        student_user.save()
+        self.generate_header(student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+
+    @freeze_time("2018-12-31 21:00:01", tick=True)
+    def test_queue_can_handle_lot_of_questions(self):
+        self.assertEquals(50, len(self.queue.questions.values()))
+    
+    @freeze_time("2018-12-31 21:00:01", tick=True)
+    def test_queue_maintains_order(self):
+        prev_question = None
+        for question in self.queue.questions.values():
+            if prev_question != None:
+                self.assertTrue(question["ask_date"] > prev_question["ask_date"])
+            prev_question = question
