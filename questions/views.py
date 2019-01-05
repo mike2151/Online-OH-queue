@@ -37,7 +37,10 @@ class QuestionDeleteView(View):
            return JsonResponse({"success": False, "error": "You are not authenticated"}) 
        question_id = (json.loads(request.body.decode())["question_id"])
        question = None
-       question = Question.objects.get(id=question_id)
+       try:
+          question = Question.objects.get(id=question_id)
+       except Question.DoesNotExist:
+          question = None
        if question == None:
             return JsonResponse({"success": False, "error": "Question does not exist"})
        if question.author_email != user.email:
