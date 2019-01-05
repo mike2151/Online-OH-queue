@@ -64,7 +64,8 @@ class QueueAsk extends React.Component {
             <div class="questionForm">
               <form class="login-form" onSubmit={this.handleSubmit}>
                 <h2 class="header-login"><center>Ask A Question</center></h2>
-                <label htmlFor="description" id="description_label">Question Description (280 Characters Remaining):</label>
+                <label class="dynamic-text" htmlFor="description" id="description_label">Question Description (280 Characters Remaining):</label>
+                <p class="dynamic-text">Please enter your question or problem. You may update this later without losing your place in line. Non-questions (e.g., "I don't have a question right now.") or questions that are not relevant to this queue or not specific enough may cause you to forfeit your spot.</p>
                 <textarea maxlength="280" id="description" name="description" 
                  value={this.state.question} onChange={this.onChange} />  
                 <button class="margin-top-button">submit</button>

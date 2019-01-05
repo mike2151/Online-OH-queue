@@ -100,6 +100,31 @@ margin-bottom: 1vh;
 color: #FFF;
 }
 
+.dynamic-text {
+  font-size: 1em;
+}
+
+.question-page {
+  width: 60vw;
+  height: 50vh;
+  padding: 8% 0 0;
+  margin: auto;
+  }
+
+@media screen and (max-width: 600px) {
+  .dynamic-text {
+    font-size: .8em;
+  }
+
+  .question-page {
+    width: 80vw;
+    height: 50vh;
+    padding: 5% 0 0;
+    margin: auto;
+    }
+}
+
+
 textarea {
 height:30vh;
 max-width:50vw;
@@ -114,13 +139,6 @@ line-height:2em;
 border:none;
 box-shadow:0px 0px 5px 1px rgba(0,0,0,0.1);
 padding:2vw;
-}
-
-.question-page {
-width: 60vw;
-height: 50vh;
-padding: 8% 0 0;
-margin: auto;
 }
 
 .questionForm {

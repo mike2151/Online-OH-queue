@@ -4,6 +4,7 @@ import datetime
 import os
 import pytz
 from django.utils.timezone import activate
+from time import strftime
 
 # Create your models here.
 class OHQueue(models.Model):
@@ -25,15 +26,22 @@ class OHQueue(models.Model):
     num_questions_answered = models.IntegerField(default=0)
     last_answer_time = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Office Hours Queue"
+        verbose_name_plural = "Office Hours Queues"
+
     def question_contents(self):
+        curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
         question_content = []
         for question in self.questions.order_by('ask_date'):
             question_dict = {
                 "first_name": question.author_first_name, 
                 "last_name": question.author_last_name,
                 "email": question.author_email,
+                "student_id": question.author_email.split("@", 1)[0],
                 "question_content": question.description,
                 "id": question.id,
+                "time_asked": question.ask_date.replace(tzinfo=pytz.utc).astimezone(curr_time_zone).strftime('%I:%M %p')
             }
             question_content.append(question_dict)
         return question_content

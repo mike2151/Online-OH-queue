@@ -125,7 +125,7 @@ class Queue extends React.Component {
       } else if (this.props.queue.is_open_extended) {
         closed_message = <p class="queue-status">Queue Open</p>;
       } else if (!this.props.queue.is_in_time) {
-        closed_message =  <p class="queue-status">Queue Closed Because Of Schedule</p>;
+        closed_message =  <p class="queue-status">Queue Closed Because of Schedule</p>;
       } else {
         closed_message = <p class="queue-status">Queue Open</p>;
       }
@@ -148,8 +148,9 @@ class Queue extends React.Component {
 
           {this.props.queue.question_contents.map(function(question, index){
                 return <tr><td>
-                {index+1} - {question.first_name} {question.last_name}
+                {index+1} - {question.first_name} {question.last_name} ({question.student_id})
                 <br/> Question: {question.question_content}
+                <br/> Time Asked: {question.time_asked}
                 <br/><center><button onClick={() => answerQuestionFunc(question.id)}
                  class="answer-link">Answer</button></center> 
                 </td></tr>
