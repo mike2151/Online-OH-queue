@@ -73,3 +73,18 @@ class PermissionsTests(TestCase):
         self.generate_header(self.admin_user)
         response = self.client.get('/api/v1/stats/frequentanswer/')
         self.assertTrue(json.loads(response.content)["authenticated"])
+
+    # summary tests
+    def test_anon_cannot_access_summary(self):
+        response = self.client.get('/api/v1/summary/')
+        self.assertEquals(401, response.status_code)
+
+    def test_student_cannot_access_summary(self):
+        self.generate_header(self.student_user)
+        response = self.client.get('/api/v1/summary/')
+        self.assertNotEqual(200, response.status_code)
+    
+    def test_ta_can_access_summary(self):
+        self.generate_header(self.ta_user)
+        response = self.client.get('/api/v1/summary/')
+        self.assertEquals(200, response.status_code)
