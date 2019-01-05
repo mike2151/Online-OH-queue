@@ -3,6 +3,7 @@ python:
   - "3.6"
 services: 
   - postgresql
+  - redis-server
 addons:
   postgresql: "9.6"
 env: 
