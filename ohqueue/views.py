@@ -13,6 +13,7 @@ from django.http import JsonResponse
 import json
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.views.decorators.csrf import csrf_exempt
 import os
 
 class OHQueueListView(generics.ListAPIView):
@@ -98,6 +99,7 @@ class QuestionEditView(generics.UpdateAPIView):
         )
         return JsonResponse({"success": True})
 
+@csrf_exempt
 class OpenQueueExtended(View):
     def post(self, request,  *args, **kwargs):
        # get current TA
@@ -136,6 +138,7 @@ class OpenQueueExtended(View):
 
        return JsonResponse({"success": True})
 
+@csrf_exempt
 class CloseQueue(View):
     def post(self, request,  *args, **kwargs):
        # get current TA

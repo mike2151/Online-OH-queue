@@ -9,6 +9,7 @@ from django.conf import settings
 import pytz
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.views.decorators.csrf import csrf_exempt
 import os
 
 class QuestionInformation(View):
@@ -26,6 +27,7 @@ class QuestionInformation(View):
             return JsonResponse({"success": False, "error": "Not the author of the question"})
        return JsonResponse({"success": True, "description": question.description})
 
+@csrf_exempt
 class QuestionDeleteView(View):
      def post(self, request,  *args, **kwargs):
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
@@ -56,6 +58,7 @@ class QuestionDeleteView(View):
         )
        return JsonResponse({"success": True})
 
+@csrf_exempt
 class QuestionAnswerView(View):
    
     def convert_timedelta_to_hours(self, duration):
