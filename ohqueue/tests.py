@@ -217,3 +217,134 @@ class OHQuestions(TestCase):
         {"queue": "main", "question_id": 1}, format="json")
         self.assertFalse(json.loads(response.content)["success"])
         self.assertEquals(1, len(self.queue.questions.values()))
+
+    def test_student_cannot_answer_questions(self):
+        self.generate_header(self.student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+
+        self.generate_header(self.student_user_two)
+        response = self.client.post('/api/v1/questions/answer/', 
+        {"queue": "main", "question_id": 1}, format="json")
+        self.assertFalse(json.loads(response.content)["success"])
+        self.assertEquals(1, len(self.queue.questions.values()))
+
+    def test_ta_answer_queue_of_two_questions(self):
+        self.generate_header(self.student_user)
+        response = self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+
+        self.generate_header(self.student_user_two)
+        response = self.client.post('/api/v1/queue/main/ask', {"description": "my question 2"}, format="json")
+        
+        self.generate_header(self.ta_user)
+        response = self.client.post('/api/v1/questions/answer/', 
+        {"queue": "main", "question_id": 1}, format="json")
+        
+        self.assertEquals("my question 2", self.queue.questions.values()[0]["description"])
+        self.assertEquals(1, len(self.queue.questions.values()))
+
+        self.generate_header(self.ta_user)
+        response = self.client.post('/api/v1/questions/answer/', 
+        {"queue": "main", "question_id": 2}, format="json")
+
+        self.assertEquals(0, len(self.queue.questions.values()))
+
+    def test_ta_cannot_answer_not_valid_queue(self):
+        self.generate_header(self.student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+        self.assertEquals(1, len(self.queue.questions.values()))
+
+        self.generate_header(self.ta_user)
+        response = self.client.post('/api/v1/questions/answer/', 
+        {"queue": "random", "question_id": 1}, format="json")
+        self.assertFalse(json.loads(response.content)["success"])
+        self.assertEquals(1, len(self.queue.questions.values()))
+
+    def test_ta_cannot_answer_not_valid_question_id(self):
+        self.generate_header(self.student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+        self.assertEquals(1, len(self.queue.questions.values()))
+
+        self.generate_header(self.ta_user)
+        response = self.client.post('/api/v1/questions/answer/', 
+        {"queue": "main", "question_id": 15}, format="json")
+        self.assertFalse(json.loads(response.content)["success"])
+        self.assertEquals(1, len(self.queue.questions.values()))
+
+    # edit questions
+    def test_can_edit_question(self):
+        self.generate_header(self.student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+        self.assertEquals("my question", self.queue.questions.values()[0]["description"])
+        
+        response = self.client.put('/api/v1/queue/question/1/edit', {"description": "new question"}, format="json")
+        self.assertTrue(json.loads(response.content)["success"])
+        self.assertEquals("new question", self.queue.questions.values()[0]["description"])
+
+    def test_anon_cannot_edit_question(self):
+        self.generate_header(self.student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+        self.assertEquals("my question", self.queue.questions.values()[0]["description"])
+        
+        self.client.credentials()
+        response = self.client.put('/api/v1/queue/question/1/edit', {"description": "new question"}, format="json")
+        self.assertTrue(401, response.status_code)
+        self.assertEquals("my question", self.queue.questions.values()[0]["description"])
+
+    def test_other_student_cannot_edit(self):
+        self.generate_header(self.student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+        self.assertEquals("my question", self.queue.questions.values()[0]["description"])
+        
+        self.generate_header(self.student_user_two)
+        response = self.client.put('/api/v1/queue/question/1/edit', {"description": "new question"}, format="json")
+        self.assertFalse(json.loads(response.content)["success"])
+        self.assertEquals("my question", self.queue.questions.values()[0]["description"])
+
+    def test_edit_non_existent_question(self):
+        self.generate_header(self.student_user)
+        response = self.client.put('/api/v1/queue/question/15/edit', {"description": "new question"}, format="json")
+        self.assertFalse(json.loads(response.content)["success"])
+    
+    # delete questions
+    def test_user_can_delete_question(self):
+        self.generate_header(self.student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+        self.assertEquals(1, len(self.queue.questions.values()))
+        
+        response = self.client.post('/api/v1/questions/delete/', {"question_id": 1}, format="json")
+        self.assertTrue(json.loads(response.content)["success"])
+        self.assertEquals(0, len(self.queue.questions.values()))
+    
+    def test_anon_cannot_delete_question(self):
+        self.generate_header(self.student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+        self.assertEquals(1, len(self.queue.questions.values()))
+        
+        self.client.credentials()
+        response = self.client.post('/api/v1/questions/delete/', {"question_id": 1}, format="json")
+        self.assertFalse(json.loads(response.content)["success"])
+        self.assertEquals(1, len(self.queue.questions.values()))
+    
+    def test_other_user_cannot_delete_question(self):
+        self.generate_header(self.student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+        self.assertEquals(1, len(self.queue.questions.values()))
+        
+        self.generate_header(self.student_user_two)
+        response = self.client.post('/api/v1/questions/delete/', {"question_id": 1}, format="json")
+        self.assertFalse(json.loads(response.content)["success"])
+        self.assertEquals(1, len(self.queue.questions.values()))
+    
+    def test_delete_with_multiple_questions(self):
+        self.generate_header(self.student_user)
+        response = self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+
+        self.generate_header(self.student_user_two)
+        response = self.client.post('/api/v1/queue/main/ask', {"description": "my question 2"}, format="json")
+        self.assertEquals(2, len(self.queue.questions.values()))
+
+        self.generate_header(self.student_user)
+        response = self.client.post('/api/v1/questions/delete/', {"question_id": 1}, format="json")
+        self.assertEquals(1, len(self.queue.questions.values()))
+
+        self.assertEquals("my question 2", self.queue.questions.values()[0]["description"])

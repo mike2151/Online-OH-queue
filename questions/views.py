@@ -29,6 +29,8 @@ class QuestionInformation(View):
 class QuestionDeleteView(View):
      def post(self, request,  *args, **kwargs):
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+       if token_header == None or " " not in token_header:
+           return JsonResponse({"success": False, "error": "You are not authenticated"})
        actual_token = token_header.split(" ")[1]
        user = StudentUser.objects.filter(auth_token=actual_token).first()
        if user == None:
@@ -37,7 +39,7 @@ class QuestionDeleteView(View):
        question = None
        question = Question.objects.get(id=question_id)
        if question == None:
-            return JsonResponse({"error": "Question does not exist"})
+            return JsonResponse({"success": False, "error": "Question does not exist"})
        if question.author_email != user.email:
             return JsonResponse({"success": False, "error": "You are not authenticated"}) 
        question.delete()
@@ -93,7 +95,7 @@ class QuestionAnswerView(View):
        except:
             question = None
        if question == None:
-            return JsonResponse({"error": "Question does not exist"})
+            return JsonResponse({"success": False, "error": "Question does not exist"})
        
        # mark question as resolved and TA answered
        question.is_answered = True

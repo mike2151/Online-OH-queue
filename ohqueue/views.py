@@ -74,16 +74,16 @@ class QuestionEditView(generics.UpdateAPIView):
         question_id = (self.kwargs["questionid"])
         token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
         if token_header == None:
-            return JsonResponse({"error": "No authentication found"})
+            return JsonResponse({"success": False, "error": "No authentication found"})
         actual_token = token_header.split(" ")[1]
         user = StudentUser.objects.filter(auth_token=actual_token).first()
         if user == None:
-            return JsonResponse({"error": "Not a valid user"}) 
+            return JsonResponse({"success": False, "error": "Not a valid user"}) 
         instance = Question.objects.filter(id=question_id).first()
         if instance == None:
-            return JsonResponse({"error": "Not a valid question"}) 
+            return JsonResponse({"success": False, "error": "Not a valid question"}) 
         if instance.author_email != user.email:
-            return JsonResponse({"error": "User is not the author of the question"}) 
+            return JsonResponse({"success": False, "error": "User is not the author of the question"}) 
             
         instance.description = request.data.get("description")
         instance.save()
