@@ -24,7 +24,7 @@ class OHQueue(models.Model):
     # average wait time fields
     average_wait_time = models.FloatField(default=0.0)
     num_questions_answered = models.IntegerField(default=0)
-    last_answer_time = models.DateTimeField(auto_now_add=True)
+    last_answer_time = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
         verbose_name = "Office Hours Queue"
