@@ -86,9 +86,30 @@ class OHQuestions(TestCase):
         self.assertEquals(200, response.status_code)
         self.assertEquals(0, len(json.loads(response.content)))
     
-    def test_get_queue_not_authenticated(self):
-        response = self.client.get('/api/v1/queue/list/')
+
+    # ta_list end point
+    def test_queue_is_open_ta(self):
+        self.generate_header(self.ta_user)
+        response = self.client.get('/api/v1/queue/list_ta/')
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, len(json.loads(response.content)))
+
+    def test_is_queue_open_unauthenticated_ta(self):
+        response = self.client.get('/api/v1/queue/list_ta/')
         self.assertEquals(401, response.status_code)
+
+    def test_is_queue_open_student_ta(self):
+        response = self.client.get('/api/v1/queue/list_ta/')
+        self.assertEquals(401, response.status_code)
+
+    def test_queue_is_not_closed_ta(self):
+        freezer = freeze_time("2018-12-31 16:00:01")
+        freezer.start()
+        self.generate_header(self.ta_user)
+        response = self.client.get('/api/v1/queue/list_ta/')
+        self.assertEquals(200, response.status_code)
+        self.assertEquals(1, len(json.loads(response.content)))
+    
 
     # extend open tests
 

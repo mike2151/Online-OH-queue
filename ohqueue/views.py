@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from django.views import View
 from .models import OHQueue
 from questions.models import Question
-from .serializers import OHQueueSerializer
+from .serializers import OHQueueSerializer, OHQueueTASerializer
 from questions.serializers import QuestionSerializer
 from rest_framework.response import Response
 from users.models import StudentUser
@@ -36,7 +36,7 @@ class OHQueueListView(generics.ListAPIView):
 
 class OHQueueTAListView(generics.ListAPIView):
     queryset = OHQueue.objects.all()
-    serializer_class = OHQueueSerializer
+    serializer_class = OHQueueTASerializer
     permission_classes = (TAPermission,)
 
     def get_queryset(self):

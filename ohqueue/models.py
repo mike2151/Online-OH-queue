@@ -30,6 +30,19 @@ class OHQueue(models.Model):
         verbose_name = "Office Hours Queue"
         verbose_name_plural = "Office Hours Queues"
 
+    def student_question_contents(self):
+        curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
+        question_content = []
+        for question in self.questions.order_by('ask_date'):
+            question_dict = {
+                "first_name": question.author_first_name, 
+                "last_name": question.author_last_name,
+                "email": question.author_email,
+                "id": question.id,
+            }
+            question_content.append(question_dict)
+        return question_content
+
     def question_contents(self):
         curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
         question_content = []
