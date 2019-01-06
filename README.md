@@ -23,13 +23,25 @@ Online-OH-Queue is a web app for hosting online office hours. Students have the 
 
 
 ## Features
+* API backend
+* Ability for students to edit and delete their own questions
+* Administrative control over queues, users, and questions
+* Average wait time for office hours queues
+* Comprehensive TA answering page
+* DDOS/brute force protection
+* Easy deploy with one button Heroku deployment
 * Email verification
-* Support for emails only in a school domain
-* Real time updates to office hours queues
+* Mobile and desktop display support
+* Modern frontend written in React
+* Password reset
+* Real time updates to office hours queues using sockets (no need to refresh)
+* Statistics about students, TAs, and traffic
+* Strongly Tested (> 100 Tests cases and > 90% code coverage)
 * Summaries for TAs preparing for their office hours
-* Statistics
-* Mobile and desktop displays
-* DDOS protection
+* Support for any number of office hours queues
+* Support for email registration only in a school domain
+* Support for holding users to one question per queue
+* Theme customization via environment variables
 
 
 ## Setup
