@@ -15,6 +15,8 @@ Online-OH-Queue is a web app for hosting online office hours. Students have the 
 [Teaching Assistants](#Teaching-Assistants) 
 <a name="Teaching-Assistants"/> <br/>
 [Pages](#Pages) 
+<a name="Students"/> <br/>
+[Students](#Students) 
 <a name="Pages"/> <br/>
 [Development](#Development) 
 <a name="Development"/><br/>
@@ -146,13 +148,19 @@ To that, navigate to the `users` section. Select the user who you wish to be a T
 
 To make a user an admin, you do the same process except check the `superuser_status` box.
 
+#### Make or manage office hours queues
+See the OHQueueSetUp section above.
+
 #### Extra Notes
 Do not worry about the Auth Token section.
 
 ## Teaching-Assistants
 As a teaching assistant, you will have two main pages to visit: `/summary` and `/answer`. <br />
 The summary page gives you all the questions asked in the weekly office hours cycle. You can use this to better prepare for office hours. <br />
-The answer page allows you to view all the queues in the queues. Answer questions in the queue which means to remove students from the queue. Finally, you have the power to manually open and close queues. 
+The answer page allows you to view all the queues in the queues. Answer questions in the queue which means to remove students from the queue. Finally, you have the power to manually open and close queues, ignoring the predefined schedule.
+
+## Students
+Students can login or signup at `/`. Once logged in, they can view all the queues at `/`. 
 
 ## Pages
 This section describes each page and what it offers.
