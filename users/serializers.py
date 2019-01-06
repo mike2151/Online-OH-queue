@@ -49,7 +49,7 @@ class UserSerializer(serializers.ModelSerializer):
         # email verification
         current_site = Site.objects.get(pk=1).domain
         mail_subject = 'Activate your office hours account'
-        message = "Hi {username}, \n Please click on the link to confirm your registration, \n{domain}/activate/{uid}/{token} \n".format(username=user.username, domain=current_site, uid=urlsafe_base64_encode(force_bytes(user.pk)).decode(), token=account_activation_token.make_token(user))
+        message = "Hi {name}, \n Please click on the link to confirm your registration: \n{domain}/activate/{uid}/{token} \n".format(name=user.first_name, domain=current_site, uid=urlsafe_base64_encode(force_bytes(user.pk)).decode(), token=account_activation_token.make_token(user))
         to_email = user.email
         email = EmailMessage(
                     mail_subject, message, to=[to_email]

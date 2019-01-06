@@ -64,7 +64,7 @@ class Queue extends React.Component {
         <div>
           <center><h2 class="queue-title">{this.props.queue.name}</h2>
           <p class="wait-time">Average Wait Time: <br />
-          {this.props.queue.average_wait_time * this.props.queue.number_questions} Minutes</p>
+          {this.props.queue.wait_time} Minutes</p>
           <a href={ '/' + this.props.queue.name + "/ask" } class="ask-link">Ask Question</a>     
           <table class="queue">
           <tr>

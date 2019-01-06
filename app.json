@@ -40,6 +40,10 @@
             "description": "Password for the email hosting",
             "value": "password"
         },
+        "MAX_WAIT_TIME": {
+            "description": "The maximum time that will display for average wait time in queues.",
+            "value": 60
+        },
         "PRIMARY_THEME_COLOR": {
             "description": "The primary color for the website. By default, it is green.",
             "value": "#76b852"

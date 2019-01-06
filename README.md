@@ -70,6 +70,9 @@ Example: `apikey`
 ##### EMAIL_PASSWORD
 Password for your email provider <br/>
 
+##### MAX_WAIT_TIME
+The maximum time that will display for average wait time in queues. <br/>
+
 ##### PRIMARY_THEME_COLOR
 By default, the Online-OH-Queue comes with a green color theme. This can be changed. This configuration variable represents the main color of the website. You must enter a valid hex color with the hashtag. If you do not want to deal with this, then leave it to the default value (the green). <br />
 Example: `#76b852`
