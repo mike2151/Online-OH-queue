@@ -46,6 +46,9 @@ class OHQueue(models.Model):
             question_content.append(question_dict)
         return question_content
 
+    def number_questions(self):
+        return len(self.questions.all())
+
     def __str__(self):
         return self.name
 

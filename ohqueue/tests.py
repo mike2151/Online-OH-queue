@@ -454,3 +454,150 @@ class LoadHandlingTests(TestCase):
             if prev_question != None:
                 self.assertTrue(question["ask_date"] > prev_question["ask_date"])
             prev_question = question
+
+class AverageWaitTimeTesting(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.queue = OHQueue.objects.create(name="main", monday_times="4:00pm-6:00pm")
+
+        self.ta_user = StudentUser.objects.create(username="ta", email="ta@upenn.edu", first_name="ta", 
+        last_name="smith", password="testing123")
+        self.ta_user.set_password("testing123")
+        self.ta_user.is_active = True
+        self.ta_user.is_ta = True
+        self.ta_user.save()
+
+        self.freezer = freeze_time("2018-12-31 21:00:01")
+        self.freezer.start()
+
+    def gen_random_string(self, l):
+        return ''.join(random.choice(string.ascii_lowercase) for x in range(l))    
+
+    def generate_header(self, user):
+        token, _ = Token.objects.get_or_create(user=user)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+    
+    def new_student_ask_question(self):
+        username = self.gen_random_string(8)
+        first_name = self.gen_random_string(8)
+        last_name = self.gen_random_string(8)
+        password = self.gen_random_string(10)
+        student_user = StudentUser.objects.create(
+            username=username,
+            email= username + "@upenn.edu", 
+            first_name=first_name, 
+            last_name=last_name, 
+            password=password
+        )
+        student_user.set_password(password)
+        student_user.is_active = True
+        student_user.save()
+        self.generate_header(student_user)
+        self.client.post('/api/v1/queue/main/ask', {"description": "my question"}, format="json")
+
+    def answer_top_question(self):
+        question_id_one = (self.queue.questions.values()[0]["id"])
+
+        self.generate_header(self.ta_user)
+        self.client.post('/api/v1/questions/answer/', 
+        {"queue": "main", "question_id": question_id_one}, format="json")
+    
+    def test_wait_time_is_init_zero(self):
+        self.assertEquals(0, self.queue.average_wait_time)
+    
+    def test_one_question_wait_time_is_zero(self):
+        self.new_student_ask_question()
+        self.freezer.stop()
+        self.freezer = freeze_time("2018-12-31 21:01:01")
+        self.freezer.start()
+        self.answer_top_question()
+        self.queue = OHQueue.objects.get(name="main")
+        self.assertEquals(0, self.queue.average_wait_time)
+    
+    def test_two_question_wait_time_is_one(self):
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:01:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:02:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.queue = OHQueue.objects.get(name="main")
+
+        self.assertEquals(.5, self.queue.average_wait_time)
+
+    def test_three_question_wait_time_is_one(self):
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:01:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:02:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:04:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.queue = OHQueue.objects.get(name="main")
+
+        self.assertEquals(1, self.queue.average_wait_time)
+
+    def test_four_question_wait_time_is_one(self):
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:01:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:02:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:04:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:14:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.queue = OHQueue.objects.get(name="main")
+
+        self.assertEquals(3.2, self.queue.average_wait_time)
+
+    def test_after_one_hour_average_reset(self):
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:01:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 21:02:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.queue = OHQueue.objects.get(name="main")
+
+        self.assertEquals(.5, self.queue.average_wait_time)
+
+        self.new_student_ask_question()
+        self.freezer = freeze_time("2018-12-31 22:04:01")
+        self.freezer.start()
+        self.answer_top_question()
+
+        self.queue = OHQueue.objects.get(name="main")
+
+        self.assertEquals(0, self.queue.average_wait_time)
+    
+
+    

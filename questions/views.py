@@ -111,28 +111,29 @@ class QuestionAnswerView(View):
        # edit average wait time
        curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
 
-       question_ask_date_local = question.ask_date.astimezone(curr_time_zone)
+       question_answer_time_local = datetime.datetime.now(curr_time_zone) 
 
-       time_diff_question_answered_ask = datetime.datetime.now(curr_time_zone) - question_ask_date_local
-       time_since_last_answer = datetime.datetime.now(curr_time_zone) - queue.last_answer_time
+       wait_time_between_question = question_answer_time_local - queue.last_answer_time
 
        new_num_answered = queue.num_questions_answered + 1
+
        old_average = queue.average_wait_time
 
        # see if one hour ago so we reset
-       if (self.convert_timedelta_to_hours(time_since_last_answer) >= 1):
+       hours_dif = self.convert_timedelta_to_hours(wait_time_between_question)
+       if (hours_dif >= 1 or hours_dif < 0):
           new_num_answered = 1
           old_average = 0
-     
+          wait_time_between_question = datetime.timedelta(seconds=0)
 
        old_sum = old_average * (new_num_answered - 1)
-       new_sum = old_sum + self.convert_timedelta_to_minutes(time_diff_question_answered_ask)
+       new_sum = old_sum + self.convert_timedelta_to_minutes(wait_time_between_question)
        new_average = round((float(new_sum) / float(new_num_answered)), 1)
        
        queue.average_wait_time = new_average
        queue.num_questions_answered = new_num_answered
        # answer time is set in current time zone
-       queue.last_answer_time = datetime.datetime.now(curr_time_zone)
+       queue.last_answer_time = question_answer_time_local
 
        # remove from the queue
        queue.questions.remove(question)
