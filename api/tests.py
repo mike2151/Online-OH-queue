@@ -1,5 +1,6 @@
 from django.test import override_settings
 from rest_framework.test import APITestCase, APIClient
+from django.core.cache import cache
 
 
 class ThrottleApiTests(APITestCase):
@@ -13,6 +14,7 @@ class ThrottleApiTests(APITestCase):
 
         response = client.post("/api/v1/users/login/", {"email": "wrong@upenn.edu", "password": "wrong"}, format="json")
         # 429 - too many requests
+        cache.clear()
         self.assertEqual(response.status_code, 429)
     
     def test_check_register_api_throttle(self):
@@ -27,4 +29,5 @@ class ThrottleApiTests(APITestCase):
             {"email": "wrong@upenn.edu", "first_name": "mike" , "last_name": "yo" ,"password": "wrong"},
              format="json")
          # 429 - too many requests
+        cache.clear()
         self.assertEqual(response.status_code, 429)
