@@ -47,6 +47,10 @@ class QueueEdit extends React.Component {
     handleSubmit(event) {
       event.preventDefault();
       const data = new FormData(event.target);
+      if (event.target.description.value.length == 0) {
+        document.getElementById("validationError").innerHTML = "Question cannot be blank";
+        return;
+      }
       const put_url = '/api/v1/queue/question/' + this.state.question_id + '/edit'
       fetch(put_url, {
         method: 'PUT',
@@ -55,13 +59,14 @@ class QueueEdit extends React.Component {
           "Authorization": "Token " + localStorage.getItem('credentials')
         }
       }).then((response) => {
-        if (response.ok) {
+        return response.json();
+      }).then((body) => {
+        if (body["success"]) {
           let path = '/';
           this.props.history.push(path);
         } else {
-          return response.json();
+          document.getElementById("validationError").innerHTML = body["error"];
         }
-      }).then((body) => {
       });
     }
 
