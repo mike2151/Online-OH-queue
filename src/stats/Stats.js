@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../static/css/style.css"
 
-import {Bar} from 'react-chartjs-2';
+import {Bar, Line} from 'react-chartjs-2';
 
 class Stats extends Component {
 
@@ -12,7 +12,15 @@ class Stats extends Component {
             'mode': 'ask',
             'data': {},
             'labels': ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            'counts': [12, 19, 3, 5, 2, 3]
+            'counts': [12, 19, 3, 5, 2, 3],
+            'timedata': [{
+                x: new Date('January 3, 2019'),
+                y: 1
+            }, {
+                t: new Date(),
+                y: 10
+            }],
+            'queryuser': ''
         }
 
         this.radioClick = this.radioClick.bind(this);
@@ -68,22 +76,108 @@ class Stats extends Component {
         });
     }
 
+    getUserQuestionData() {
+        fetch('/api/v1/stats/frequentanswer/', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Token ' + localStorage.getItem('credentials')
+            }
+        }).then((response) => {
+            console.log("Getting a response");
+            return response.json();
+        }).then((body) => {
+            console.log('Logging the frequent answerer data');
+            this.setState({'data': body}, () => {
+                console.log(this.state.data);
+                var emails = [];
+                var amounts = [];
+                for (var key in body) {
+                    emails.push(key);
+                    amounts.push(body[key]);
+                }
+                this.setState({'labels': emails, 'counts': amounts});
+            });
+        });
+    }
+
     radioClick(event) {
         this.setState({'mode': event.target.id}, () => {
             console.log(this.state.mode);
             if (this.state.mode == 'ask') {
-                this.getAskData();
+                //this.getAskData();
             } else if (this.state.mode == 'answer') {
-                this.getAnswerData();
+                //this.getAnswerData();
             }
         });
     }
 
+    getBarGraphHtml() {
+        return (
+            <Bar 
+                labels={["Red", "Blue"]}
+                data={{
+                    labels: this.state.labels,
+                    datasets: [{
+                        label: '# of Questions',
+                        data: this.state.counts,
+                        backgroundColor: 'rgba(75, 192, 192, 1)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                }}
+                width={100}
+                height={50}
+                options={{
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }}
+            />
+        )
+    }
+
+    getTimeSeriesHtml() {
+        return (
+            <Line
+                data={{
+                    labels: ['Red', 'Blue'],
+                    datasets: [
+                        {
+                            label: "it's lit",
+                            data: this.state.timedata
+                        }
+                    ]
+                }}
+                options={{
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: 'month'
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }}
+            />
+        )
+    }
+
     componentDidMount() {
-        this.getAskData();
+        //this.getAskData();
     }
 
     render() {
+        var timeSeries = this.getTimeSeriesHtml();
         
         const activeRadio = "btn btn-secondary active";
         const passiveRadio = "btn btn-secondary";
@@ -104,31 +198,7 @@ class Stats extends Component {
                 </div>
                 
                 <div className="stats-chart">
-                    <Bar 
-                        labels={["Red", "Blue"]}
-                        data={{
-                            labels: this.state.labels,
-                            datasets: [{
-                                label: '# of Questions',
-                                data: this.state.counts,
-                                backgroundColor: 'rgba(75, 192, 192, 1)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1
-                            }]
-                        }}
-                        width={100}
-                        height={50}
-                        options={{
-                            maintainAspectRatio: false,
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero:true
-                                    }
-                                }]
-                            }
-                        }}
-                    />
+                    {timeSeries}
                 </div>
             </div>
         )

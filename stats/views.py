@@ -53,3 +53,25 @@ class FrequentAnswerView(View):
         print(results)
         response = results.to_dict()
         return JsonResponse(response)
+
+class UserQuestionsView(View):
+    def get(self, request, *args, **kwargs):
+        user_email = (self.kwargs["email"])
+        
+
+        user_questions = Question.objects.filter(author_email=user_email)
+        df = pd.DataFrame(list(user_questions.values()))
+        df['daystr'] = df.ask_date.dt.strftime('%Y-%m-%d')
+        results = df.groupby(by='daystr').daystr.count()
+        print(df)
+        print(results)
+        response = results.to_dict()
+        return JsonResponse(response)
+
+class GetAllStudentsView(View):
+    def get(self, request, *args, **kwargs):
+        users = StudentUser.objects.all()
+        students = []
+        for student in users:
+            students.append(student.email)
+        return JsonResponse({'value': students})
