@@ -18,6 +18,9 @@ from rest_framework.response import Response
 
 from rest_framework import generics
 from rest_framework.throttling import AnonRateThrottle
+from django.core.mail import EmailMessage
+from django.contrib.sites.models import Site
+import os
 
 from . import models
 from . import serializers
@@ -26,6 +29,33 @@ class UserRegisterView(generics.CreateAPIView):
     queryset = models.StudentUser.objects.all()
     serializer_class = serializers.UserSerializer
     permission_classes = (AllowAny,)
+
+    def create(self, request, *args, **kwargs):
+        # see if inactive account. If so, resend email
+        attempt_email = request.data.get("email")
+        user = None
+        try:
+            user = (models.StudentUser.objects.get(email=attempt_email))
+        except models.StudentUser.DoesNotExist:
+            user = None
+        if user != None:
+            if not user.is_active:
+                # resend confirmation email
+                current_site = Site.objects.get(pk=1).domain
+                course_title = os.environ.get('COURSE_TITLE', 'CIS 121')
+                mail_subject = 'Activate your ' + course_title + ' Office Hours Account'
+                message = "Hi {name}, \n Please click on the link to confirm your registration for {course_title}: \n{domain}/activate/{uid}/{token} \n Best, \n {course_title} Staff".format(course_title=course_title ,name=user.first_name, domain=current_site, uid=urlsafe_base64_encode(force_bytes(user.pk)).decode(), token=account_activation_token.make_token(user))
+                to_email = user.email
+                email = EmailMessage(
+                            mail_subject, message, to=[to_email]
+                )
+                email.send()
+                return HttpResponse(status=201)
+            else:
+                return super(UserRegisterView, self).create(request, *args, **kwargs)
+        else:
+            return super(UserRegisterView, self).create(request, *args, **kwargs)
+
 
 def activate(request, uidb64, token):
     try:
@@ -36,7 +66,7 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        return redirect('/login')
+        return redirect('/activated')
     else:
         return HttpResponse('Activation link is invalid!')
 
@@ -60,14 +90,16 @@ def login(request):
                     status=HTTP_200_OK)
 
 class taAuthenticationView(View):
+    # return the email because some views also need the email of the TA
     def get(self, request):
        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-       if " " not in token_header:
-           return JsonResponse({"is_ta": False})
+       if token_header == None or " " not in token_header:
+           return JsonResponse({"is_ta": False, "email": ""})
        actual_token = token_header.split(" ")[1]
        user = models.StudentUser.objects.filter(auth_token=actual_token).first()
-       if user == None or not user.is_ta:
-           return JsonResponse({"is_ta": False})
-       else:
-           return JsonResponse({"is_ta": True})
+       if user == None:
+           return JsonResponse({"is_ta": False, "email": ""})
+       if not user.is_ta:
+           return JsonResponse({"is_ta": False, "email": user.email})
+       return JsonResponse({"is_ta": True})
 

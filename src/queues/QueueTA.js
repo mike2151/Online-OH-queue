@@ -123,9 +123,9 @@ class Queue extends React.Component {
       if (this.props.queue.is_closed) {
         closed_message =  <p class="queue-status">Queue Closed Manually</p>;
       } else if (this.props.queue.is_open_extended) {
-        closed_message = <p class="queue-status">Queue Open</p>;
+        closed_message = <p class="queue-status">Queue Opened Manually</p>;
       } else if (!this.props.queue.is_in_time) {
-        closed_message =  <p class="queue-status">Queue Closed Because Of Schedule</p>;
+        closed_message =  <p class="queue-status">Queue Closed Because of Schedule</p>;
       } else {
         closed_message = <p class="queue-status">Queue Open</p>;
       }
@@ -136,7 +136,7 @@ class Queue extends React.Component {
           <center><h2 class="queue-title">{this.props.queue.name}</h2>
           {closed_message}
           <p class="wait-time">Average Wait Time: <br />
-           {this.props.queue.average_wait_time} Minutes</p>
+           {this.props.queue.wait_time} Minutes</p>
            <button onClick={() => extendQueueFunc(this.props.queue.name)}
                  className={btnGroupClassOpen}>Keep Queue Open</button>
            <button onClick={() => closeQueueFunc(this.props.queue.name)}
@@ -147,10 +147,11 @@ class Queue extends React.Component {
           </tr>
 
           {this.props.queue.question_contents.map(function(question, index){
-                return <tr><td>
-                {index+1} - {question.first_name} {question.last_name}
+                return <tr><td><p class="queue-text">
+                {index+1} - {question.first_name} {question.last_name} ({question.student_id})
                 <br/> Question: {question.question_content}
-                <br/><center><button onClick={() => answerQuestionFunc(question.id)}
+                <br/> Time Asked: {question.time_asked}
+                <br/></p><center><button onClick={() => answerQuestionFunc(question.id)}
                  class="answer-link">Answer</button></center> 
                 </td></tr>
             })}

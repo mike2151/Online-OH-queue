@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mike2151/Online-OH-queue.svg?branch=master)](https://travis-ci.org/mike2151/Online-OH-queue) [![codecov](https://codecov.io/gh/mike2151/Online-OH-queue/branch/master/graph/badge.svg)](https://codecov.io/gh/mike2151/Online-OH-queue)
+[![Build Status](https://travis-ci.org/mike2151/Online-OH-queue.svg?branch=master)](https://travis-ci.org/mike2151/Online-OH-queue) [![codecov](https://codecov.io/gh/mike2151/Online-OH-queue/branch/master/graph/badge.svg)](https://codecov.io/gh/mike2151/Online-OH-queue) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # Online Office Hours Queue
 ## About
@@ -15,6 +15,8 @@ Online-OH-Queue is a web app for hosting online office hours. Students have the 
 [Teaching Assistants](#Teaching-Assistants) 
 <a name="Teaching-Assistants"/> <br/>
 [Pages](#Pages) 
+<a name="Students"/> <br/>
+[Students](#Students) 
 <a name="Pages"/> <br/>
 [Development](#Development) 
 <a name="Development"/><br/>
@@ -23,13 +25,25 @@ Online-OH-Queue is a web app for hosting online office hours. Students have the 
 
 
 ## Features
+* API backend
+* Ability for students to edit and delete their own questions
+* Administrative control over queues, users, and questions
+* Average wait time for office hours queues
+* Comprehensive TA answering page
+* DDOS/brute force protection
+* Easy deploy with one button Heroku deployment
 * Email verification
-* Support for emails only in a school domain
-* Real time updates to office hours queues
+* Mobile and desktop display support
+* Modern frontend written in React
+* Password reset
+* Real time updates to office hours queues using sockets (no need to refresh)
+* Statistics about students, TAs, and traffic
+* Strongly Tested (> 100 Tests cases and > 90% code coverage)
 * Summaries for TAs preparing for their office hours
-* Statistics
-* Mobile and desktop displays
-* DDOS protection
+* Support for any number of office hours queues
+* Support for email registration only in a school domain
+* Support for holding users to one question per queue
+* Theme customization via environment variables
 
 
 ## Setup
@@ -69,6 +83,12 @@ Example: `apikey`
 
 ##### EMAIL_PASSWORD
 Password for your email provider <br/>
+
+##### MAX_WAIT_TIME
+The maximum time that will display for average wait time in queues. <br/>
+
+##### OFFICE_HOURS_URL
+URL to office hours schedule. <br/>
 
 ##### PRIMARY_THEME_COLOR
 By default, the Online-OH-Queue comes with a green color theme. This can be changed. This configuration variable represents the main color of the website. You must enter a valid hex color with the hashtag. If you do not want to deal with this, then leave it to the default value (the green). <br />
@@ -131,13 +151,19 @@ To that, navigate to the `users` section. Select the user who you wish to be a T
 
 To make a user an admin, you do the same process except check the `superuser_status` box.
 
+#### Make or manage office hours queues
+See the OHQueueSetUp section above.
+
 #### Extra Notes
 Do not worry about the Auth Token section.
 
 ## Teaching-Assistants
 As a teaching assistant, you will have two main pages to visit: `/summary` and `/answer`. <br />
 The summary page gives you all the questions asked in the weekly office hours cycle. You can use this to better prepare for office hours. <br />
-The answer page allows you to view all the queues in the queues. Answer questions in the queue which means to remove students from the queue. Finally, you have the power to manually open and close queues. 
+The answer page allows you to view all the queues in the queues. Answer questions in the queue which means to remove students from the queue. Finally, you have the power to manually open and close queues, ignoring the predefined schedule.
+
+## Students
+Students can login or signup at `/`. Once logged in, they can view all the queues at `/`. 
 
 ## Pages
 This section describes each page and what it offers.
@@ -167,6 +193,10 @@ Ask a question for the given queue. Only authenticated users can do this. In add
 
 `/answer` <br />
 This page is only visible to TAs. It allows you to view all queues in a queue and "answer" questions which will remove students from the queue. You also have the option to close and open queues manually. 
+<br />
+
+`/statistics` <br />
+This page is only visible to admins. It displays statistics regarding queues, students, and TAs. 
 <br />
 
 

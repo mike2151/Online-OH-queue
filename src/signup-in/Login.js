@@ -1,9 +1,11 @@
 import React from "react";
-import "../static/css/style.css"
+import "../static/css/style.css";
+import swal from 'sweetalert';
+import { Route , withRouter}  from 'react-router-dom';
 
 class LoginForm extends React.Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
 
       this.state = {
         email: '',
@@ -23,6 +25,10 @@ class LoginForm extends React.Component {
       }).then((body) => {
         document.body.style.setProperty('--primary-color', body['primary_theme_color']);
       });
+
+      if (this.props.activated) {
+        swal("Email Confirmed!", "Please log in", "success");
+      }
     }
   
     handleSubmit(event) {
@@ -35,7 +41,7 @@ class LoginForm extends React.Component {
         return response.json();
       }).then((body) => {
         if (body.error) {
-          alert('Invalid login');
+          document.getElementById("errorText").innerHTML = "Invalid credentials";
         } else {
           localStorage.setItem('credentials', body.token);
           this.props.history.push('/');
@@ -55,12 +61,13 @@ class LoginForm extends React.Component {
               <form class="login-form" onSubmit={this.handleSubmit}>
                 <h2 class="header-login"><center>Log in</center></h2>
                 <label htmlFor="email">Penn Email</label>
-                <input id="email" name="email" type="email" value={this.state.email} onChange={this.onChange} />  
+                <input id="email" name="email" maxLength={64} type="email" value={this.state.email} onChange={this.onChange} />  
                 <label htmlFor="password">Password</label>
                 <input id="password" name="password" type="password" value={this.state.password} onChange={this.onChange} />
                 <button>login</button>
                 <p class="message">Not registered? <a href="/signup">Create an account</a></p>
                 <p class="message">Forget your password? <a href="/password_reset">Reset your password</a></p>
+                <p id="errorText" class="validationErrorText"></p>
               </form>
             </div>
           </div>
@@ -69,4 +76,4 @@ class LoginForm extends React.Component {
     }
   }
 
-  export default LoginForm;
+  export default withRouter(LoginForm);

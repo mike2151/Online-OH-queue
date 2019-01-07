@@ -1,12 +1,13 @@
 import React from "react";
 import "../static/css/style.css"
 
-class QueueAsk extends React.Component {
+class QueueEdit extends React.Component {
     constructor() {
       super();
 
       this.state = {
-        description: ''
+        description: '',
+        question_id: ''
       }
 
       this.onChange = this.onChange.bind(this);
@@ -22,6 +23,25 @@ class QueueAsk extends React.Component {
       }).then((body) => {
         document.body.style.setProperty('--primary-color', body['primary_theme_color']);
       });
+      var question_id = this.props.match.params.questionid;
+      this.setState({question_id: question_id.toString()});
+      fetch('/api/v1/questions/detail/' + question_id.toString(), {
+        method: 'GET',
+        headers: {
+          "Authorization": "Token " + localStorage.getItem('credentials')
+        }
+      }).then((response) => {
+        return response.json();
+      }).then((body) => {
+        if (body["success"]) {
+          this.setState({description: body["description"]})
+          document.getElementById("description").value = body["description"];
+          var current_length = document.getElementById("description").value.length;
+          var remaining_chars = 280 - current_length;
+          document.getElementById("description_label").innerHTML =
+          "Question Description (" + remaining_chars.toString() + " Characters Remaining)";
+        }
+      });
     }
   
     handleSubmit(event) {
@@ -31,24 +51,21 @@ class QueueAsk extends React.Component {
         document.getElementById("validationError").innerHTML = "Question cannot be blank";
         return;
       }
-      const post_url = '/api/v1/queue/' + this.props.match.params.queue + '/ask'
-      fetch(post_url, {
-        method: 'POST',
+      const put_url = '/api/v1/queue/question/' + this.state.question_id + '/edit'
+      fetch(put_url, {
+        method: 'PUT',
         body: data,
         headers: {
           "Authorization": "Token " + localStorage.getItem('credentials')
         }
       }).then((response) => {
-        if (response.ok) {
+        return response.json();
+      }).then((body) => {
+        if (body["success"]) {
           let path = '/';
           this.props.history.push(path);
         } else {
-          return response.json();
-        }
-      }).then((body) => {
-        if (typeof body === "undefined") {}
-        else {
-          document.getElementById("validationError").innerHTML = body;
+          document.getElementById("validationError").innerHTML = body["error"];
         }
       });
     }
@@ -67,9 +84,8 @@ class QueueAsk extends React.Component {
           <div class="question-page">
             <div class="questionForm">
               <form class="login-form" onSubmit={this.handleSubmit}>
-                <h2 class="header-login"><center>Ask A Question</center></h2>
-                <label class="dynamic-text" htmlFor="description" id="description_label">Question Description (280 Characters Remaining):</label>
-                <p class="dynamic-text">Please enter your question or problem. You may update this later without losing your place in line. Non-questions (e.g., "I don't have a question right now.") or questions that are not relevant to this queue or not specific enough may cause you to forfeit your spot.</p>
+                <h2 class="header-login"><center>Edit Question</center></h2>
+                <label htmlFor="description" id="description_label">Question Description (280 Characters Remaining):</label>
                 <textarea maxlength="280" id="description" name="description" 
                  value={this.state.question} onChange={this.onChange} />  
                 <button class="margin-top-button">submit</button>
@@ -82,4 +98,4 @@ class QueueAsk extends React.Component {
     }
   }
 
-  export default QueueAsk;
+  export default QueueEdit;

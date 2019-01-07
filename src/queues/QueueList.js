@@ -10,6 +10,9 @@ class QueueList extends React.Component {
   constructor(props) {
     super(props); 
     this.logout = this.logout.bind(this);
+    this.state = {
+      oh_link: ""
+    };
   }
 
   componentDidMount() {
@@ -20,6 +23,7 @@ class QueueList extends React.Component {
       return response.json();
     }).then((body) => {
       document.body.style.setProperty('--primary-color', body['primary_theme_color']);
+      this.setState({oh_link: body['oh_url']})
     });
   }
 
@@ -29,6 +33,8 @@ class QueueList extends React.Component {
    }
   
   render() {
+
+    var user_email = this.props.user_email;
 
     let screenWidth = window.innerWidth;
 
@@ -42,15 +48,29 @@ class QueueList extends React.Component {
       width: widthStr
     };
 
-    if (this.props.queues.length === 0) {
-      return (
-        <div>
-          <div class="top-right">
-            <button className="btn btn-primary" onClick={this.logout}>Log out</button>
+    if (this.props.queues.length == 0) {
+      if (this.state.oh_link.length == 0) {
+        return (
+          <div>
+            <div class="top-right">
+              <button className="btn btn-primary" onClick={this.logout}>Log out</button>
+            </div>
+            <h2 class="center-screen">There are no office hours queues available</h2>
           </div>
-          <h2 class="center-screen">There are no office hours queues available</h2>
-        </div>
-      )
+        )
+      } else {
+        return (
+          <div>
+            <div class="top-right">
+              <button className="btn btn-primary" onClick={this.logout}>Log out</button>
+            </div>
+            <div class="center-screen">
+            <h2 >There are no office hours queues available.</h2>
+            <p>Office Hours Schedule: <a href={this.state.oh_link}>Schedule</a></p>
+            </div>
+          </div>
+        )
+      }
     }
     
     if (screenWidth < 800) {
@@ -61,7 +81,8 @@ class QueueList extends React.Component {
           </div>
           <div class="verticalList">
             {this.props.queues.map(function(queue, index){
-                return <div style={queueTableStyle} class="queue-table" ><Queue queue={queue}/></div>;
+                return <div style={queueTableStyle} class="queue-table" >
+                <Queue queue={queue} user_email={user_email}/></div>;
             })}
           </div>
         </div>
@@ -74,7 +95,8 @@ class QueueList extends React.Component {
           </div>
           <div class="horizontalList">
             {this.props.queues.map(function(queue, index){
-                return <div style={queueTableStyle} class="queue-table" ><Queue queue={queue}/></div>;
+                return <div style={queueTableStyle} class="queue-table" >
+                <Queue queue={queue} user_email={user_email}/></div>;
             })}
           </div>
         </div>

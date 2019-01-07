@@ -4,10 +4,11 @@ import datetime
 import os
 import pytz
 from django.utils.timezone import activate
+from time import strftime
 
 # Create your models here.
 class OHQueue(models.Model):
-    name = models.CharField(max_length=256, unique=True)
+    name = models.CharField(max_length=32, unique=True)
     questions = models.ManyToManyField(Question, blank=True)
     is_open_extended = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
@@ -25,18 +26,43 @@ class OHQueue(models.Model):
     num_questions_answered = models.IntegerField(default=0)
     last_answer_time = models.DateTimeField(auto_now_add=True, null=True)
 
-    def question_contents(self):
+    class Meta:
+        verbose_name = "Office Hours Queue"
+        verbose_name_plural = "Office Hours Queues"
+
+    def student_question_contents(self):
+        curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
         question_content = []
         for question in self.questions.order_by('ask_date'):
             question_dict = {
                 "first_name": question.author_first_name, 
                 "last_name": question.author_last_name,
                 "email": question.author_email,
-                "question_content": question.description,
                 "id": question.id,
             }
             question_content.append(question_dict)
         return question_content
+
+    def question_contents(self):
+        curr_time_zone = pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))
+        question_content = []
+        for question in self.questions.order_by('ask_date'):
+            question_dict = {
+                "first_name": question.author_first_name, 
+                "last_name": question.author_last_name,
+                "email": question.author_email,
+                "student_id": question.author_email.split("@", 1)[0],
+                "question_content": question.description,
+                "id": question.id,
+                "time_asked": question.ask_date.replace(tzinfo=pytz.utc).astimezone(curr_time_zone).strftime('%I:%M %p')
+            }
+            question_content.append(question_dict)
+        return question_content
+
+    def wait_time(self):
+        max_wait_time = os.environ.get('MAX_WAIT_TIME', 60.0)
+        wait_time = self.average_wait_time * len(self.questions.all())
+        return min(wait_time, max_wait_time)
 
     def __str__(self):
         return self.name
@@ -91,7 +117,12 @@ class OHQueue(models.Model):
         return True
 
     # takes in the current time and the times specified by the OHqueue and sees if it is active 
-    def isQueueActive(self):
+    def isQueueActive(self, user):
+
+        if user != None:
+            for question in self.questions.all():
+                if question.author_email == user.email:
+                    return True
 
         if self.is_open_extended: 
             return True

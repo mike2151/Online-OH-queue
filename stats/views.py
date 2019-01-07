@@ -7,6 +7,7 @@ from .utils import dateLastStartOfWeek
 from rest_framework.permissions import IsAuthenticated
 from questions.serializers import QuestionSerializer
 from django.http import HttpResponse, JsonResponse
+from api.permissions import TAPermission
 
 import numpy as np
 import pandas as pd
@@ -17,30 +18,27 @@ import datetime
 class SummaryList(generics.ListAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (TAPermission,)
 
     def get_queryset(self):
-       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-       if " " not in token_header:
-           return Question.objects.none()
-       actual_token = token_header.split(" ")[1]
-       user = StudentUser.objects.filter(auth_token=actual_token).first()
-       if user == None or not user.is_ta:
-           return Question.objects.none()
-
        # get all of the question
        last_date = dateLastStartOfWeek()
-       questions = Question.objects.filter(ask_date__gte=last_date)
+       questions = Question.objects.filter(ask_date__gte=last_date).order_by("host_queue")
        return questions
 
 class FrequentUserView(View):
     def get(self, request,  *args, **kwargs):
         all_questions = Question.objects.all()
 
+        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+        if token_header == None or " " not in token_header:
+            return JsonResponse({"authenticated": False})
+        actual_token = token_header.split(" ")[1]
+        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        if user == None or not user.is_superuser:
+            return JsonResponse({"authenticated": False})
         df = pd.DataFrame(list(all_questions.values()))
-        results = df.groupby(by='author_email').author_email.count()
         results2 = df.groupby(['author_email', 'author_first_name', 'author_last_name']).answered_by_email.count()
-        response = results.to_dict()
         response2 = results2.to_dict()
         actualresponse = []
         for key in response2:
@@ -50,12 +48,22 @@ class FrequentUserView(View):
             element['lname'] = key[2]
             element['count'] = response2[key]
             actualresponse.append(element)
-        return JsonResponse({'value': actualresponse})
-
+            return_dictionary = {}
+            return_dictionary["value"] = actualresponse
+            return_dictionary["authenticated"] = True
+        return JsonResponse(return_dictionary)
+      
 class FrequentAnswerView(View):
     def get(self, request, *args, **kwargs):
         all_questions = Question.objects.all()
 
+        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+        if token_header == None or " " not in token_header:
+            return JsonResponse({"authenticated": False})
+        actual_token = token_header.split(" ")[1]
+        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        if user == None or not user.is_superuser:
+            return JsonResponse({"authenticated": False})
         df = pd.DataFrame(list(all_questions.values()))
         results = df.groupby(by='answered_by_email').answered_by_email.count()
         response = results.to_dict()

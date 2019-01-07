@@ -1,0 +1,10 @@
+ignore:
+  - "ohq/.*"
+  - "wsgi.py"
+  - "frontend/apps.py"
+  - "api/apps.py"
+  - "ohqueue/apps.py"
+  - "questions/apps.py"
+  - "stats/apps.py"
+  - "users/apps.py"
+  - "users/forms.py"

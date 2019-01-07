@@ -15,6 +15,7 @@ class App extends Component {
     this.fetchData = this.fetchData.bind(this);
     this.state = {
       isLoggedIn: false,
+      user_email: "",
       queues: []
     };
 
@@ -59,10 +60,11 @@ class App extends Component {
             }
         }).then((response) => {
           return response.json();
-        }).then((body) => {
-          if (body["is_ta"]) {
+        }).then((ta_body) => {
+          if (ta_body["is_ta"]) {
             this.props.history.push('/answer');
           } else {
+            this.setState({user_email: ta_body["email"]});
             this.setState({isLoggedIn: true});
             this.setState({queues: body});
           }
@@ -85,7 +87,7 @@ class App extends Component {
     if(this.state.isLoggedIn) {
       return (
         <div>
-          <QueueList queues={this.state.queues} />
+          <QueueList queues={this.state.queues} user_email={this.state.user_email}/>
         </div>
       );
     } else {

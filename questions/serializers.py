@@ -11,8 +11,8 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        read_only_fields = ('is_answered', 'answered_by', 'author_email', 'author_first_name', 'author_last_name', 'answered_by_email')
-        fields = ( 'is_answered', 'description', 'ask_date', 'author_email', 'author_first_name', 'author_last_name', 'answered_by_email')
+        read_only_fields = ('is_answered', 'answered_by', 'author_email', 'author_first_name', 'author_last_name', 'answered_by_email', 'answerer_first_name', 'answerer_last_name', 'host_queue')
+        fields = ( 'is_answered', 'description', 'ask_date', 'author_email', 'author_first_name', 'author_last_name', 'answered_by_email', 'answerer_first_name', 'answerer_last_name', 'host_queue')
     def create(self, validated_data):
 
         user_first_name = (self.context["user-first-name"])
@@ -64,3 +64,4 @@ class QuestionSerializer(serializers.ModelSerializer):
         )
 
         return question
+    

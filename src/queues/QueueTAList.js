@@ -10,6 +10,7 @@ class QueueTaList extends Component {
   constructor(props) {
     super(props);
     this.fetchData = this.fetchData.bind(this);
+    this.logout = this.logout.bind(this);
     this.state = {
       isTA: false,
       queues: []
@@ -20,6 +21,12 @@ class QueueTaList extends Component {
       WebSocketInstance.addCallbacks(this.update.bind(this))
     });
   }
+
+  logout() {
+    localStorage.removeItem('credentials');
+    this.props.history.push('/login');
+   }
+  
 
   waitForSocketConnection(callback) {
     const component = this;

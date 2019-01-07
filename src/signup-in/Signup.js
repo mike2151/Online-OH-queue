@@ -32,8 +32,8 @@ class SignUpForm extends React.Component {
       var first_name = data.get("first_name");
       var last_name = data.get("last_name");
       var password = data.get("password");
-      if (email.indexOf("upenn.edu") === -1) {
-        violationList.push("Must have a penn email");
+      if (email.indexOf("upenn.edu") == -1) {
+        violationList.push("Must use a Penn email address");
         violationExists = true;
       }
       if (first_name.length === 0) {
@@ -50,7 +50,7 @@ class SignUpForm extends React.Component {
       }
 
       if (violationExists) {
-        this.setState({validationErrors: this.state.validationErrors.concat(violationList)});
+        this.setState({validationErrors: violationList});
       }
       return !violationExists;
     }
@@ -86,13 +86,13 @@ class SignUpForm extends React.Component {
               <form class="login-form" onSubmit={this.handleSubmit}>
                 <h2 class="header-login"><center>Sign Up</center></h2>
                 <label htmlFor="email">Enter Penn Email</label>
-                <input id="email" name="email" type="email" />
+                <input id="email" maxLength={64} name="email" type="email" />
         
                 <label htmlFor="first_name">First Name</label>
-                <input id="first_name" name="first_name" type="text" />
+                <input id="first_name" maxLength={32} name="first_name" type="text" />
         
                 <label htmlFor="last_name">Last Name</label>
-                <input id="last_name" name="last_name" type="text" />
+                <input id="last_name" maxLength={32} name="last_name" type="text" />
 
                 <label htmlFor="password">Password</label>
                 <input id="password" name="password" type="password" />
