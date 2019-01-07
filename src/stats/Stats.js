@@ -21,7 +21,8 @@ class Stats extends Component {
             'queryUser': '',
             'askData': [],
             'answerData': {},
-            'slotData': {}
+            'slotData': {},
+            'authenticated': false
         }
 
         this.radioClick = this.radioClick.bind(this);
@@ -42,37 +43,45 @@ class Stats extends Component {
         }).then((response) => {
             return response.json();
         }).then((body) => {
-            this.setState({'askData': body.value});
+            this.setState({'askData': body.value, 'authenticated': body.authenticated});
         });
     }
 
     displayAskData() {
-        var askDataJSX = (this.state.askData).map((dataObj) => {
-            return (
-                <tr>
-                    <td>{dataObj.email}</td>
-                    <td>{dataObj.fname}</td>
-                    <td>{dataObj.lname}</td>
-                    <td>{dataObj.count}</td>
-                </tr>
-            );
-        });
-        
-        return (
-            <table className="table table-hover">
-                <thead>
+        if (this.state.authenticated) {
+            var askDataJSX = (this.state.askData).map((dataObj) => {
+                return (
                     <tr>
-                        <th scope="col">Email</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col"># of Questions Asked</th>
+                        <td>{dataObj.email}</td>
+                        <td>{dataObj.fname}</td>
+                        <td>{dataObj.lname}</td>
+                        <td>{dataObj.count}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    {askDataJSX}
-                </tbody>
-            </table>
-        );
+                );
+            });
+            
+            return (
+                <table className="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Email</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col"># of Questions Asked</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {askDataJSX}
+                    </tbody>
+                </table>
+            );
+        } else {
+            return (
+                <div>
+                    <p>You are not authenticated.</p>
+                </div>
+            )
+        }
     }
 
     getAnswerData() {
@@ -84,56 +93,64 @@ class Stats extends Component {
         }).then((response) => {
             return response.json();
         }).then((body) => {
-            this.setState({'data': body}, () => {
-                var emails = [];
+            this.setState({'data': body.value}, () => {
+                var names = [];
                 var amounts = [];
-                for (var key in body) {
-                    emails.push(key);
-                    amounts.push(body[key]);
-                }
-                this.setState({'labels': emails, 'counts': amounts, 'answerData': body});
+                body.value.forEach((dataJSON) => {
+                    names.push(dataJSON.fname + ' ' + dataJSON.lname);
+                    amounts.push(dataJSON.count);
+                })
+                this.setState({'labels': names, 'counts': amounts, 'answerData': body.value, 'authenticated': body.authenticated});
             });
         });
     }
 
     displayAnswerData() {
-        return (
-            <Bar 
-                labels={["Red", "Blue"]}
-                data={{
-                    labels: this.state.labels,
-                    datasets: [{
-                        label: '# of Questions Answered',
-                        data: this.state.counts,
-                        backgroundColor: 'rgba(75, 192, 192, 1)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                }}
-                width={100}
-                height={50}
-                options={{
-                    maintainAspectRatio: false,
-                    scales: {
-                        xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'TA email'
-                            }
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Count of Questions Answered'
-                            },
-                            ticks: {
-                                beginAtZero:true
-                            }
+        if (this.state.authenticated) {
+            return (
+                <Bar 
+                    labels={["Red", "Blue"]}
+                    data={{
+                        labels: this.state.labels,
+                        datasets: [{
+                            label: '# of Questions Answered',
+                            data: this.state.counts,
+                            backgroundColor: 'rgba(75, 192, 192, 1)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
                         }]
-                    }
-                }}
-            />
-        )
+                    }}
+                    width={100}
+                    height={50}
+                    options={{
+                        maintainAspectRatio: false,
+                        scales: {
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'TA'
+                                }
+                            }],
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Count of Questions Answered'
+                                },
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        }
+                    }}
+                />
+            )
+        } else {
+            return (
+                <div>
+                    <p>You are not authenticated.</p>
+                </div>
+            )
+        }
     }
 
     getUserQuestionData() {
@@ -149,9 +166,7 @@ class Stats extends Component {
                 var timedata = Object.keys(body).map((day) => {
                     return {'x': new Date(day), 'y': body[day]};
                 });
-                this.setState({'data': body, 'timedata': timedata}, () => {
-                    this.setState({'data': body});
-                });
+                this.setState({'data': body, 'timedata': timedata, 'authenticated': body.authenticated});
             });
         } else {
             this.setState({'data': undefined});
@@ -159,59 +174,67 @@ class Stats extends Component {
     }
 
     displayUserQuestionData() {
-        if (this.state.data) {
-            return (
-                <div>
-                    <SearchBar 
-                        callback={this.searchBarCallback}
-                    />
-                    <Line
-                        data={{
-                            labels: ['Red', 'Blue'],
-                            datasets: [
-                                {
-                                    label: "# of Questions Asked on Each Day",
-                                    data: this.state.timedata,
-                                    backgroundColor: 'rgba(75, 192, 192, 1)',
-                                    borderColor: 'rgba(54, 162, 235, 1)',
+        if (this.state.authenticated) {
+            if (this.state.queryUser && this.state.timedata) {
+                return (
+                    <div>
+                        <SearchBar 
+                            callback={this.searchBarCallback}
+                        />
+                        <Line
+                            data={{
+                                labels: ['Red', 'Blue'],
+                                datasets: [
+                                    {
+                                        label: "# of Questions Asked on Each Day",
+                                        data: this.state.timedata,
+                                        backgroundColor: 'rgba(75, 192, 192, 1)',
+                                        borderColor: 'rgba(54, 162, 235, 1)',
+                                    }
+                                ]
+                            }}
+                            options={{
+                                scales: {
+                                    xAxes: [{
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Date'
+                                        },
+                                        type: 'time',
+                                        time: {
+                                            unit: 'month'
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Count of Questions Asked by ' + this.state.queryUser
+                                        },
+                                        ticks: {
+                                            beginAtZero:true
+                                        }
+                                    }]
                                 }
-                            ]
-                        }}
-                        options={{
-                            scales: {
-                                xAxes: [{
-                                    scaleLabel: {
-                                        display: true,
-                                        labelString: 'Date'
-                                    },
-                                    type: 'time',
-                                    time: {
-                                        unit: 'month'
-                                    }
-                                }],
-                                yAxes: [{
-                                    scaleLabel: {
-                                        display: true,
-                                        labelString: 'Count of Questions Asked by ' + this.state.queryUser
-                                    },
-                                    ticks: {
-                                        beginAtZero:true
-                                    }
-                                }]
-                            }
-                        }}
-                    />
-                </div>
-            );
+                            }}
+                        />
+                    </div>
+                );
+            } else {
+                return (
+                    <div>
+                        <SearchBar 
+                            callback={this.searchBarCallback}
+                        />
+                        <p>Search a student's email to get started.</p>
+                    </div>
+                );
+            }
         } else {
             return (
                 <div>
-                    <SearchBar 
-                        callback={this.searchBarCallback}
-                    />
-                    <p>Search a student's email to get started.</p>
+                    <p>You are not authenticated.</p>
                 </div>
-            );
+            )
         }
     }
 
@@ -226,52 +249,60 @@ class Stats extends Component {
         }).then((body) => {
             var timeslots = [];
             var amounts = [];
-            for (var key in body) {
+            for (var key in body.value) {
                 timeslots.push(key);
-                amounts.push(body[key]);
+                amounts.push(body.value[key]);
             }
-            this.setState({'slots': timeslots, 'counts': amounts, 'data': body, 'slotData': body});
+            this.setState({'slots': timeslots, 'counts': amounts, 'data': body, 'slotData': body.value, 'authenticated': body.authenticated});
         })
     }
 
     displayTrafficData() {
-        return (
-            <Bar 
-                labels={["Red", "Blue"]}
-                data={{
-                    labels: this.state.slots,
-                    datasets: [{
-                        label: '# of Questions',
-                        data: this.state.counts,
-                        backgroundColor: 'rgba(75, 192, 192, 1)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    }]
-                }}
-                width={100}
-                height={50}
-                options={{
-                    maintainAspectRatio: false,
-                    scales: {
-                        xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Time slot'
-                            }
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Count of Questions'
-                            },
-                            ticks: {
-                                beginAtZero:true
-                            }
+        if (this.state.authenticated) {
+            return (
+                <Bar 
+                    labels={["Red", "Blue"]}
+                    data={{
+                        labels: this.state.slots,
+                        datasets: [{
+                            label: '# of Questions',
+                            data: this.state.counts,
+                            backgroundColor: 'rgba(75, 192, 192, 1)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
                         }]
-                    }
-                }}
-            />
-        )
+                    }}
+                    width={100}
+                    height={50}
+                    options={{
+                        maintainAspectRatio: false,
+                        scales: {
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Time slot'
+                                }
+                            }],
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Count of Questions'
+                                },
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        }
+                    }}
+                />
+            )
+        } else {
+            return (
+                <div>
+                    <p>You are not authenticated.</p>
+                </div>
+            )
+        }
     }
 
     radioClick(event) {

@@ -179,8 +179,7 @@ class GetTrafficTimesView(View):
 
         result = df.groupby(by='slot').slot.count()
         dictresult = result.to_dict()
-        dictresult["authenticated"] = True
-        return JsonResponse(dictresult)
+        return JsonResponse({"authenticated": True, "value": dictresult})
     
     def tz_to_slot(self, time):
         result = self.buckets_for_date(time)
