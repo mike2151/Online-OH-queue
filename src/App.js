@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LandingPage from "./landing-page/LandingPage";
 import QueueList from "./queues/QueueList";
-import { Redirect } from 'react-router-dom'
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import './static/css/style.css'
@@ -49,7 +48,7 @@ class App extends Component {
       return response.json();
     }).then((body) => {
       if (body.detail) {
-        if (body.detail.localeCompare("Invalid token.") == 0) {
+        if (body.detail.localeCompare("Invalid token.") === 0) {
           // invalid token
         }
       } else {

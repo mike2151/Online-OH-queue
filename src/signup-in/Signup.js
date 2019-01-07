@@ -36,11 +36,11 @@ class SignUpForm extends React.Component {
         violationList.push("Must use a Penn email address");
         violationExists = true;
       }
-      if (first_name.length == 0) {
+      if (first_name.length === 0) {
         violationList.push("First name cannot be blank");
         violationExists = true;
       }
-      if (last_name.length == 0) {
+      if (last_name.length === 0) {
         violationList.push("Last name cannot be blank");
         violationExists = true;
       }
