@@ -38,7 +38,7 @@ class FrequentUserView(View):
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
         if (len(all_questions.values()) == 0):
-            return JsonResponse({"value": []})
+            return JsonResponse({"authenticated": True, "value": []})
         df = pd.DataFrame(list(all_questions.values()))
         results2 = df.groupby(['author_email', 'author_first_name', 'author_last_name']).answered_by_email.count()
         response2 = results2.to_dict()
@@ -50,9 +50,9 @@ class FrequentUserView(View):
             element['lname'] = key[2]
             element['count'] = response2[key]
             actualresponse.append(element)
-            return_dictionary = {}
-            return_dictionary["value"] = actualresponse
-            return_dictionary["authenticated"] = True
+        return_dictionary = {}
+        return_dictionary["value"] = actualresponse
+        return_dictionary["authenticated"] = True
         return JsonResponse(return_dictionary)
       
 class FrequentAnswerView(View):
@@ -67,11 +67,24 @@ class FrequentAnswerView(View):
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
         if (len(all_questions.values()) == 0):
-            return JsonResponse({"value": []})
+            return JsonResponse({"authenticated": True, "value": []})
         df = pd.DataFrame(list(all_questions.values()))
         results = df.groupby(by='answered_by_email').answered_by_email.count()
+        results2 = df.groupby(['answered_by_email', 'answerer_first_name', 'answerer_last_name']).answered_by_email.count()
         response = results.to_dict()
-        return JsonResponse(response)
+        response2 = results2.to_dict()
+        actualresponse = []
+        for key in response2:
+            element = {}
+            element['email'] = key[0]
+            element['fname'] = key[1]
+            element['lname'] = key[2]
+            element['count'] = response2[key]
+            actualresponse.append(element)
+        return_dictionary = {}
+        return_dictionary["value"] = actualresponse
+        return_dictionary["authenticated"] = True
+        return JsonResponse(return_dictionary)
 
 class UserQuestionsView(View):
     def get(self, request, *args, **kwargs):
