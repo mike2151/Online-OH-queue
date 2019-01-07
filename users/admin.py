@@ -19,6 +19,7 @@ class StudentUserAdmin(UserAdmin):
         ('Permissions', {'fields': ('is_active', 'is_ta', 'is_superuser')}),
         ('Important Dates', {'fields': ('date_joined',)})
     )
+    list_filter = ('is_superuser', 'is_ta', 'is_active')
 
 admin.site.site_header = os.environ.get('COURSE_TITLE','')  + ' Office Hours Admin'
 admin.site.register(StudentUser, StudentUserAdmin)

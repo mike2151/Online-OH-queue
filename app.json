@@ -44,6 +44,10 @@
             "description": "The maximum time that will display for average wait time in queues.",
             "value": 60
         },
+        "OFFICE_HOURS_URL": {
+            "description": "URL to office hours schedule",
+            "value": "https://www.cis.upenn.edu/~cis121/current/schedule.html"
+        },
         "PRIMARY_THEME_COLOR": {
             "description": "The primary color for the website. By default, it is green.",
             "value": "#76b852"

@@ -16,7 +16,8 @@ ReactDOM.render((
         <Switch>
             <Route exact path='/' component={App} />
             <Route exact path='/signup' component={SignUpForm} />
-            <Route exact path='/login' component={LoginForm} />
+            <Route exact path='/login' component={() => <LoginForm activated={false} />} />
+            <Route exact path='/activated' component={() => <LoginForm activated={true} />} />
             <Route exact path='/answer' component={QueueTaList} />
             <Route exact path='/summary' component={Summary} />
             <Route exact path='/statistics' component={Stats} />

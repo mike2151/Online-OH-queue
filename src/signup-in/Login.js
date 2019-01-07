@@ -1,9 +1,11 @@
 import React from "react";
-import "../static/css/style.css"
+import "../static/css/style.css";
+import swal from 'sweetalert';
+import { Route , withRouter}  from 'react-router-dom';
 
 class LoginForm extends React.Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
 
       this.state = {
         email: '',
@@ -23,6 +25,10 @@ class LoginForm extends React.Component {
       }).then((body) => {
         document.body.style.setProperty('--primary-color', body['primary_theme_color']);
       });
+
+      if (this.props.activated) {
+        swal("Email Confirmed!", "Please log in", "success");
+      }
     }
   
     handleSubmit(event) {
@@ -70,4 +76,4 @@ class LoginForm extends React.Component {
     }
   }
 
-  export default LoginForm;
+  export default withRouter(LoginForm);

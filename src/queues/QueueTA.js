@@ -123,7 +123,7 @@ class Queue extends React.Component {
       if (this.props.queue.is_closed) {
         closed_message =  <p class="queue-status">Queue Closed Manually</p>;
       } else if (this.props.queue.is_open_extended) {
-        closed_message = <p class="queue-status">Queue Open</p>;
+        closed_message = <p class="queue-status">Queue Opened Manually</p>;
       } else if (!this.props.queue.is_in_time) {
         closed_message =  <p class="queue-status">Queue Closed Because of Schedule</p>;
       } else {

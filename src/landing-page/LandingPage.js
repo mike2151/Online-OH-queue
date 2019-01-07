@@ -14,6 +14,7 @@ class LandingPage extends React.Component {
       return response.json();
     }).then((body) => {
       document.body.style.setProperty('--primary-color', body['primary_theme_color']);
+      document.getElementById("header").innerHTML = body['course_title'] + " Office Hours Queue";
     });
   }
 
@@ -21,7 +22,7 @@ class LandingPage extends React.Component {
     return (
     <header className="masthead d-flex">
         <div className="container text-center my-auto">
-          <h1 className="mb-1 title-text">Office Hours Queue</h1>
+          <h1 id="header" className="mb-1 title-text">Office Hours Queue</h1>
           <a className="btn btn-primary btn-margin btn-xl" href="/signup">
             Sign up
           </a>

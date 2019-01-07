@@ -12,6 +12,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     path('signup/', TemplateView.as_view(template_name='index.html')),
     path('login/', TemplateView.as_view(template_name='index.html')),
+    path('activated/', TemplateView.as_view(template_name='index.html')),
     path('answer/', TemplateView.as_view(template_name='index.html')),
     path('summary/', TemplateView.as_view(template_name='index.html')),
     path('statistics/', TemplateView.as_view(template_name='index.html')),

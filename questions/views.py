@@ -106,6 +106,9 @@ class QuestionAnswerView(View):
        # mark question as resolved and TA answered
        question.is_answered = True
        question.answered_by_email = user.email
+       question.answerer_first_name = user.first_name
+       question.answerer_last_name = user.last_name
+       question.host_queue = queue_name
        question.save()
 
        # edit average wait time
