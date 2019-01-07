@@ -51,7 +51,7 @@ class SearchBar extends Component {
     render() {
         var suggestionsHTML = this.state.suggestions.map((email) => {
             return (
-                <p>{email}</p>
+                <p onClick={this.props.callback}>{email}</p>
             )
         })
         return (
