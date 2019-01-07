@@ -76,6 +76,69 @@ class PermissionsTests(TestCase):
         response = self.client.get('/api/v1/stats/frequentanswer/')
         self.assertTrue(json.loads(response.content)["authenticated"])
 
+    # user questions tests
+
+    def test_anon_cannot_access_user_questions(self):
+        response = self.client.get('/api/v1/stats/yo@gmail.com/questions/')
+        self.assertFalse(json.loads(response.content)["authenticated"])
+
+    def test_student_cannot_access_user_questions(self):
+        self.generate_header(self.student_user)
+        response = self.client.get('/api/v1/stats/yo@gmail.com/questions/')
+        self.assertFalse(json.loads(response.content)["authenticated"])
+    
+    def test_ta_cannot_access_user_questions(self):
+        self.generate_header(self.ta_user)
+        response = self.client.get('/api/v1/stats/yo@gmail.com/questions/')
+        self.assertFalse(json.loads(response.content)["authenticated"])
+
+    def test_admin_can_access_user_questions(self):
+        self.generate_header(self.admin_user)
+        response = self.client.get('/api/v1/stats/yo@gmail.com/questions/')
+        self.assertTrue(json.loads(response.content)["authenticated"])
+
+    # GetAllStudentsView tests
+
+    def test_anon_cannot_access_get_all_students(self):
+        response = self.client.get('/api/v1/stats/getstudents/')
+        self.assertFalse(json.loads(response.content)["authenticated"])
+
+    def test_student_cannot_access_get_all_students(self):
+        self.generate_header(self.student_user)
+        response = self.client.get('/api/v1/stats/getstudents/')
+        self.assertFalse(json.loads(response.content)["authenticated"])
+    
+    def test_ta_cannot_access_get_all_students(self):
+        self.generate_header(self.ta_user)
+        response = self.client.get('/api/v1/stats/getstudents/')
+        self.assertFalse(json.loads(response.content)["authenticated"])
+
+    def test_admin_can_access_get_all_students(self):
+        self.generate_header(self.admin_user)
+        response = self.client.get('/api/v1/stats/getstudents/')
+        self.assertTrue(json.loads(response.content)["authenticated"])
+
+    # Traffic Time tests
+
+    def test_anon_cannot_access_get_traffic_times(self):
+        response = self.client.get('/api/v1/stats/traffictime/')
+        self.assertFalse(json.loads(response.content)["authenticated"])
+
+    def test_student_cannot_access_get_traffic_times(self):
+        self.generate_header(self.student_user)
+        response = self.client.get('/api/v1/stats/traffictime/')
+        self.assertFalse(json.loads(response.content)["authenticated"])
+    
+    def test_ta_cannot_access_get_all_traffic_times(self):
+        self.generate_header(self.ta_user)
+        response = self.client.get('/api/v1/stats/traffictime/')
+        self.assertFalse(json.loads(response.content)["authenticated"])
+
+    def test_admin_can_access_get_all_traffic_times(self):
+        self.generate_header(self.admin_user)
+        response = self.client.get('/api/v1/stats/traffictime/')
+        self.assertTrue(json.loads(response.content)["authenticated"])
+
     # summary tests
     def test_anon_cannot_access_summary(self):
         response = self.client.get('/api/v1/summary/')

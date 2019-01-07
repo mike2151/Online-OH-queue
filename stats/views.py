@@ -88,31 +88,54 @@ class FrequentAnswerView(View):
 
 class UserQuestionsView(View):
     def get(self, request, *args, **kwargs):
-        user_email = (self.kwargs["email"])
-        
+        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+        if token_header == None or " " not in token_header:
+            return JsonResponse({"authenticated": False})
+        actual_token = token_header.split(" ")[1]
+        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        if user == None or not user.is_superuser:
+            return JsonResponse({"authenticated": False})
 
+        user_email = (self.kwargs["email"])
         user_questions = Question.objects.filter(author_email=user_email)
         if len(user_questions.values()) == 0:
-            return JsonResponse({})
+            return JsonResponse({"authenticated": True})
         df = pd.DataFrame(list(user_questions.values()))
         df['daystr'] = df.ask_date.dt.strftime('%Y-%m-%d')
         results = df.groupby(by='daystr').daystr.count()
         response = results.to_dict()
+        response["authenticated"] = True
         return JsonResponse(response)
 
 class GetAllStudentsView(View):
     def get(self, request, *args, **kwargs):
+        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+        if token_header == None or " " not in token_header:
+            return JsonResponse({"authenticated": False, "value": []})
+        actual_token = token_header.split(" ")[1]
+        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        if user == None or not user.is_superuser:
+            return JsonResponse({"authenticated": False, "value": []})
+
         users = StudentUser.objects.all()
         students = []
         for student in users:
             students.append(student.email)
-        return JsonResponse({'value': students})
+        return JsonResponse({"authenticated": True, 'value': students})
 
 class GetTrafficTimesView(View):
     def get(self, request, *args, **kwargs):
+        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+        if token_header == None or " " not in token_header:
+            return JsonResponse({"authenticated": False})
+        actual_token = token_header.split(" ")[1]
+        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        if user == None or not user.is_superuser:
+            return JsonResponse({"authenticated": False})
+
         all_questions = Question.objects.all()
         if (len(all_questions.values()) == 0):
-            return JsonResponse({})
+            return JsonResponse({"authenticated": True})
         df = pd.DataFrame(list(all_questions.values()))
         df['tznormal'] = df['ask_date'].apply(
             lambda x: x.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York')))
@@ -156,6 +179,7 @@ class GetTrafficTimesView(View):
 
         result = df.groupby(by='slot').slot.count()
         dictresult = result.to_dict()
+        dictresult["authenticated"] = True
         return JsonResponse(dictresult)
     
     def tz_to_slot(self, time):
