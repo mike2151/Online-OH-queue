@@ -132,10 +132,46 @@ class GetTrafficTimesView(View):
         print(saturday_slots)
         print(sunday_slots)
 
-        return JsonResponse({'value': True})
+        print("printing slot")
+        print(self.buckets_for_date(df.loc[0, 'tznormal']))
+
+        df['slot'] = df.tznormal.apply(self.tz_to_slot)
+
+        print(df)
+
+        result = df.groupby(by='slot').slot.count()
+        print(result)
+        dictresult = result.to_dict()
+        print(dictresult)
+        return JsonResponse(dictresult)
+    
+    def tz_to_slot(self, time):
+        result = self.buckets_for_date(time)
+        slotstr = ""
+        if result[0] == 0:
+            slotstr += "Mon "
+        elif result[0] == 1:
+            slotstr += "Tues "
+        elif result[0] == 1:
+            slotstr += "Wed "
+        elif result[0] == 1:
+            slotstr += "Thurs "
+        elif result[0] == 1:
+            slotstr += "Fri "
+        elif result[0] == 1:
+            slotstr += "Sat "
+        elif result[0] == 1:
+            slotstr += "Sun "
         
-
-
+        slotstr += result[1]
+        return slotstr
+        
+    def buckets_for_date(self, ask_date):
+        day_week_number = ask_date.weekday()
+        curr_hour_str = ask_date.strftime("%I:00%p")
+        one_hour_str = (ask_date + datetime.timedelta(hours=1)).strftime("%I:00%p")
+        time_interval = curr_hour_str + "-" + one_hour_str
+        return day_week_number, time_interval
 
     def convert_timedelta_to_hours(self, duration):
             days, seconds = duration.days, duration.seconds
