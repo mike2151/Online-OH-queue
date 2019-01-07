@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import "../static/css/style.css"
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import {Bar, Line} from 'react-chartjs-2';
+
+import SearchBar from './SearchBar';
 
 class Stats extends Component {
 
@@ -195,6 +198,7 @@ class Stats extends Component {
                             <input type="radio" name="options" id="traffic" autocomplete="off" onClick={this.radioClick} /> Traffic at Each Slot
                         </label>
                     </div>
+                    <SearchBar />
                 </div>
                 
                 <div className="stats-chart">

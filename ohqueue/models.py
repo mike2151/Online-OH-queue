@@ -13,17 +13,17 @@ class OHQueue(models.Model):
     is_closed = models.BooleanField(default=False)
     is_in_time = models.BooleanField(default=False)
     # scheduling
-    monday_times = models.CharField(max_length=50, default="")
-    tuesday_times = models.CharField(max_length=50, default="")
-    wednesday_times = models.CharField(max_length=50, default="")
-    thursday_times = models.CharField(max_length=50, default="")
-    friday_times = models.CharField(max_length=50, default="")
-    saturday_times = models.CharField(max_length=50, default="")
-    sunday_times = models.CharField(max_length=50, default="")
+    monday_times = models.CharField(max_length=50, default="", blank=True, null=True)
+    tuesday_times = models.CharField(max_length=50, default="", blank=True, null=True)
+    wednesday_times = models.CharField(max_length=50, default="", blank=True, null=True)
+    thursday_times = models.CharField(max_length=50, default="", blank=True, null=True)
+    friday_times = models.CharField(max_length=50, default="", blank=True, null=True)
+    saturday_times = models.CharField(max_length=50, default="", blank=True, null=True)
+    sunday_times = models.CharField(max_length=50, default="", blank=True, null=True)
     # average wait time fields
     average_wait_time = models.FloatField(default=0.0)
     num_questions_answered = models.IntegerField(default=0)
-    last_answer_time = models.DateTimeField(auto_now_add=True)
+    last_answer_time = models.DateTimeField(auto_now_add=True, null=True)
 
     def question_contents(self):
         question_content = []
