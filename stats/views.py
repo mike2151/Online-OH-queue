@@ -37,6 +37,8 @@ class FrequentUserView(View):
         user = StudentUser.objects.filter(auth_token=actual_token).first()
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
+        if (len(all_questions.values()) == 0):
+            return JsonResponse({"value": []})
         df = pd.DataFrame(list(all_questions.values()))
         results2 = df.groupby(['author_email', 'author_first_name', 'author_last_name']).answered_by_email.count()
         response2 = results2.to_dict()
@@ -64,6 +66,8 @@ class FrequentAnswerView(View):
         user = StudentUser.objects.filter(auth_token=actual_token).first()
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
+        if (len(all_questions.values()) == 0):
+            return JsonResponse({"value": []})
         df = pd.DataFrame(list(all_questions.values()))
         results = df.groupby(by='answered_by_email').answered_by_email.count()
         response = results.to_dict()
@@ -75,6 +79,8 @@ class UserQuestionsView(View):
         
 
         user_questions = Question.objects.filter(author_email=user_email)
+        if len(user_questions.values()) == 0:
+            return JsonResponse({})
         df = pd.DataFrame(list(user_questions.values()))
         df['daystr'] = df.ask_date.dt.strftime('%Y-%m-%d')
         results = df.groupby(by='daystr').daystr.count()
@@ -92,6 +98,8 @@ class GetAllStudentsView(View):
 class GetTrafficTimesView(View):
     def get(self, request, *args, **kwargs):
         all_questions = Question.objects.all()
+        if (len(all_questions.values()) == 0):
+            return JsonResponse({})
         df = pd.DataFrame(list(all_questions.values()))
         df['tznormal'] = df['ask_date'].apply(
             lambda x: x.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York')))
