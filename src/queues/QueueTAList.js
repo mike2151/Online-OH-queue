@@ -89,7 +89,7 @@ class QueueTaList extends Component {
       let screenWidth = window.innerWidth;
 
       var numQueues = this.state.queues.length;
-      if (numQueues == 0 || screenWidth < 800) {
+      if (numQueues === 0 || screenWidth < 800) {
         numQueues = 1;
       }
       var widthOfEachQueue = 100.0 / numQueues;

@@ -1,7 +1,7 @@
 import React from "react";
 import Queue from "./Queue";
 import "../static/css/style.css"
-import { Route , withRouter}  from 'react-router-dom';
+import {withRouter}  from 'react-router-dom';
 
 
 
@@ -33,7 +33,7 @@ class QueueList extends React.Component {
     let screenWidth = window.innerWidth;
 
     var numQueues = this.props.queues.length;
-    if (numQueues == 0 || screenWidth < 800) {
+    if (numQueues === 0 || screenWidth < 800) {
       numQueues = 1;
     }
     var widthOfEachQueue = 100.0 / numQueues;
@@ -42,7 +42,7 @@ class QueueList extends React.Component {
       width: widthStr
     };
 
-    if (this.props.queues.length == 0) {
+    if (this.props.queues.length === 0) {
       return (
         <div>
           <div class="top-right">

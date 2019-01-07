@@ -24,9 +24,7 @@ class SearchBar extends Component {
         }).then((response) => {
             return response.json();
         }).then((body) => {
-            this.setState({'students': body.value}, () => {
-                console.log(this.state.students);
-            });
+            this.setState({'students': body.value});
         })
     }
 
@@ -51,7 +49,7 @@ class SearchBar extends Component {
     render() {
         var suggestionsHTML = this.state.suggestions.map((email) => {
             return (
-                <p onClick={this.props.callback}>{email}</p>
+                <p className="suggestion" onClick={this.props.callback}>{email}</p>
             )
         })
         return (

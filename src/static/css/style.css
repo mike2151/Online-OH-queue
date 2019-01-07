@@ -388,6 +388,7 @@ height: 100vh;
   height: 100%;
   width: 100%;
   padding: .4em;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
 .stats-nav {
@@ -398,6 +399,14 @@ height: 100vh;
 .stats-chart {
   height: 90vh !important;
   padding: .4em;
+}
+
+.suggestion {
+  background-color: #ffffff;
+}
+
+.suggestion:hover {
+  background-color: #59F989;
 }
 
 /*

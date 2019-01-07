@@ -7,7 +7,7 @@ import SignUpForm from './signup-in/Signup';
 import LoginForm from './signup-in/Login';
 import Summary from './stats/Summary';
 import Stats from './stats/Stats';
-import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render((

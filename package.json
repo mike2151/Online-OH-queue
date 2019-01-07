@@ -11,8 +11,8 @@
     "react-router-dom": "^4.3.1",
     "sweetalert": "^2.1.2",
     "chart.js": "2.5.x",
-    "react-chartjs-2": "2.7.4"
-    "react-scripts": "^2.1.2",
+    "react-chartjs-2": "2.7.4",
+    "react-scripts": "^2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",

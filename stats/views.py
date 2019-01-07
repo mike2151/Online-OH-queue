@@ -36,25 +36,28 @@ class SummaryList(generics.ListAPIView):
 class FrequentUserView(View):
     def get(self, request,  *args, **kwargs):
         all_questions = Question.objects.all()
-        for question in all_questions:
-            print(question)
 
         df = pd.DataFrame(list(all_questions.values()))
         results = df.groupby(by='author_email').author_email.count()
-        print(results)
+        results2 = df.groupby(['author_email', 'author_first_name', 'author_last_name']).answered_by_email.count()
         response = results.to_dict()
-        #return JsonResponse({"json": "true"})
-        return JsonResponse(response)
+        response2 = results2.to_dict()
+        actualresponse = []
+        for key in response2:
+            element = {}
+            element['email'] = key[0]
+            element['fname'] = key[1]
+            element['lname'] = key[2]
+            element['count'] = response2[key]
+            actualresponse.append(element)
+        return JsonResponse({'value': actualresponse})
 
 class FrequentAnswerView(View):
     def get(self, request, *args, **kwargs):
         all_questions = Question.objects.all()
-        for question in all_questions:
-            print(question)
 
         df = pd.DataFrame(list(all_questions.values()))
         results = df.groupby(by='answered_by_email').answered_by_email.count()
-        print(results)
         response = results.to_dict()
         return JsonResponse(response)
 
@@ -67,8 +70,6 @@ class UserQuestionsView(View):
         df = pd.DataFrame(list(user_questions.values()))
         df['daystr'] = df.ask_date.dt.strftime('%Y-%m-%d')
         results = df.groupby(by='daystr').daystr.count()
-        print(df)
-        print(results)
         response = results.to_dict()
         return JsonResponse(response)
 
@@ -87,8 +88,6 @@ class GetTrafficTimesView(View):
         df['tznormal'] = df['ask_date'].apply(
             lambda x: x.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York')))
         )
-
-        print(df)
 
         ohqentries = OHQueue.objects.all()
         monday_slots = []
@@ -124,25 +123,10 @@ class GetTrafficTimesView(View):
         saturday_slots = list(set(saturday_slots))
         sunday_slots = list(set(sunday_slots))
 
-        print(monday_slots)
-        print(tuesday_slots)
-        print(wednesday_slots)
-        print(thursday_slots)
-        print(friday_slots)
-        print(saturday_slots)
-        print(sunday_slots)
-
-        print("printing slot")
-        print(self.buckets_for_date(df.loc[0, 'tznormal']))
-
         df['slot'] = df.tznormal.apply(self.tz_to_slot)
 
-        print(df)
-
         result = df.groupby(by='slot').slot.count()
-        print(result)
         dictresult = result.to_dict()
-        print(dictresult)
         return JsonResponse(dictresult)
     
     def tz_to_slot(self, time):

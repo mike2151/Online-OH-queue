@@ -13,18 +13,15 @@ class Stats extends Component {
 
         this.state={
             'mode': 'ask',
-            'data': {},
-            'labels': ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-            'counts': [12, 19, 3, 5, 2, 3],
+            'data': [],
+            'labels': [],
+            'counts': [],
             'slots': [],
-            'timedata': [{
-                x: new Date('January 3, 2019'),
-                y: 1
-            }, {
-                t: new Date(),
-                y: 10
-            }],
-            'queryUser': ''
+            'timedata': [],
+            'queryUser': '',
+            'askData': [],
+            'answerData': {},
+            'slotData': {}
         }
 
         this.radioClick = this.radioClick.bind(this);
@@ -43,41 +40,37 @@ class Stats extends Component {
                 'Authorization': 'Token ' + localStorage.getItem('credentials')
             }
         }).then((response) => {
-            console.log("Getting a response");
             return response.json();
         }).then((body) => {
-            console.log('Logging the frequent asker data');
-            this.setState({'data': body}, () => {
-                console.log(this.state.data);
-                var emails = [];
-                var amounts = [];
-                for (var key in body) {
-                    emails.push(key);
-                    amounts.push(body[key]);
-                }
-                this.setState({'labels': emails, 'counts': amounts, 'data': body});
-            });
+            this.setState({'askData': body.value});
         });
     }
 
     displayAskData() {
-        console.log(this.state.data);
-        var askDataJSX = Object.keys(this.state.data).map((email) => {
+        var askDataJSX = (this.state.askData).map((dataObj) => {
             return (
                 <tr>
-                    <td>{email}</td>
-                    <td>{this.state.data[email]}</td>
+                    <td>{dataObj.email}</td>
+                    <td>{dataObj.fname}</td>
+                    <td>{dataObj.lname}</td>
+                    <td>{dataObj.count}</td>
                 </tr>
             );
         });
         
         return (
-            <table>
-                <tr>
-                    <th>Email</th>
-                    <th>Number of Questions</th>
-                </tr>
-                {askDataJSX}
+            <table className="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Email</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col"># of Questions Asked</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {askDataJSX}
+                </tbody>
             </table>
         );
     }
@@ -89,19 +82,16 @@ class Stats extends Component {
                 'Authorization': 'Token ' + localStorage.getItem('credentials')
             }
         }).then((response) => {
-            console.log("Getting a response");
             return response.json();
         }).then((body) => {
-            console.log('Logging the frequent answerer data');
             this.setState({'data': body}, () => {
-                console.log(this.state.data);
                 var emails = [];
                 var amounts = [];
                 for (var key in body) {
                     emails.push(key);
                     amounts.push(body[key]);
                 }
-                this.setState({'labels': emails, 'counts': amounts, 'data': body});
+                this.setState({'labels': emails, 'counts': amounts, 'answerData': body});
             });
         });
     }
@@ -113,7 +103,7 @@ class Stats extends Component {
                 data={{
                     labels: this.state.labels,
                     datasets: [{
-                        label: '# of Questions',
+                        label: '# of Questions Answered',
                         data: this.state.counts,
                         backgroundColor: 'rgba(75, 192, 192, 1)',
                         borderColor: 'rgba(54, 162, 235, 1)',
@@ -125,7 +115,17 @@ class Stats extends Component {
                 options={{
                     maintainAspectRatio: false,
                     scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'TA email'
+                            }
+                        }],
                         yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Count of Questions Answered'
+                            },
                             ticks: {
                                 beginAtZero:true
                             }
@@ -137,8 +137,6 @@ class Stats extends Component {
     }
 
     getUserQuestionData() {
-        console.log("Got to here in userquestiondata get");
-        console.log(this.state.queryUser);
         if (this.state.queryUser) {
             fetch('/api/v1/stats/' + this.state.queryUser + '/questions/', {
                 method: 'GET',
@@ -146,16 +144,12 @@ class Stats extends Component {
                     'Authorization': 'Token ' + localStorage.getItem('credentials')
                 }
             }).then((response) => {
-                console.log("Getting a response");
                 return response.json();
             }).then((body) => {
-                console.log('Logging the user question data');
                 var timedata = Object.keys(body).map((day) => {
                     return {'x': new Date(day), 'y': body[day]};
                 });
-                timedata.push({'x': new Date('2019-02-02'), 'y': 3});
                 this.setState({'data': body, 'timedata': timedata}, () => {
-                    console.log(this.state.data);
                     this.setState({'data': body});
                 });
             });
@@ -176,7 +170,7 @@ class Stats extends Component {
                             labels: ['Red', 'Blue'],
                             datasets: [
                                 {
-                                    label: "it's lit",
+                                    label: "# of Questions Asked on Each Day",
                                     data: this.state.timedata,
                                     backgroundColor: 'rgba(75, 192, 192, 1)',
                                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -186,12 +180,20 @@ class Stats extends Component {
                         options={{
                             scales: {
                                 xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Date'
+                                    },
                                     type: 'time',
                                     time: {
                                         unit: 'month'
                                     }
                                 }],
                                 yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Count of Questions Asked by ' + this.state.queryUser
+                                    },
                                     ticks: {
                                         beginAtZero:true
                                     }
@@ -222,14 +224,13 @@ class Stats extends Component {
         }).then((response) => {
             return response.json();
         }).then((body) => {
-            console.log(this.state.data);
             var timeslots = [];
             var amounts = [];
             for (var key in body) {
                 timeslots.push(key);
                 amounts.push(body[key]);
             }
-            this.setState({'slots': timeslots, 'counts': amounts, 'data': body});
+            this.setState({'slots': timeslots, 'counts': amounts, 'data': body, 'slotData': body});
         })
     }
 
@@ -252,7 +253,17 @@ class Stats extends Component {
                 options={{
                     maintainAspectRatio: false,
                     scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Time slot'
+                            }
+                        }],
                         yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Count of Questions'
+                            },
                             ticks: {
                                 beginAtZero:true
                             }
@@ -265,41 +276,40 @@ class Stats extends Component {
 
     radioClick(event) {
         this.setState({'mode': event.target.id}, () => {
-            console.log(this.state.mode);
-            if (this.state.mode == 'ask') {
+            if (this.state.mode === 'ask') {
                 this.getAskData();
-            } else if (this.state.mode == 'answer') {
+            } else if (this.state.mode === 'answer') {
                 this.getAnswerData();
-            } else if (this.state.mode == 'userquestions') {
+            } else if (this.state.mode === 'userquestions') {
                 this.getUserQuestionData();
-            } else if (this.state.mode == 'traffic') {
+            } else if (this.state.mode === 'traffic') {
                 this.getTrafficData();
             }
         });
     }
 
     searchBarCallback(event) {
-        console.log('Changing queryUser field');
         this.setState({'queryUser': event.target.innerHTML}, () => {
             this.getUserQuestionData();
         });
     }
 
     componentDidMount() {
+        document.title = 'Online OH Queue';
         this.getAskData();
     }
 
     render() {
         const activeRadio = "btn btn-secondary active";
         const passiveRadio = "btn btn-secondary";
-        if (this.state.data) {
+        if (this.state.askData) {
             var dataJSX = this.displayAskData();
         }
-        if (this.state.mode == 'answer') {
+        if (this.state.mode === 'answer') {
             dataJSX = this.displayAnswerData();
-        } else if (this.state.mode == 'userquestions') {
+        } else if (this.state.mode === 'userquestions') {
             dataJSX = this.displayUserQuestionData();
-        } else if (this.state.mode == 'traffic') {
+        } else if (this.state.mode === 'traffic') {
             dataJSX = this.displayTrafficData();
         }
 
@@ -307,16 +317,16 @@ class Stats extends Component {
             <div className="stats-page">
                 <div className="stats-nav">
                     <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                        <label className={this.state.mode == 'ask' ? activeRadio : passiveRadio}>
+                        <label className={this.state.mode === 'ask' ? activeRadio : passiveRadio}>
                             <input type="radio" name="options" id="ask" autocomplete="off" checked onClick={this.radioClick} /> Questions per Student
                         </label>
-                        <label className={this.state.mode == 'answer' ? activeRadio : passiveRadio}>
+                        <label className={this.state.mode === 'answer' ? activeRadio : passiveRadio}>
                             <input type="radio" name="options" id="answer" autocomplete="off" onClick={this.radioClick} /> Answers per TA
                         </label>
-                        <label className={this.state.mode == 'traffic' ? activeRadio : passiveRadio}>
+                        <label className={this.state.mode === 'traffic' ? activeRadio : passiveRadio}>
                             <input type="radio" name="options" id="traffic" autocomplete="off" onClick={this.radioClick} /> Traffic at Each Slot
                         </label>
-                        <label className={this.state.mode == 'userquestions' ? activeRadio : passiveRadio}>
+                        <label className={this.state.mode === 'userquestions' ? activeRadio : passiveRadio}>
                             <input type="radio" name="options" id="userquestions" autocomplete="off" onClick={this.radioClick} /> Time Series of User's Questions
                         </label>
                     </div>
