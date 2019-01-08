@@ -10,6 +10,7 @@ class QueueList extends React.Component {
   constructor(props) {
     super(props); 
     this.logout = this.logout.bind(this);
+    this.is_user_not_in_queues = this.is_user_not_in_queues.bind(this)
     this.state = {
       oh_link: ""
     };
@@ -32,6 +33,19 @@ class QueueList extends React.Component {
     localStorage.removeItem('credentials');
     this.props.history.push('/login');
    }
+
+  is_user_not_in_queues(user_email) {
+    for (var q in this.props.queues) {
+     var queue = this.props.queues[q];
+     for (var i in queue.student_question_contents) {
+       var question = queue.student_question_contents[i];
+       if (user_email === question["email"]) {
+         return false;
+       }
+     }
+    }
+    return true;
+  } 
   
   render() {
 
@@ -48,6 +62,9 @@ class QueueList extends React.Component {
     var queueTableStyle = {
       width: widthStr
     };
+
+    var user_not_in_queue = this.is_user_not_in_queues(user_email);
+
 
     if (this.props.queues.length == 0) {
       if (this.state.oh_link.length == 0) {
@@ -67,7 +84,7 @@ class QueueList extends React.Component {
             </div>
             <div class="center-screen">
             <h2 >There are no office hours queues available.</h2>
-            <p>Office Hours Schedule: <a href={this.state.oh_link}>Schedule</a></p>
+            <p><a href={this.state.oh_link}>Click Here for Office Hours Schedule</a></p>
             </div>
           </div>
         )
@@ -83,7 +100,7 @@ class QueueList extends React.Component {
           <div class="verticalList">
             {this.props.queues.map(function(queue, index){
                 return <div style={queueTableStyle} class="queue-table" >
-                <Queue queue={queue} user_email={user_email}/></div>;
+                <Queue queue={queue} user_email={user_email} user_not_in_queue={user_not_in_queue}/></div>;
             })}
           </div>
         </div>
@@ -97,7 +114,7 @@ class QueueList extends React.Component {
           <div class="horizontalList">
             {this.props.queues.map(function(queue, index){
                 return <div style={queueTableStyle} class="queue-table" >
-                <Queue queue={queue} user_email={user_email}/></div>;
+                <Queue queue={queue} user_email={user_email} user_not_in_queue={user_not_in_queue}/></div>;
             })}
           </div>
         </div>
