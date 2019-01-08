@@ -44,11 +44,12 @@ class UserRegisterView(generics.CreateAPIView):
                 current_site = Site.objects.get(pk=1).domain
                 course_title = os.environ.get('COURSE_TITLE', 'CIS 121')
                 mail_subject = 'Activate your ' + course_title + ' Office Hours Account'
-                message = "Hi {name}, \n Please click on the link to confirm your registration for {course_title}: \n{domain}/activate/{uid}/{token} \n Best, \n {course_title} Staff".format(course_title=course_title ,name=user.first_name, domain=current_site, uid=urlsafe_base64_encode(force_bytes(user.pk)).decode(), token=account_activation_token.make_token(user))
+                message = "<p>Hi {name}, <br /> Please click on the link to confirm your registration for the {course_title} Office Hours Queue:  <br />{domain}/activate/{uid}/{token}  <br /> Best, <br /> {course_title} Staff</p>".format(course_title=course_title ,name=user.first_name, domain=current_site, uid=urlsafe_base64_encode(force_bytes(user.pk)).decode(), token=account_activation_token.make_token(user))
                 to_email = user.email
                 email = EmailMessage(
                             mail_subject, message, to=[to_email]
                 )
+                email.content_subtype = "html"
                 email.send()
                 return HttpResponse(status=201)
             else:
