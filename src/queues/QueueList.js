@@ -48,8 +48,8 @@ class QueueList extends React.Component {
       width: widthStr
     };
 
-    if (this.props.queues.length == 0) {
-      if (this.state.oh_link.length == 0) {
+    if (this.props.queues.length === 0) {
+      if (this.state.oh_link.length === 0) {
         return (
           <div>
             <div class="top-right">

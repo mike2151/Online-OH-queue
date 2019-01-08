@@ -20,7 +20,7 @@ class Stats extends Component {
             'timedata': [],
             'queryUser': '',
             'askData': [],
-            'answerData': {},
+            'answerData': [],
             'slotData': {},
             'authenticated': false
         }
@@ -43,7 +43,7 @@ class Stats extends Component {
         }).then((response) => {
             return response.json();
         }).then((body) => {
-            this.setState({'askData': body.value, 'authenticated': body.authenticated});
+            this.setState({'askData': (body.value ? body.value : []), 'authenticated': body.authenticated});
         });
     }
 
@@ -53,6 +53,7 @@ class Stats extends Component {
                 return (
                     <tr>
                         <td>{dataObj.email}</td>
+                        <td>{dataObj.email.substring(0, dataObj.email.indexOf('@'))}</td>
                         <td>{dataObj.fname}</td>
                         <td>{dataObj.lname}</td>
                         <td>{dataObj.count}</td>
@@ -65,6 +66,7 @@ class Stats extends Component {
                     <thead>
                         <tr>
                             <th scope="col">Email</th>
+                            <th scope="col">PennKey</th>
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col"># of Questions Asked</th>
@@ -93,19 +95,50 @@ class Stats extends Component {
         }).then((response) => {
             return response.json();
         }).then((body) => {
-            this.setState({'data': body.value}, () => {
-                var names = [];
-                var amounts = [];
-                body.value.forEach((dataJSON) => {
-                    names.push(dataJSON.fname + ' ' + dataJSON.lname);
-                    amounts.push(dataJSON.count);
-                })
-                this.setState({'labels': names, 'counts': amounts, 'answerData': body.value, 'authenticated': body.authenticated});
-            });
+            this.setState({'answerData': body.value, 'authenticated': body.authenticated});
         });
     }
 
     displayAnswerData() {
+        if (this.state.authenticated) {
+            var answerDataJSX = (this.state.answerData).map((dataObj) => {
+                return (
+                    <tr>
+                        <td>{dataObj.email}</td>
+                        <td>{dataObj.email.substring(0, dataObj.email.indexOf('@'))}</td>
+                        <td>{dataObj.fname}</td>
+                        <td>{dataObj.lname}</td>
+                        <td>{dataObj.count}</td>
+                    </tr>
+                );
+            });
+            
+            return (
+                <table className="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Email</th>
+                            <th scope="col">PennKey</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col"># of Questions Answered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {answerDataJSX}
+                    </tbody>
+                </table>
+            );
+        } else {
+            return (
+                <div>
+                    <p>You are not authenticated.</p>
+                </div>
+            )
+        }
+    }
+
+    /* displayAnswerData() {
         if (this.state.authenticated) {
             return (
                 <Bar 
@@ -151,7 +184,7 @@ class Stats extends Component {
                 </div>
             )
         }
-    }
+    } */
 
     getUserQuestionData() {
         if (this.state.queryUser) {
@@ -333,9 +366,7 @@ class Stats extends Component {
     render() {
         const activeRadio = "btn btn-secondary active";
         const passiveRadio = "btn btn-secondary";
-        if (this.state.askData) {
-            var dataJSX = this.displayAskData();
-        }
+        var dataJSX = this.displayAskData();
         if (this.state.mode === 'answer') {
             dataJSX = this.displayAnswerData();
         } else if (this.state.mode === 'userquestions') {

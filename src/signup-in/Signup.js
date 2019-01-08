@@ -32,7 +32,7 @@ class SignUpForm extends React.Component {
       var first_name = data.get("first_name");
       var last_name = data.get("last_name");
       var password = data.get("password");
-      if (email.indexOf("upenn.edu") == -1) {
+      if (email.indexOf("upenn.edu") === -1) {
         violationList.push("Must use a Penn email address");
         violationExists = true;
       }

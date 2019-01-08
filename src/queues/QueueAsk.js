@@ -27,7 +27,7 @@ class QueueAsk extends React.Component {
     handleSubmit(event) {
       event.preventDefault();
       const data = new FormData(event.target);
-      if (event.target.description.value.length == 0) {
+      if (event.target.description.value.length === 0) {
         document.getElementById("validationError").innerHTML = "Question cannot be blank";
         return;
       }

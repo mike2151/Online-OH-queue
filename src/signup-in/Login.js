@@ -1,7 +1,7 @@
 import React from "react";
 import "../static/css/style.css";
 import swal from 'sweetalert';
-import { Route , withRouter}  from 'react-router-dom';
+import {withRouter}  from 'react-router-dom';
 
 class LoginForm extends React.Component {
     constructor(props) {
