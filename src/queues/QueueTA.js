@@ -134,6 +134,7 @@ class Queue extends React.Component {
       return (
         <div>
           <center><h2 class="queue-title">{this.props.queue.name}</h2>
+          <p>{this.props.queue.description}</p>
           {closed_message}
           <p class="wait-time">Average Wait Time: <br />
            {this.props.queue.wait_time} Minutes</p>

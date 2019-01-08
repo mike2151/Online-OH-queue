@@ -134,6 +134,7 @@ Online-OH-Queue supports the creation of multiple queues. To create a queue, nav
 Then, click on `+ Add` in the `OHQUEUE` section. <br />
 Ignore all fields except the ones mentioned below:<br />
 Enter a name for the queue. This name will be visible to all students. <br />
+Enter a description  for the queue. This description will be visible to all students. <br />
 Times Open Section: <br />
 These fields are used to specify when the queue is open for students to ask questions. You must enter a string in the following format for each field: <br />
 Example: `2:00pm-4:00pm;5:00pm-8:00pm` <br />
