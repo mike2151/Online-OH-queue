@@ -67,6 +67,10 @@ These variables will make your instance of Online-OH-Queue unique to your course
 This is the name of the corse. <br/>
 Example: `CIS 121`
 
+#### DEFAULT_FROM_EMAIL
+This is the email address that is the sender for all site wide emails
+Example: `cis121oh@gmail.com`
+
 ##### DOMAIN_NAME
 This is the name of the website URL you will be running the website on. Include the full name as if you were entering it into a web browser. Exclude any http or https<br/>
 Example: `cisohqueue.herokuapp.com` or `ohqueue.com`

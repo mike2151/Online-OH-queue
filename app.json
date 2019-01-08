@@ -24,6 +24,10 @@
             "description": "Title of the course",
             "value": "CIS 121"
         },
+        "DEFAULT_FROM_EMAIL": {
+            "description": "The email address that various emails will be sent from",
+            "value": "cis121oh@gmail.com"
+        },
         "DOMAIN_NAME": {
             "description": "Domain of the website. Should be just the name of the site followed by the top level domain (ex. .com)",
             "value": "test-ohqueue.herokuapp.com"
