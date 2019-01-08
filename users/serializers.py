@@ -48,6 +48,11 @@ class UserSerializer(serializers.ModelSerializer):
         try:
             user.save()
         except IntegrityError:
+            # need to delete the user that was created
+            try:
+                models.StudentUser.objects.get(email=user.email).delete()
+            except:
+                raise serializers.ValidationError("Email already in use")
             raise serializers.ValidationError("Email already in use")
 
         # email verification
