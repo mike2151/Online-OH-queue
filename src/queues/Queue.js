@@ -65,7 +65,7 @@ class Queue extends React.Component {
         <div>
           <center><h2 class="queue-title">{this.props.queue.name}</h2>
           <p>{this.props.queue.description}</p>
-          <p class="wait-time">Average Wait Time: <br />
+          <p class="wait-time">Estimated Wait Time: <br />
           {this.props.queue.wait_time} Minutes</p>
           
           {this.props.user_not_in_queue ?

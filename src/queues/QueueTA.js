@@ -136,7 +136,7 @@ class Queue extends React.Component {
           <center><h2 class="queue-title">{this.props.queue.name}</h2>
           <p>{this.props.queue.description}</p>
           {closed_message}
-          <p class="wait-time">Average Wait Time: <br />
+          <p class="wait-time">Estimated Wait Time: <br />
            {this.props.queue.wait_time} Minutes</p>
            <button onClick={() => extendQueueFunc(this.props.queue.name)}
                  className={btnGroupClassOpen}>Keep Queue Open</button>

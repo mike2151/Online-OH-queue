@@ -141,6 +141,7 @@ line-height: inherit; }
 position: absolute;
 top: 0px;
 right: 0px;
+opacity: 0.6;
 }  
 
 .landing-page {
