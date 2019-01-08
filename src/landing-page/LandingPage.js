@@ -15,6 +15,7 @@ class LandingPage extends React.Component {
     }).then((body) => {
       document.body.style.setProperty('--primary-color', body['primary_theme_color']);
       document.getElementById("header").innerHTML = body['course_title'] + " Office Hours Queue";
+      document.title = body['course_title'] + " OH Queue";
     });
   }
 

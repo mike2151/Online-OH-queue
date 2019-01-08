@@ -88,6 +88,7 @@ class QueueTaList extends Component {
       return response.json();
     }).then((body) => {
       document.body.style.setProperty('--primary-color', body['primary_theme_color']);
+      document.title = body['course_title'] + " OH Queue";
     });
   }
 

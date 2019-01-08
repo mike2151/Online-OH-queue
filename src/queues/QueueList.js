@@ -23,7 +23,8 @@ class QueueList extends React.Component {
       return response.json();
     }).then((body) => {
       document.body.style.setProperty('--primary-color', body['primary_theme_color']);
-      this.setState({oh_link: body['oh_url']})
+      this.setState({oh_link: body['oh_url']});
+      document.title = body['course_title'] + " OH Queue";
     });
   }
 
