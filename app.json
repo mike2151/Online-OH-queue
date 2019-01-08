@@ -44,6 +44,10 @@
             "description": "Password for the email hosting",
             "value": "password"
         },
+        "FAVICON_URL": {
+            "description": "Link to a .ico file for the site favicon",
+            "value": "http://www.iconj.com/ico/7/n/7nyy6txzog.ico"
+        },
         "MAX_WAIT_TIME": {
             "description": "The maximum time that will display for average wait time in queues.",
             "value": 60

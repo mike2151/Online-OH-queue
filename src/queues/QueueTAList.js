@@ -89,6 +89,13 @@ class QueueTaList extends Component {
     }).then((body) => {
       document.body.style.setProperty('--primary-color', body['primary_theme_color']);
       document.title = body['course_title'] + " OH Queue";
+      
+      // change favicon
+      var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+      link.type = 'image/x-icon';
+      link.rel = 'shortcut icon';
+      link.href = body['favicon_url'];
+      document.getElementsByTagName('head')[0].appendChild(link);
     });
   }
 

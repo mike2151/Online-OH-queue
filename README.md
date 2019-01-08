@@ -88,6 +88,9 @@ Example: `apikey`
 ##### EMAIL_PASSWORD
 Password for your email provider <br/>
 
+##### FAVICON_URL
+Link to a .ico file for the site favicon <br/>
+
 ##### MAX_WAIT_TIME
 The maximum time that will display for average wait time in queues. <br/>
 
