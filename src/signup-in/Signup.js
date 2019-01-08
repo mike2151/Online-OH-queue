@@ -72,7 +72,7 @@ class SignUpForm extends React.Component {
             document.getElementById("password").value = "";
           } else {
             var violationList = ["Email is taken"];
-            this.setState({validationErrors: this.state.validationErrors.concat(violationList)});
+            this.setState({validationErrors: violationList});
           }
         });
       }
