@@ -247,7 +247,7 @@ width:100%;
 background:#fff;
 border-radius:3px;
 line-height:2em;
-border:none;
+border:solid 1px black;
 box-shadow:0px 0px 5px 1px rgba(0,0,0,0.1);
 padding:2vw;
 }
