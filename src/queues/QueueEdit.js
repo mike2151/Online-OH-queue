@@ -32,7 +32,7 @@ class QueueEdit extends React.Component {
       });
       var question_id = this.props.match.params.questionid;
       this.setState({question_id: question_id.toString()});
-      fetch('/api/v1/questions/detail/' + question_id.toString(), {
+      fetch('/api/v1/questions/detail/' + question_id.toString() + "/", {
         method: 'GET',
         headers: {
           "Authorization": "Token " + localStorage.getItem('credentials')

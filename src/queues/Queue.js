@@ -83,7 +83,7 @@ class Queue extends React.Component {
                   <tr><td>{index+1} - {question.first_name} {question.last_name} 
                   <button onClick={() => deleteQuestionFunc(question.id)}
                   class="delete-link">Delete</button>
-                  <a href={ '/' + question.id + "/edit" } class="delete-link">Edit</a> 
+                  <a href={ '/' + question.id + "/edit/" } class="delete-link">Edit</a> 
                   </td></tr>
                 :
                   <tr><td>{index+1} - {question.first_name} {question.last_name}</td></tr>
