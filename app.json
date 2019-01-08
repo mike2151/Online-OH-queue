@@ -24,6 +24,10 @@
             "description": "Title of the course",
             "value": "CIS 121"
         },
+        "DEFAULT_FROM_EMAIL": {
+            "description": "The email address that various emails will be sent from",
+            "value": "cis121oh@gmail.com"
+        },
         "DOMAIN_NAME": {
             "description": "Domain of the website. Should be just the name of the site followed by the top level domain (ex. .com)",
             "value": "test-ohqueue.herokuapp.com"
@@ -40,6 +44,10 @@
             "description": "Password for the email hosting",
             "value": "password"
         },
+        "FAVICON_URL": {
+            "description": "Link to a .ico file for the site favicon",
+            "value": "http://www.iconj.com/ico/7/n/7nyy6txzog.ico"
+        },
         "MAX_WAIT_TIME": {
             "description": "The maximum time that will display for average wait time in queues.",
             "value": 60
@@ -50,7 +58,7 @@
         },
         "PRIMARY_THEME_COLOR": {
             "description": "The primary color for the website. By default, it is green.",
-            "value": "#76b852"
+            "value": "#445B73"
         },
         "QUEUE_TIME_ZONE": {
             "description": "Time zone of the office hour queues. All time zones: https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568",

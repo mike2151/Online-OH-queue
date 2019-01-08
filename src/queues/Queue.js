@@ -56,26 +56,19 @@ class Queue extends React.Component {
         }
       });
     }
+
   
     render() {
       var user_email = this.props.user_email;
       var deleteQuestionFunc = this.deleteQuestion;
-
-      var user_not_in_queue = true;
-      for (var i in this.props.queue.student_question_contents) {
-        var question = this.props.queue.student_question_contents[i];
-        if (user_email === question["email"]) {
-          user_not_in_queue = false;
-          break;
-        }
-      }
       return (
         <div>
           <center><h2 class="queue-title">{this.props.queue.name}</h2>
-          <p class="wait-time">Average Wait Time: <br />
+          <p>{this.props.queue.description}</p>
+          <p class="wait-time">Estimated Wait Time: <br />
           {this.props.queue.wait_time} Minutes</p>
           
-          {user_not_in_queue ?
+          {this.props.user_not_in_queue ?
             <a href={ '/' + this.props.queue.name + "/ask" } class="ask-link">Ask Question</a> 
             :
             <span></span>
@@ -90,7 +83,7 @@ class Queue extends React.Component {
                   <tr><td>{index+1} - {question.first_name} {question.last_name} 
                   <button onClick={() => deleteQuestionFunc(question.id)}
                   class="delete-link">Delete</button>
-                  <a href={ '/' + question.id + "/edit" } class="delete-link">Edit</a> 
+                  <a href={ '/' + question.id + "/edit/" } class="delete-link">Edit</a> 
                   </td></tr>
                 :
                   <tr><td>{index+1} - {question.first_name} {question.last_name}</td></tr>

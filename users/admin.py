@@ -15,7 +15,7 @@ class StudentUserAdmin(UserAdmin):
     model = StudentUser
     list_display = ['email', 'first_name', 'last_name', 'username', 'is_active', 'is_ta', 'is_superuser']
     fieldsets = (
-        ('User Information', {'fields': ('first_name', 'last_name', 'email')}),
+        ('User Information', {'fields': ('first_name', 'last_name', 'email', 'username')}),
         ('Permissions', {'fields': ('is_active', 'is_ta', 'is_superuser')}),
         ('Important Dates', {'fields': ('date_joined',)})
     )

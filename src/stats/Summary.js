@@ -11,7 +11,7 @@ class Summary extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/v1/summary', {
+    fetch('/api/v1/summary/', {
       method: 'GET',
       headers: {
           "Authorization": "Token " + localStorage.getItem('credentials')

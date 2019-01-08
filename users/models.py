@@ -24,4 +24,5 @@ class StudentUser(AbstractUser):
     def save(self, *args, **kwargs):
        if self.is_superuser:
            self.is_ta = True
+           self.is_staff = True
        return super(StudentUser, self).save(*args, **kwargs)

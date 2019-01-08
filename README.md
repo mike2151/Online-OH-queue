@@ -67,6 +67,10 @@ These variables will make your instance of Online-OH-Queue unique to your course
 This is the name of the corse. <br/>
 Example: `CIS 121`
 
+#### DEFAULT_FROM_EMAIL
+This is the email address that is the sender for all site wide emails
+Example: `cis121oh@gmail.com`
+
 ##### DOMAIN_NAME
 This is the name of the website URL you will be running the website on. Include the full name as if you were entering it into a web browser. Exclude any http or https<br/>
 Example: `cisohqueue.herokuapp.com` or `ohqueue.com`
@@ -84,6 +88,9 @@ Example: `apikey`
 ##### EMAIL_PASSWORD
 Password for your email provider <br/>
 
+##### FAVICON_URL
+Link to a .ico file for the site favicon <br/>
+
 ##### MAX_WAIT_TIME
 The maximum time that will display for average wait time in queues. <br/>
 
@@ -91,8 +98,8 @@ The maximum time that will display for average wait time in queues. <br/>
 URL to office hours schedule. <br/>
 
 ##### PRIMARY_THEME_COLOR
-By default, the Online-OH-Queue comes with a green color theme. This can be changed. This configuration variable represents the main color of the website. You must enter a valid hex color with the hashtag. If you do not want to deal with this, then leave it to the default value (the green). <br />
-Example: `#76b852`
+By default, the Online-OH-Queue comes with a blue color theme. This can be changed. This configuration variable represents the main color of the website. You must enter a valid hex color with the hashtag. If you do not want to deal with this, then leave it to the default value (the blue). <br />
+Example: `#445B73`
 
 ##### QUEUE_TIME_ZONE
 This field tells the server which timezone it should operate in. The default value is `America/New_York` which represents New York time. A full list of all the timezones can be found here: [Time Zones](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568) <br/>
@@ -119,12 +126,10 @@ You will then be prompted to enter the information for this account. The usernam
 You will likely need at least a hobby plan to be able to handle the traffic of your course. You can do so by going in the resources tab and clicking `Change Dyno Type` to `Hobby`. It will cost 7 dollars a month.
 
 #### Changing the Site Name
-We need to tell the server what domain we are using so it can properly send password reset and account confirmation emails. First, navigate to `/admin` and enter the credentials of the superuser you just created. <br />
-Next, on the left hand side, click on `Sites`. Then, click on `example.com`. Change both fields to match what you put for the `DOMAIN_NAME` configuration variable from earlier. Finally, click `Save`
+We need to tell the server what domain we are using so it can properly send password reset and account confirmation emails. First, navigate to `/admin` and enter the credentials of the superuser you just created. <br /> 
+Next, on the left hand side, click on `Sites`. Then, click on `example.com`. Change both fields to match what you put for the `DOMAIN_NAME` configuration variable from earlier **including the preceding http:// or https://**. Finally, click `Save`
 
 Next, you will need to set up Office Hours Queues. See the next section regarding that set up.
-
-
 
 ## OHQueueSetUp
 Online-OH-Queue supports the creation of multiple queues. To create a queue, navigate to `/admin`, log in with the superuser credentials you created earlier or with another admin account.
@@ -132,6 +137,7 @@ Online-OH-Queue supports the creation of multiple queues. To create a queue, nav
 Then, click on `+ Add` in the `OHQUEUE` section. <br />
 Ignore all fields except the ones mentioned below:<br />
 Enter a name for the queue. This name will be visible to all students. <br />
+Enter a description  for the queue. This description will be visible to all students. <br />
 Times Open Section: <br />
 These fields are used to specify when the queue is open for students to ask questions. You must enter a string in the following format for each field: <br />
 Example: `2:00pm-4:00pm;5:00pm-8:00pm` <br />

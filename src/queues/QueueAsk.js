@@ -21,17 +21,25 @@ class QueueAsk extends React.Component {
         return response.json();
       }).then((body) => {
         document.body.style.setProperty('--primary-color', body['primary_theme_color']);
+        document.title = body['course_title'] + " OH Queue";
+        // change favicon
+        var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+        link.type = 'image/x-icon';
+        link.rel = 'shortcut icon';
+        link.href = body['favicon_url'];
+        document.getElementsByTagName('head')[0].appendChild(link);
       });
     }
   
     handleSubmit(event) {
       event.preventDefault();
       const data = new FormData(event.target);
-      if (event.target.description.value.length === 0) {
+      var str_cpy = event.target.description.value;
+      if (event.target.description.value.length == 0 || !str_cpy.replace(/\s/g, '').length) {
         document.getElementById("validationError").innerHTML = "Question cannot be blank";
         return;
       }
-      const post_url = '/api/v1/queue/' + this.props.match.params.queue + '/ask'
+      const post_url = '/api/v1/queue/' + this.props.match.params.queue + '/ask/'
       fetch(post_url, {
         method: 'POST',
         body: data,
@@ -69,7 +77,7 @@ class QueueAsk extends React.Component {
               <form class="login-form" onSubmit={this.handleSubmit}>
                 <h2 class="header-login"><center>Ask A Question</center></h2>
                 <label class="dynamic-text" htmlFor="description" id="description_label">Question Description (280 Characters Remaining):</label>
-                <p class="dynamic-text">Please enter your question or problem. You may update this later without losing your place in line. Non-questions (e.g., "I don't have a question right now.") or questions that are not relevant to this queue or not specific enough may cause you to forfeit your spot.</p>
+                <p class="dynamic-text">Please enter your question or problem. You may update this later without losing your place in line. Non-questions (e.g., "I don't have a question right now."), questions that are not relevant to this queue, or questions not specific enough may cause you to forfeit your spot.</p>
                 <textarea maxlength="280" id="description" name="description" 
                  value={this.state.question} onChange={this.onChange} />  
                 <button class="margin-top-button">submit</button>

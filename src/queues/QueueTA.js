@@ -7,6 +7,7 @@ class Queue extends React.Component {
     constructor() {
       super();
       this.answerQuestion = this.answerQuestion.bind(this);
+      this.deleteQuestion = this.deleteQuestion.bind(this);
       this.extendQueue = this.extendQueue.bind(this);
       this.closeQueue = this.closeQueue.bind(this);
       this.state = {
@@ -99,8 +100,29 @@ class Queue extends React.Component {
       });
     }
 
+    deleteQuestion(question_id) {
+      var post_name = "/api/v1/questions/delete/";
+      fetch(post_name, {
+        method: 'POST',
+        body: JSON.stringify({
+          "question_id": question_id
+        }),
+        headers: {
+          "Authorization": "Token " + localStorage.getItem('credentials'),
+          "X-CSRFToken": this.state.csrftoken
+        }
+      }).then((response) => {
+        return response.json();
+      }).then((body) => {
+        if (!body["success"]) {
+          // handle non success
+        }
+      });
+    }
+
     render() {
       var answerQuestionFunc = this.answerQuestion;
+      var deleteQuestionFunc = this.deleteQuestion;
       var extendQueueFunc = this.extendQueue;
       var closeQueueFunc = this.closeQueue;
       var classNames = require('classnames');
@@ -129,13 +151,13 @@ class Queue extends React.Component {
       } else {
         closed_message = <p class="queue-status">Queue Open</p>;
       }
-      
-
+    
       return (
         <div>
           <center><h2 class="queue-title">{this.props.queue.name}</h2>
+          <p>{this.props.queue.description}</p>
           {closed_message}
-          <p class="wait-time">Average Wait Time: <br />
+          <p class="wait-time">Estimated Wait Time: <br />
            {this.props.queue.wait_time} Minutes</p>
            <button onClick={() => extendQueueFunc(this.props.queue.name)}
                  className={btnGroupClassOpen}>Keep Queue Open</button>
@@ -152,7 +174,8 @@ class Queue extends React.Component {
                 <br/> Question: {question.question_content}
                 <br/> Time Asked: {question.time_asked}
                 <br/></p><center><button onClick={() => answerQuestionFunc(question.id)}
-                 class="answer-link">Answer</button></center> 
+                 class="answer-link">Answer</button>  <button onClick={() => deleteQuestionFunc(question.id)}
+                 class="delete-link">Delete</button> </center> 
                 </td></tr>
             })}
           </table></center>

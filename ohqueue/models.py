@@ -9,6 +9,7 @@ from time import strftime
 # Create your models here.
 class OHQueue(models.Model):
     name = models.CharField(max_length=32, unique=True)
+    description = models.CharField(max_length=100, blank=True, null=True)
     questions = models.ManyToManyField(Question, blank=True)
     is_open_extended = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
@@ -60,8 +61,8 @@ class OHQueue(models.Model):
         return question_content
 
     def wait_time(self):
-        max_wait_time = os.environ.get('MAX_WAIT_TIME', 60.0)
-        wait_time = self.average_wait_time * len(self.questions.all())
+        max_wait_time = float(os.environ.get('MAX_WAIT_TIME', 60.0))
+        wait_time = float(self.average_wait_time * float(len(self.questions.all())))
         return min(wait_time, max_wait_time)
 
     def __str__(self):
@@ -148,6 +149,12 @@ class OHQueue(models.Model):
             s = self.saturday_times
         elif current_weekday == 6:
             s = self.sunday_times
+        if s == None or len(s) == 0:
+            isValidTime = False
+            if self.is_in_time != isValidTime:
+                self.is_in_time = isValidTime
+                self.save()
+            return isValidTime
         s = s.replace(" ", "")
         # split using deliminator ;
         day_times = s.split(";")

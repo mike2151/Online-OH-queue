@@ -45,7 +45,7 @@ class QuestionDeleteView(View):
           question = None
        if question == None:
             return JsonResponse({"success": False, "error": "Question does not exist"})
-       if question.author_email != user.email:
+       if question.author_email != user.email and not user.is_ta:
             return JsonResponse({"success": False, "error": "You are not authenticated"}) 
        question.delete()
        layer = get_channel_layer()
