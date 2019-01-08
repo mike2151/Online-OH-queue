@@ -95,8 +95,8 @@ The maximum time that will display for average wait time in queues. <br/>
 URL to office hours schedule. <br/>
 
 ##### PRIMARY_THEME_COLOR
-By default, the Online-OH-Queue comes with a green color theme. This can be changed. This configuration variable represents the main color of the website. You must enter a valid hex color with the hashtag. If you do not want to deal with this, then leave it to the default value (the green). <br />
-Example: `#76b852`
+By default, the Online-OH-Queue comes with a blue color theme. This can be changed. This configuration variable represents the main color of the website. You must enter a valid hex color with the hashtag. If you do not want to deal with this, then leave it to the default value (the blue). <br />
+Example: `#445B73`
 
 ##### QUEUE_TIME_ZONE
 This field tells the server which timezone it should operate in. The default value is `America/New_York` which represents New York time. A full list of all the timezones can be found here: [Time Zones](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568) <br/>

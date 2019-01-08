@@ -54,7 +54,7 @@
         },
         "PRIMARY_THEME_COLOR": {
             "description": "The primary color for the website. By default, it is green.",
-            "value": "#76b852"
+            "value": "#445B73"
         },
         "QUEUE_TIME_ZONE": {
             "description": "Time zone of the office hour queues. All time zones: https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568",
