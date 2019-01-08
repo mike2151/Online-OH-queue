@@ -9,6 +9,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
 from django.conf import settings
 from django.contrib.sites.models import Site
+from django.db import IntegrityError
 import os
 
 class UserSerializer(serializers.ModelSerializer):
@@ -44,7 +45,10 @@ class UserSerializer(serializers.ModelSerializer):
         user.is_active = False
         user.username = user.email.split("@")[0]
         user.set_password(user.password)
-        user.save()
+        try:
+            user.save()
+        except IntegrityError:
+            raise serializers.ValidationError("Email already in use")
 
         # email verification
         current_site = Site.objects.get(pk=1).domain
