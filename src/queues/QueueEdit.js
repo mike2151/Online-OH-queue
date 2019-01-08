@@ -51,7 +51,7 @@ class QueueEdit extends React.Component {
         document.getElementById("validationError").innerHTML = "Question cannot be blank";
         return;
       }
-      const put_url = '/api/v1/queue/question/' + this.state.question_id + '/edit'
+      const put_url = '/api/v1/queue/question/' + this.state.question_id + '/edit/'
       fetch(put_url, {
         method: 'PUT',
         body: data,

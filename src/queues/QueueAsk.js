@@ -32,7 +32,7 @@ class QueueAsk extends React.Component {
         document.getElementById("validationError").innerHTML = "Question cannot be blank";
         return;
       }
-      const post_url = '/api/v1/queue/' + this.props.match.params.queue + '/ask'
+      const post_url = '/api/v1/queue/' + this.props.match.params.queue + '/ask/'
       fetch(post_url, {
         method: 'POST',
         body: data,

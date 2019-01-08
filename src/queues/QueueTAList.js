@@ -43,7 +43,7 @@ class QueueTaList extends Component {
 
   fetchData() {
     // see if TA
-    fetch('/api/v1/users/is_ta', {
+    fetch('/api/v1/users/is_ta/', {
       method: 'GET',
       headers: {
           "Authorization": "Token " + localStorage.getItem('credentials')

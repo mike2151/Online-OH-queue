@@ -53,7 +53,7 @@ class App extends Component {
         }
       } else {
         // see if user is a TA
-        fetch('/api/v1/users/is_ta', {
+        fetch('/api/v1/users/is_ta/', {
           method: 'GET',
           headers: {
               "Authorization": "Token " + localStorage.getItem('credentials')
