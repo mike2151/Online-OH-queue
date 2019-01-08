@@ -60,8 +60,8 @@ class OHQueue(models.Model):
         return question_content
 
     def wait_time(self):
-        max_wait_time = os.environ.get('MAX_WAIT_TIME', 60.0)
-        wait_time = self.average_wait_time * len(self.questions.all())
+        max_wait_time = float(os.environ.get('MAX_WAIT_TIME', 60.0))
+        wait_time = float(self.average_wait_time * float(len(self.questions.all())))
         return min(wait_time, max_wait_time)
 
     def __str__(self):
