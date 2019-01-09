@@ -25,4 +25,6 @@ class StudentUser(AbstractUser):
        if self.is_superuser:
            self.is_ta = True
            self.is_staff = True
+       else:
+           self.is_staff = False
        return super(StudentUser, self).save(*args, **kwargs)
