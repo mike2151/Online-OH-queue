@@ -988,7 +988,180 @@ Gets the number of questions answered by each TA
         </tr>
         <tr>
             <td>Return</td>
-            <td>Returns JSON, keys are TA emails, values are #answers</td>
+            <td>Returns JSON, value field of JSON: array of objects, each object has 'email', 'fname' (first name), 'lname' (last name), and 'count' (# of questions) field</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+### Number of Questions per Student
+Gets the number of questions asked by each student
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/stats/frequentasker</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>Admin</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Return</td>
+            <td>Returns JSON, value field of JSON: array of objects, each object has 'email', 'fname' (first name), 'lname' (last name), and 'count' (# of answers) field</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+### Time Series of a Student's Questions
+Gets the number of questions asked by a particular student on each day
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/stats/&ltemail&gt/questions/</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>Admin</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Return</td>
+            <td>Returns JSON, 'value' field of JSON: keys are date strings, values are #questions</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+### List of Students Signed Up
+Gets a list of all the students who have signed up for the office hours queue
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/stats/getstudents/</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>Admin</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Return</td>
+            <td>Returns JSON, 'value' field of JSON: array of emails of students (strings)</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+### Traffic at Each Office Hours Time Slot
+Gets the number of questions asked at each hour of office hours
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/stats/traffictime/</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>Admin</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Return</td>
+            <td>Returns JSON, 'value' field of JSON: keys are timeslot strings, values are #questions</td>
         </tr>
         <tr>
             <td>Parameters</td>
