@@ -1008,49 +1008,6 @@ Gets the number of questions answered by each TA
     </tbody>
 </table>
 
-### Number of Questions per Student
-Gets the number of questions asked by each student
-
-<table>
-    <tbody>
-        <tr>
-            <td>URL</td>
-            <td><code>/api/v1/stats/frequentasker</td>
-        </tr>
-        <tr>
-            <td>HTTP Methods</td>
-            <td>GET</td>
-        </tr>
-        <tr>
-            <td>Permission</td>
-            <td>Admin</td>
-        </tr>
-        <tr>
-            <td>Response Formats</td>
-            <td>JSON</td>
-        </tr>
-        <tr>
-            <td>Return</td>
-            <td>Returns JSON, value field of JSON: array of objects, each object has 'email', 'fname' (first name), 'lname' (last name), and 'count' (# of answers) field</td>
-        </tr>
-        <tr>
-            <td>Parameters</td>
-            <td>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                            <th>Example Values</th>
-                        </tr>
-                    </thead>
-                </table>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
 ### Time Series of a Student's Questions
 Gets the number of questions asked by a particular student on each day
 
