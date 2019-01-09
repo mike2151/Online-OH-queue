@@ -37,6 +37,12 @@ class UserRegistrationTest(TestCase):
          "first_name": "mike", "last_name": "smith", "password": "passdogyo"}, format='json')
         self.assertEqual(400, response.status_code)
         self.assertIn("Email is not a Penn Email", ((json.loads(response.content))["email"]))
+
+    def test_plus_in_email(self):
+        response = self.client.post('/api/v1/users/register/', {'email': 'mike+2@upenn.edu',
+         "first_name": "mike", "last_name": "smith", "password": "passdogyo"}, format='json')
+        self.assertEqual(400, response.status_code)
+        self.assertIn("No special characters allowed", ((json.loads(response.content))["email"]))
     
     def test_successful_creation(self):
         response = self.client.post('/api/v1/users/register/', {"email": "mike@upenn.edu", "first_name": "mike", "last_name": "smith", "password": "passdogyo"}, format='json')

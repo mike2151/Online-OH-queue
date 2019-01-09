@@ -17,6 +17,9 @@ class UserSerializer(serializers.ModelSerializer):
     def validate_email(self, email):
         if "upenn.edu" not in email:
             raise serializers.ValidationError("Email is not a Penn Email")
+            
+        if "+" in email:
+            raise serializers.ValidationError("No special characters allowed")
         
         user = None
         try:

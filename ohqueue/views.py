@@ -31,7 +31,7 @@ class OHQueueListView(generics.ListAPIView):
 
        all_queues = OHQueue.objects.all()
        active_queues_id = [o.id for o in all_queues if o.isQueueActive(user)]
-       queues = all_queues.filter(id__in=active_queues_id)
+       queues = all_queues.filter(id__in=active_queues_id).order_by('name')
        return queues
 
 class OHQueueTAListView(generics.ListAPIView):
@@ -42,7 +42,7 @@ class OHQueueTAListView(generics.ListAPIView):
     def get_queryset(self):
        all_queues = OHQueue.objects.all()
        active_queues_id = [o.id for o in all_queues if o.updateTime()]
-       queues = all_queues.filter(id__in=active_queues_id)
+       queues = all_queues.filter(id__in=active_queues_id).order_by('name')
        return queues
 
 class QuestionCreationView(generics.CreateAPIView):
