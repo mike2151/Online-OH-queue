@@ -108,9 +108,6 @@ Example: `America/New_York`
 ##### SECRET_KEY
 This is automatically generated so you do not need to worry about it. <br/>
 
-#### SHOW_WAIT_TIME
-Boolean variable that determines whether or not students see the estimated wait time for queues <br/>
-
 ##### START_OF_WEEK
 This is the day of the week that starts the office hours weekly cycle. In other words, this value represents the day of the week when office hours start getting questions about a different homework or problem set. An example would be if homeworks were due on a weekly basis on Sunday, then Monday would be the start of the week with respect to office hours. <br/>
 Example: `Monday`
@@ -148,8 +145,10 @@ In the queue above, office hours are held 2pm to 4pm and 5pm to 8pm on the day t
 Notes on the format: <br />
 If you are not holding office hours on a day, then leave the field blank.<br />
 When specifying times, use the format above: hour:minuteam/pm. First indicate the hour. Next, a colon followed by the minutes. Next, either am or pm. The dash indicates a time range. So in the case of `2:00pm-4:00pm` the queue remains open from 2pm to 4pm. Simply typing `2pm-4pm` will crash the app. You must include the minutes.<br />
-A semicolon followed by another time range is used if the queue is not open during a continuous time interval. See the value abovw for an example <br />
+A semicolon followed by another time range is used if the queue is not open during a continuous time interval. See the value above for an example <br />
 **Failure to adhere to the time convention will make the Office Hours Queue not appear or may even bring up a failure error on the office hours page!**
+
+The field `show_ewt` is a boolean field. When set to true, the queue will display the estimated wait time. When false, it will not.
 
 Click save in the bottom right corner when done.
 

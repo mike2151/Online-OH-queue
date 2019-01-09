@@ -8,8 +8,7 @@ class Queue extends React.Component {
     super(props); 
     this.deleteQuestion = this.deleteQuestion.bind(this);
     this.state = {
-      csrftoken: "",
-      show_wait_time: false
+      csrftoken: ""
     };
   }
 
@@ -34,7 +33,6 @@ class Queue extends React.Component {
         return response.json();
       }).then((body) => {
         document.body.style.setProperty('--primary-color', body['primary_theme_color']);
-        this.setState({show_wait_time: body['show_wait_time']});
       });
 
     }
@@ -68,7 +66,7 @@ class Queue extends React.Component {
           <center><h2 class="queue-title">{this.props.queue.name}</h2>
           <p>{this.props.queue.description}</p>
 
-          {this.state.show_wait_time ?
+          {this.props.queue.show_ewt ?
             <p class="wait-time">Estimated Wait Time: <br />
             {this.props.queue.wait_time} Minutes</p>
           :

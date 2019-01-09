@@ -14,6 +14,7 @@ class OHQueue(models.Model):
     is_open_extended = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
     is_in_time = models.BooleanField(default=False)
+    show_ewt = models.BooleanField(default=True)
     # scheduling
     monday_times = models.CharField(max_length=50, default="", blank=True, null=True)
     tuesday_times = models.CharField(max_length=50, default="", blank=True, null=True)
