@@ -9,7 +9,7 @@ from time import strftime
 # Create your models here.
 class OHQueue(models.Model):
     name = models.CharField(max_length=32, unique=True)
-    description = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=150, blank=True, null=True)
     questions = models.ManyToManyField(Question, blank=True)
     is_open_extended = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)

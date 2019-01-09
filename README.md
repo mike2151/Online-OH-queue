@@ -106,7 +106,10 @@ This field tells the server which timezone it should operate in. The default val
 Example: `America/New_York`
 
 ##### SECRET_KEY
-This is automatically generated so you do not need to worry about it.
+This is automatically generated so you do not need to worry about it. <br/>
+
+#### SHOW_WAIT_TIME
+Boolean variable that determines whether or not students see the estimated wait time for queues <br/>
 
 ##### START_OF_WEEK
 This is the day of the week that starts the office hours weekly cycle. In other words, this value represents the day of the week when office hours start getting questions about a different homework or problem set. An example would be if homeworks were due on a weekly basis on Sunday, then Monday would be the start of the week with respect to office hours. <br/>

@@ -68,6 +68,10 @@
             "description": "A secret key for making hashes",
             "generator": "secret"
         },
+        "SHOW_WAIT_TIME": {
+            "description": "Boolean variable that determines whether or not students see the estimated wait time for queues",
+            "generator": "true"
+        },
         "START_OF_WEEK": {
             "description": "Start of the office hours week cycle",
             "value": "Monday"
