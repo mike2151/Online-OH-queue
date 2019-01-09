@@ -125,6 +125,8 @@ You will then be prompted to enter the information for this account. The usernam
 #### Changing the Heroku Plan
 You will likely need at least a hobby plan to be able to handle the traffic of your course. You can do so by going in the resources tab and clicking `Change Dyno Type` to `Hobby`. It will cost 7 dollars a month.
 
+You may also consider changing the plan for the Redis server. The Redis server is responsible for the sockets and updating the website without the need to refresh. The free version supports 20 concurrent connections. Upgrading to 15 dollars a month will allow 40 concurrent connections. You may do this under the resources tab in Heroku. Under Add-ons, select Heroku Redis and select Premium 0. 
+
 #### Changing the Site Name
 We need to tell the server what domain we are using so it can properly send password reset and account confirmation emails. First, navigate to `/admin` and enter the credentials of the superuser you just created. <br /> 
 Next, on the left hand side, click on `Sites`. Then, click on `example.com`. Change both fields to match what you put for the `DOMAIN_NAME` configuration variable from earlier **including the preceding http:// or https://**. Finally, click `Save`
@@ -168,10 +170,11 @@ Do not worry about the Auth Token section.
 ## Teaching-Assistants
 As a teaching assistant, you will have two main pages to visit: `/summary` and `/answer`. <br />
 The summary page gives you all the questions asked in the weekly office hours cycle. You can use this to better prepare for office hours. <br />
-The answer page allows you to view all the queues in the queues. Answer questions in the queue which means to remove students from the queue. Finally, you have the power to manually open and close queues, ignoring the predefined schedule.
+The answer page allows you to view all the queues in the queues. Answer questions in the queue which means to remove students from the queue. Finally, you have the power to manually open and close queues, ignoring the predefined schedule. TAs can also delete questions from queues.
 
 ## Students
 Students can login or signup at `/`. Once logged in, they can view all the queues at `/`. 
+The page will allow users to ask questions on any of the queues. Students may only ask one question. Therefore, once students ask their question, the option to ask another question will disappear. Students have the ability to edit their question along with deleting it. 
 
 ## Pages
 This section describes each page and what it offers.
@@ -240,7 +243,7 @@ You should run `touch build/static/css/.keep ; touch build/static/js/.keep` befo
 The following describes the endpoints for the API:
 
 ### Get Website Theme
-Gets the theme for the website
+Gets the theme and other variables like the course name for the website
 
 <table>
     <tbody>
@@ -590,6 +593,59 @@ Creates a question for the office hours queue
     </tbody>
 </table>
 
+### Edit A Question 
+Edits a question
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/queue/question/&lt;question_id&gt;/edit</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>POST</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>Owner of question</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          <td><tt>question_id</tt></td>
+                          <td><strong>Required - URL parameter</strong></td>
+                          <td>Question id</td>
+                          <td><tt>5</tt></td>
+                      </tr>
+                      <tr>
+                          <td><tt>description</tt></td>
+                          <td><strong>Required</strong></td>
+                          <td>The question itself (limited to 280 chars)</td>
+                          <td>Question.</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
 ### Get Current Office Hour Queues
 Returns all of the active office hours queues along with their question
 
@@ -606,6 +662,49 @@ Returns all of the active office hours queues along with their question
         <tr>
             <td>Permission</td>
             <td>Authenticated</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+        <tr>
+            <td>Return</td>
+            <td>Returns list of office queue objects</td>
+        </tr>
+        <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+### Get Current Office Hour Queues - TA
+Returns all of the active office hours queues with more details for the TA
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/queue/list_ta</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>GET</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>TA</td>
         </tr>
         <tr>
             <td>Response Formats</td>
@@ -673,6 +772,100 @@ Answers a question
                           <td>Name of the office hours queue that the question is in</td>
                           <td><tt>2-minute-office-hours-queue</tt></td>
                       </tr>
+                      <tr>
+                          <td><tt>question_id</tt></td>
+                          <td><strong>Required</strong></td>
+                          <td>Primary key of the question</td>
+                          <td><tt>5</tt></td>
+                      </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+### Delete a question
+Deletes a question
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/questions/delete</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>POST</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>TA or user who posted</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+       <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          <td><tt>question_id</tt></td>
+                          <td><strong>Required</strong></td>
+                          <td>Primary key of the question</td>
+                          <td><tt>5</tt></td>
+                      </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+### Question Details
+Gets the details regarding a question
+
+<table>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td><code>/api/v1/questions/detail/&lt;question_id&gt;</td>
+        </tr>
+        <tr>
+            <td>HTTP Methods</td>
+            <td>POST</td>
+        </tr>
+        <tr>
+            <td>Permission</td>
+            <td>User who posted</td>
+        </tr>
+        <tr>
+            <td>Response Formats</td>
+            <td>JSON</td>
+        </tr>
+       <tr>
+            <td>Parameters</td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                            <th>Example Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                       <tr>
                           <td><tt>question_id</tt></td>
                           <td><strong>Required</strong></td>
