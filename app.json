@@ -50,7 +50,7 @@
         },
         "MAX_WAIT_TIME": {
             "description": "The maximum time that will display for average wait time in queues.",
-            "value": 60
+            "value": "60"
         },
         "OFFICE_HOURS_URL": {
             "description": "URL to office hours schedule",
