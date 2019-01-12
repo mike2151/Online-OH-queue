@@ -88,6 +88,12 @@ class OHQueue(models.Model):
             s = self.saturday_times
         elif current_weekday == 6:
             s = self.sunday_times
+        if s == None or len(s) == 0:
+            isValidTime = False
+            if self.is_in_time != isValidTime:
+                self.is_in_time = isValidTime
+                self.save()
+            return isValidTime
         s = s.replace(" ", "")
         # split using deliminator ;
         day_times = s.split(";")
