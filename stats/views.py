@@ -193,15 +193,15 @@ class GetTrafficTimesView(View):
             slotstr += "Mon "
         elif result[0] == 1:
             slotstr += "Tues "
-        elif result[0] == 1:
+        elif result[0] == 2:
             slotstr += "Wed "
-        elif result[0] == 1:
+        elif result[0] == 3:
             slotstr += "Thurs "
-        elif result[0] == 1:
+        elif result[0] == 4:
             slotstr += "Fri "
-        elif result[0] == 1:
+        elif result[0] == 5:
             slotstr += "Sat "
-        elif result[0] == 1:
+        elif result[0] == 6:
             slotstr += "Sun "
         
         slotstr += result[1]
