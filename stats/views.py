@@ -103,7 +103,6 @@ class UserTimeSeriesView(View):
 
         question_lst = []
         for question in user_questions:
-            print(question)
             question_lst.append(question.description)
         df = pd.DataFrame(list(user_questions.values()))
         df['daystr'] = df.ask_date.dt.strftime('%Y-%m-%d')
