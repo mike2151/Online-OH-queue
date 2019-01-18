@@ -51,7 +51,8 @@ class FrequentUserView(View):
             element['count'] = response2[key]
             actualresponse.append(element)
         return_dictionary = {}
-        return_dictionary["value"] = actualresponse
+        sortedres = sorted(actualresponse, key = lambda k: k['count'], reverse=True)
+        return_dictionary["value"] = sortedres
         return_dictionary["authenticated"] = True
         return JsonResponse(return_dictionary)
       
@@ -82,7 +83,8 @@ class FrequentAnswerView(View):
             element['count'] = response2[key]
             actualresponse.append(element)
         return_dictionary = {}
-        return_dictionary["value"] = actualresponse
+        sortedres = sorted(actualresponse, key = lambda k: k['count'], reverse=True)
+        return_dictionary["value"] = sortedres
         return_dictionary["authenticated"] = True
         return JsonResponse(return_dictionary)
 
