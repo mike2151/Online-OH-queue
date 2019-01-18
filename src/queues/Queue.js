@@ -68,7 +68,7 @@ class Queue extends React.Component {
 
           {this.props.queue.show_ewt ?
             <p class="wait-time">Estimated Wait Time: <br />
-            {this.props.queue.wait_time} Minutes</p>
+            {this.props.queue.wait_time.toFixed(1)} Minutes</p>
           :
             <span></span>
           }

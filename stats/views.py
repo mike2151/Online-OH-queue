@@ -23,7 +23,7 @@ class SummaryList(generics.ListAPIView):
     def get_queryset(self):
        # get all of the question
        last_date = dateLastStartOfWeek()
-       questions = Question.objects.filter(ask_date__gte=last_date).order_by("host_queue")
+       questions = Question.objects.filter(ask_date__gte=last_date).order_by("ask_date")
        return questions
 
 class FrequentUserView(View):

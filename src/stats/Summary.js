@@ -6,21 +6,12 @@ class Summary extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isTA: false,
       questions: []
     };
   }
 
   componentDidMount() {
-    fetch('/api/v1/summary/', {
-      method: 'GET',
-      headers: {
-          "Authorization": "Token " + localStorage.getItem('credentials')
-        }
-    }).then((response) => {
-      return response.json();
-    }).then((body) => {
-        this.setState({questions: body});
-    });
 
     document.title = "Online OH Queue";
 
@@ -31,9 +22,36 @@ class Summary extends Component {
     }).then((body) => {
       document.body.style.setProperty('--primary-color', body['primary_theme_color']);
     });
+
+    fetch('/api/v1/users/is_ta/', {
+      method: 'GET',
+      headers: {
+          "Authorization": "Token " + localStorage.getItem('credentials')
+        }
+    }).then((response) => {
+      return response.json();
+    }).then((body) => {
+      if (body["is_ta"]) {
+        this.setState({isTA: true});
+        fetch('/api/v1/summary/', {
+          method: 'GET',
+          headers: {
+              "Authorization": "Token " + localStorage.getItem('credentials')
+            }
+        }).then((response) => {
+          return response.json();
+        }).then((body) => {
+            this.setState({questions: body});
+        });
+      } else {
+          this.setState({isTA: false});
+      }
+    });
+    
   }
 
   render() {
+    if(this.state.isTA) {
       return (
         <div>
           <center><h2>Office Hours Questions This Week:</h2></center>
@@ -47,6 +65,13 @@ class Summary extends Component {
           </table>
         </div>
       );
+    } else {
+      return (
+        <h3 class="center-screen">You do not have appropriate permissions to access this page.
+        <br /> <a href="/login">Login here</a></h3>
+      )
+    }
+      
   }
 }
 
