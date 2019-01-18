@@ -86,7 +86,7 @@ class FrequentAnswerView(View):
         return_dictionary["authenticated"] = True
         return JsonResponse(return_dictionary)
 
-class UserQuestionsView(View):
+class UserTimeSeriesView(View):
     def get(self, request, *args, **kwargs):
         token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
         if token_header == None or " " not in token_header:
@@ -99,12 +99,17 @@ class UserQuestionsView(View):
         user_email = (self.kwargs["email"])
         user_questions = Question.objects.filter(author_email=user_email)
         if len(user_questions.values()) == 0:
-            return JsonResponse({"authenticated": True})
+            return JsonResponse({"authenticated": True, "timeseries": {}, "questions": []})
+
+        question_lst = []
+        for question in user_questions:
+            print(question)
+            question_lst.append(question.description)
         df = pd.DataFrame(list(user_questions.values()))
         df['daystr'] = df.ask_date.dt.strftime('%Y-%m-%d')
         results = df.groupby(by='daystr').daystr.count()
-        response = results.to_dict()
-        response["authenticated"] = True
+        timesrs = results.to_dict()
+        response = {"authenticated": True, "timeseries": timesrs, "questions": question_lst}
         return JsonResponse(response)
 
 class GetAllStudentsView(View):

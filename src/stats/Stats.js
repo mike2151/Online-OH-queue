@@ -138,54 +138,6 @@ class Stats extends Component {
         }
     }
 
-    /* displayAnswerData() {
-        if (this.state.authenticated) {
-            return (
-                <Bar 
-                    labels={["Red", "Blue"]}
-                    data={{
-                        labels: this.state.labels,
-                        datasets: [{
-                            label: '# of Questions Answered',
-                            data: this.state.counts,
-                            backgroundColor: 'rgba(75, 192, 192, 1)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    }}
-                    width={100}
-                    height={50}
-                    options={{
-                        maintainAspectRatio: false,
-                        scales: {
-                            xAxes: [{
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'TA'
-                                }
-                            }],
-                            yAxes: [{
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Count of Questions Answered'
-                                },
-                                ticks: {
-                                    beginAtZero:true
-                                }
-                            }]
-                        }
-                    }}
-                />
-            )
-        } else {
-            return (
-                <div>
-                    <p>You are not authenticated.</p>
-                </div>
-            )
-        }
-    } */
-
     getUserQuestionData() {
         if (this.state.queryUser) {
             fetch('/api/v1/stats/' + this.state.queryUser + '/questions/', {
@@ -196,8 +148,8 @@ class Stats extends Component {
             }).then((response) => {
                 return response.json();
             }).then((body) => {
-                var timedata = Object.keys(body).map((day) => {
-                    return {'x': new Date(day), 'y': body[day]};
+                var timedata = Object.keys(body.timeseries).map((day) => {
+                    return {'x': new Date(day), 'y': body.timeseries[day]};
                 });
                 this.setState({'data': body, 'timedata': timedata, 'authenticated': body.authenticated});
             });
@@ -208,48 +160,67 @@ class Stats extends Component {
 
     displayUserQuestionData() {
         if (this.state.authenticated) {
-            if (this.state.queryUser && this.state.timedata) {
+            if (this.state.queryUser && this.state.data && this.state.data.questions) {
+                var questionTbl = this.state.data.questions.map((text) => {
+                    return (
+                        <tr>
+                            <td>{text}</td>
+                        </tr>
+                    )
+                })
                 return (
                     <div>
-                        <SearchBar 
-                            callback={this.searchBarCallback}
-                        />
-                        <Line
-                            data={{
-                                labels: ['Red', 'Blue'],
-                                datasets: [
-                                    {
-                                        label: "# of Questions Asked on Each Day",
-                                        data: this.state.timedata,
-                                        backgroundColor: 'rgba(75, 192, 192, 1)',
-                                        borderColor: 'rgba(54, 162, 235, 1)',
+                        <div>
+                            <SearchBar 
+                                callback={this.searchBarCallback}
+                            />
+                            <Line
+                                data={{
+                                    labels: ['Red', 'Blue'],
+                                    datasets: [
+                                        {
+                                            label: "# of Questions Asked on Each Day",
+                                            data: this.state.timedata,
+                                            backgroundColor: 'rgba(75, 192, 192, 1)',
+                                            borderColor: 'rgba(54, 162, 235, 1)',
+                                        }
+                                    ]
+                                }}
+                                options={{
+                                    scales: {
+                                        xAxes: [{
+                                            scaleLabel: {
+                                                display: true,
+                                                labelString: 'Date'
+                                            },
+                                            type: 'time',
+                                            time: {
+                                                unit: 'month'
+                                            }
+                                        }],
+                                        yAxes: [{
+                                            scaleLabel: {
+                                                display: true,
+                                                labelString: 'Count of Questions Asked by ' + this.state.queryUser
+                                            },
+                                            ticks: {
+                                                beginAtZero:true
+                                            }
+                                        }]
                                     }
-                                ]
-                            }}
-                            options={{
-                                scales: {
-                                    xAxes: [{
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: 'Date'
-                                        },
-                                        type: 'time',
-                                        time: {
-                                            unit: 'month'
-                                        }
-                                    }],
-                                    yAxes: [{
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: 'Count of Questions Asked by ' + this.state.queryUser
-                                        },
-                                        ticks: {
-                                            beginAtZero:true
-                                        }
-                                    }]
-                                }
-                            }}
-                        />
+                                }}
+                            />
+                        </div>
+                        <br />
+                        <br />
+                        <p>Questions from {this.state.queryUser}</p>
+                        <div>
+                            <table className="table table-hover">
+                                <tbody>
+                                    {questionTbl}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 );
             } else {
@@ -291,43 +262,29 @@ class Stats extends Component {
     }
 
     displayTrafficData() {
-        if (this.state.authenticated) {
+        if (this.state.authenticated && this.state.data && this.state.data.value) {
+            var trafficDataJSX = Object.keys(this.state.data.value).map((slot) => {
+                return (
+                    <tr>
+                        <td>{slot}</td>
+                        <td>{this.state.data.value[slot]}</td>
+                    </tr>
+                )
+            })
             return (
-                <Bar 
-                    labels={["Red", "Blue"]}
-                    data={{
-                        labels: this.state.slots,
-                        datasets: [{
-                            label: '# of Questions',
-                            data: this.state.counts,
-                            backgroundColor: 'rgba(75, 192, 192, 1)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    }}
-                    width={100}
-                    height={50}
-                    options={{
-                        maintainAspectRatio: false,
-                        scales: {
-                            xAxes: [{
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Time slot'
-                                }
-                            }],
-                            yAxes: [{
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: 'Count of Questions'
-                                },
-                                ticks: {
-                                    beginAtZero:true
-                                }
-                            }]
-                        }
-                    }}
-                />
+                <div>
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Time Slot</th>
+                                <th scope="col"># of Questions Asked</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {trafficDataJSX}
+                        </tbody>
+                    </table>
+                </div>
             )
         } else {
             return (
@@ -375,8 +332,12 @@ class Stats extends Component {
             dataJSX = this.displayTrafficData();
         }
 
-        return (
-            <div className="stats-page">
+        var labelsJSX = (
+            <div></div>
+        )
+
+        if (this.state.authenticated) {
+            labelsJSX = (
                 <div className="stats-nav">
                     <div className="btn-group btn-group-toggle" data-toggle="buttons">
                         <label className={this.state.mode === 'ask' ? activeRadio : passiveRadio}>
@@ -393,6 +354,12 @@ class Stats extends Component {
                         </label>
                     </div>
                 </div>
+            )
+        }
+
+        return (
+            <div className="stats-page">
+                {labelsJSX}
                 
                 <div className="stats-chart">
                     {dataJSX}
