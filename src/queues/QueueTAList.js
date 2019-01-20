@@ -13,7 +13,8 @@ class QueueTaList extends Component {
     this.logout = this.logout.bind(this);
     this.state = {
       isTA: false,
-      queues: []
+      queues: [],
+      default_document: "Online OH Queue"
     };
 
     WebSocketInstance.connect();
@@ -80,7 +81,6 @@ class QueueTaList extends Component {
   }
 
   componentDidMount() {
-    document.title = "Online OH Queue";
     this.fetchData()
     fetch('/api/v1/theme/', {
       method: 'GET',
@@ -88,7 +88,8 @@ class QueueTaList extends Component {
       return response.json();
     }).then((body) => {
       document.body.style.setProperty('--primary-color', body['primary_theme_color']);
-      document.title = body['course_title'] + " OH Queue";
+      this.setState({default_document: body['course_title'] + " OH Queue"});
+      document.title = this.state.default_document;
       // change favicon
       var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
       link.type = 'image/x-icon';
@@ -100,9 +101,22 @@ class QueueTaList extends Component {
 
   render() {
     if(this.state.isTA) {
-      let screenWidth = window.innerWidth;
 
       var numQueues = this.state.queues.length;
+
+      // get the number of current questions in the queues
+      var numQuestions = 0;
+      for (var i = 0; i < numQueues; i++) {
+        numQuestions = numQuestions + this.state.queues[i].question_contents.length;
+      }
+      if (numQuestions != 0) {
+        document.title = "(" + numQuestions.toString() + ") " + this.state.default_document; 
+      } else {
+        document.title = this.state.default_document;
+      }
+
+      let screenWidth = window.innerWidth;
+      
       if (numQueues === 0 || screenWidth < 800) {
         numQueues = 1;
       }

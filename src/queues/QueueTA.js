@@ -16,7 +16,6 @@ class Queue extends React.Component {
     }
 
     componentDidMount() {
-      document.title = "Online OH Queue";
       var cookieValue = null;
       if (document.cookie && document.cookie !== '') {
           var cookies = document.cookie.split(';');
