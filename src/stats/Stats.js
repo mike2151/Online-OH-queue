@@ -14,6 +14,9 @@ class Stats extends Component {
     constructor(props) {
         super(props);
 
+        var d1 = new Date();
+        var d2 = new Date();
+        d2.setDate(d1.getDate() - 7);
         this.state={
             'mode': 'ask',
             'data': [],
@@ -26,8 +29,8 @@ class Stats extends Component {
             'answerData': [],
             'slotData': {},
             'authenticated': false,
-            'startdate': new Date(),
-            'enddate': new Date()
+            'startdate': d2,
+            'enddate': d1
         }
 
         this.radioClick = this.radioClick.bind(this);
