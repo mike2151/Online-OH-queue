@@ -28,8 +28,6 @@ class SummaryList(generics.ListAPIView):
 
 class FrequentUserView(View):
     def get(self, request,  *args, **kwargs):
-        all_questions = Question.objects.all()
-
         token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
         if token_header == None or " " not in token_header:
             return JsonResponse({"authenticated": False})
@@ -37,8 +35,13 @@ class FrequentUserView(View):
         user = StudentUser.objects.filter(auth_token=actual_token).first()
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
+        
+        start = self.kwargs["start"]
+        end = self.kwargs["end"]
+        all_questions = Question.objects.filter(ask_date__range=[start, end])
         if (len(all_questions.values()) == 0):
             return JsonResponse({"authenticated": True, "value": []})
+        
         df = pd.DataFrame(list(all_questions.values()))
         results2 = df.groupby(['author_email', 'author_first_name', 'author_last_name']).answered_by_email.count()
         response2 = results2.to_dict()
@@ -58,7 +61,6 @@ class FrequentUserView(View):
       
 class FrequentAnswerView(View):
     def get(self, request, *args, **kwargs):
-        all_questions = Question.objects.all()
 
         token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
         if token_header == None or " " not in token_header:
@@ -67,6 +69,10 @@ class FrequentAnswerView(View):
         user = StudentUser.objects.filter(auth_token=actual_token).first()
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
+
+        start = self.kwargs["start"]
+        end = self.kwargs["end"]
+        all_questions = Question.objects.filter(ask_date__range=[start, end])
         if (len(all_questions.values()) == 0):
             return JsonResponse({"authenticated": True, "value": []})
         df = pd.DataFrame(list(all_questions.values()))
@@ -139,9 +145,11 @@ class GetTrafficTimesView(View):
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
 
-        all_questions = Question.objects.all()
+        start = self.kwargs["start"]
+        end = self.kwargs["end"]
+        all_questions = Question.objects.filter(ask_date__range=[start, end])
         if (len(all_questions.values()) == 0):
-            return JsonResponse({"authenticated": True})
+            return JsonResponse({"authenticated": True, "value": {}})
         df = pd.DataFrame(list(all_questions.values()))
         df['tznormal'] = df['ask_date'].apply(
             lambda x: x.replace(tzinfo=pytz.utc).astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York')))

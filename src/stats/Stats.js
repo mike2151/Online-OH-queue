@@ -3,6 +3,9 @@ import "../static/css/style.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import {Bar, Line} from 'react-chartjs-2';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 import SearchBar from './SearchBar';
 
@@ -22,10 +25,14 @@ class Stats extends Component {
             'askData': [],
             'answerData': [],
             'slotData': {},
-            'authenticated': false
+            'authenticated': false,
+            'startdate': new Date(),
+            'enddate': new Date()
         }
 
         this.radioClick = this.radioClick.bind(this);
+        this.startDateChange = this.startDateChange.bind(this);
+        this.endDateChange = this.endDateChange.bind(this);
         this.getAskData = this.getAskData.bind(this);
         this.getAnswerData = this.getAnswerData.bind(this);
         this.displayAskData = this.displayAskData.bind(this);
@@ -34,8 +41,34 @@ class Stats extends Component {
         this.displayUserQuestionData = this.displayUserQuestionData.bind(this);
     }
 
+    startDateChange(date) {
+        this.setState({'startdate': date}, () => {
+            if (this.state.mode === 'ask') {
+                this.getAskData();
+            } else if (this.state.mode === 'answer') {
+                this.getAnswerData();
+            } else if (this.state.mode === 'traffic') {
+                this.getTrafficData();
+            }
+        });
+    }
+
+    endDateChange(date) {
+        this.setState({'enddate': date}, () => {
+            if (this.state.mode === 'ask') {
+                this.getAskData();
+            } else if (this.state.mode === 'answer') {
+                this.getAnswerData();
+            } else if (this.state.mode === 'traffic') {
+                this.getTrafficData();
+            }
+        })
+    }
+
     getAskData() {
-        fetch('/api/v1/stats/frequentasker/', {
+        var d1 = this.state.startdate.toISOString().split('T')[0];
+        var d2 = this.state.enddate.toISOString().split('T')[0];
+        fetch('/api/v1/stats/frequentasker/' + d1 + '/' + d2 + '/', {
             method: 'GET',
             headers: {
                 'Authorization': 'Token ' + localStorage.getItem('credentials')
@@ -62,20 +95,32 @@ class Stats extends Component {
             });
             
             return (
-                <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Email</th>
-                            <th scope="col">PennKey</th>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col"># of Questions Asked</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {askDataJSX}
-                    </tbody>
-                </table>
+                <div>
+                    <span>Date Range Beginning&nbsp;&nbsp;</span>
+                    <DatePicker
+                        selected={this.state.startdate}
+                        onChange={this.startDateChange}
+                    />
+                    <span>&nbsp;&nbsp;Date Range End&nbsp;&nbsp;</span>
+                    <DatePicker
+                        selected={this.state.enddate}
+                        onChange={this.endDateChange}
+                    />
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Email</th>
+                                <th scope="col">PennKey</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col"># of Questions Asked</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {askDataJSX}
+                        </tbody>
+                    </table>
+                </div>
             );
         } else {
             return (
@@ -87,7 +132,9 @@ class Stats extends Component {
     }
 
     getAnswerData() {
-        fetch('/api/v1/stats/frequentanswer/', {
+        var d1 = this.state.startdate.toISOString().split('T')[0];
+        var d2 = this.state.enddate.toISOString().split('T')[0];
+        fetch('/api/v1/stats/frequentanswer/' + d1 + '/' + d2 + '/', {
             method: 'GET',
             headers: {
                 'Authorization': 'Token ' + localStorage.getItem('credentials')
@@ -114,20 +161,32 @@ class Stats extends Component {
             });
             
             return (
-                <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Email</th>
-                            <th scope="col">PennKey</th>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col"># of Questions Answered</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {answerDataJSX}
-                    </tbody>
-                </table>
+                <div>
+                    <span>Date Range Beginning&nbsp;&nbsp;</span>
+                    <DatePicker
+                        selected={this.state.startdate}
+                        onChange={this.startDateChange}
+                    />
+                    <span>&nbsp;&nbsp;Date Range End&nbsp;&nbsp;</span>
+                    <DatePicker
+                        selected={this.state.enddate}
+                        onChange={this.endDateChange}
+                    />
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Email</th>
+                                <th scope="col">PennKey</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col"># of Questions Answered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {answerDataJSX}
+                        </tbody>
+                    </table>
+                </div>
             );
         } else {
             return (
@@ -243,7 +302,9 @@ class Stats extends Component {
     }
 
     getTrafficData() {
-        fetch('/api/v1/stats/traffictime/', {
+        var d1 = this.state.startdate.toISOString().split('T')[0];
+        var d2 = this.state.enddate.toISOString().split('T')[0];
+        fetch('/api/v1/stats/traffictime/' + d1 + '/' + d2 + '/', {
             method: 'GET',
             headers: {
                 'Authorization': 'Token ' + localStorage.getItem('credentials')
@@ -273,17 +334,29 @@ class Stats extends Component {
             })
             return (
                 <div>
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Time Slot</th>
-                                <th scope="col"># of Questions Asked</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {trafficDataJSX}
-                        </tbody>
-                    </table>
+                    <span>Date Range Beginning&nbsp;&nbsp;</span>
+                    <DatePicker
+                        selected={this.state.startdate}
+                        onChange={this.startDateChange}
+                    />
+                    <span>&nbsp;&nbsp;Date Range End&nbsp;&nbsp;</span>
+                    <DatePicker
+                        selected={this.state.enddate}
+                        onChange={this.endDateChange}
+                    />
+                    <div>
+                        <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Time Slot</th>
+                                    <th scope="col"># of Questions Asked</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {trafficDataJSX}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )
         } else {

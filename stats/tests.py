@@ -37,43 +37,43 @@ class PermissionsTests(TestCase):
     # asker tests
 
     def test_anon_cannot_access_frequent_asker(self):
-        response = self.client.get('/api/v1/stats/frequentasker/')
+        response = self.client.get('/api/v1/stats/frequentasker/2018-12-31/2019-01-30/')
         self.assertFalse(json.loads(response.content)["authenticated"])
 
     def test_student_cannot_access_frequent_asker(self):
         self.generate_header(self.student_user)
-        response = self.client.get('/api/v1/stats/frequentasker/')
+        response = self.client.get('/api/v1/stats/frequentasker/2018-12-31/2019-01-30/')
         self.assertFalse(json.loads(response.content)["authenticated"])
     
     def test_ta_cannot_access_frequent_asker(self):
         self.generate_header(self.ta_user)
-        response = self.client.get('/api/v1/stats/frequentasker/')
+        response = self.client.get('/api/v1/stats/frequentasker/2018-12-31/2019-01-30/')
         self.assertFalse(json.loads(response.content)["authenticated"])
 
     def test_admin_can_access_frequent_asker(self):
         self.generate_header(self.admin_user)
-        response = self.client.get('/api/v1/stats/frequentasker/')
+        response = self.client.get('/api/v1/stats/frequentasker/2018-12-31/2019-01-30/')
         self.assertTrue(json.loads(response.content)["authenticated"])
 
     # answerer tests
 
     def test_anon_cannot_access_frequent_answer(self):
-        response = self.client.get('/api/v1/stats/frequentanswer/')
+        response = self.client.get('/api/v1/stats/frequentanswer/2018-12-31/2019-01-30/')
         self.assertFalse(json.loads(response.content)["authenticated"])
 
     def test_student_cannot_access_frequent_answer(self):
         self.generate_header(self.student_user)
-        response = self.client.get('/api/v1/stats/frequentanswer/')
+        response = self.client.get('/api/v1/stats/frequentanswer/2018-12-31/2019-01-30/')
         self.assertFalse(json.loads(response.content)["authenticated"])
     
     def test_ta_cannot_access_frequent_answer(self):
         self.generate_header(self.ta_user)
-        response = self.client.get('/api/v1/stats/frequentanswer/')
+        response = self.client.get('/api/v1/stats/frequentanswer/2018-12-31/2019-01-30/')
         self.assertFalse(json.loads(response.content)["authenticated"])
 
     def test_admin_can_access_frequent_answer(self):
         self.generate_header(self.admin_user)
-        response = self.client.get('/api/v1/stats/frequentanswer/')
+        response = self.client.get('/api/v1/stats/frequentanswer/2018-12-31/2019-01-30/')
         self.assertTrue(json.loads(response.content)["authenticated"])
 
     # user questions tests
@@ -121,22 +121,22 @@ class PermissionsTests(TestCase):
     # Traffic Time tests
 
     def test_anon_cannot_access_get_traffic_times(self):
-        response = self.client.get('/api/v1/stats/traffictime/')
+        response = self.client.get('/api/v1/stats/traffictime/2018-12-31/2019-01-30/')
         self.assertFalse(json.loads(response.content)["authenticated"])
 
     def test_student_cannot_access_get_traffic_times(self):
         self.generate_header(self.student_user)
-        response = self.client.get('/api/v1/stats/traffictime/')
+        response = self.client.get('/api/v1/stats/traffictime/2018-12-31/2019-01-30/')
         self.assertFalse(json.loads(response.content)["authenticated"])
     
     def test_ta_cannot_access_get_all_traffic_times(self):
         self.generate_header(self.ta_user)
-        response = self.client.get('/api/v1/stats/traffictime/')
+        response = self.client.get('/api/v1/stats/traffictime/2018-12-31/2019-01-30/')
         self.assertFalse(json.loads(response.content)["authenticated"])
 
     def test_admin_can_access_get_all_traffic_times(self):
         self.generate_header(self.admin_user)
-        response = self.client.get('/api/v1/stats/traffictime/')
+        response = self.client.get('/api/v1/stats/traffictime/2018-12-31/2019-01-30/')
         self.assertTrue(json.loads(response.content)["authenticated"])
 
     # summary tests

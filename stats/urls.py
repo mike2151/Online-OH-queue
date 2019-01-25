@@ -3,9 +3,9 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('frequentasker/', views.FrequentUserView.as_view()),
-    path('frequentanswer/', views.FrequentAnswerView.as_view()),
+    path('frequentasker/<start>/<end>/', views.FrequentUserView.as_view()),
+    path('frequentanswer/<start>/<end>/', views.FrequentAnswerView.as_view()),
     path('<email>/questions/', views.UserTimeSeriesView.as_view()),
     path('getstudents/', views.GetAllStudentsView.as_view()),
-    path('traffictime/', views.GetTrafficTimesView.as_view())
+    path('traffictime/<start>/<end>/', views.GetTrafficTimesView.as_view())
 ]
