@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import LandingPage from "./landing-page/LandingPage";
 import QueueList from "./queues/QueueList";
 
 import "bootstrap/dist/css/bootstrap.min.css";
