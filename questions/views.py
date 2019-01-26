@@ -14,9 +14,7 @@ import os
 
 class QuestionInformation(View):
      def get(self, request, *args, **kwargs):
-       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-       actual_token = token_header.split(" ")[1]
-       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       user = request.user
        if user == None:
            return JsonResponse({"success": False, "error": "You are not authenticated"})
        question_id = (self.kwargs["questionid"])
@@ -30,11 +28,7 @@ class QuestionInformation(View):
 class QuestionDeleteView(View):
      @csrf_exempt
      def post(self, request,  *args, **kwargs):
-       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-       if token_header == None or " " not in token_header:
-           return JsonResponse({"success": False, "error": "You are not authenticated"})
-       actual_token = token_header.split(" ")[1]
-       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       user = request.user
        if user == None:
            return JsonResponse({"success": False, "error": "You are not authenticated"}) 
        question_id = (json.loads(request.body.decode())["question_id"])
@@ -76,11 +70,7 @@ class QuestionAnswerView(View):
     @csrf_exempt
     def post(self, request,  *args, **kwargs):
        # get current TA
-       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-       if token_header == None or " " not in token_header:
-           return JsonResponse({"success": False, "error": "You are not authenticated"})
-       actual_token = token_header.split(" ")[1]
-       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       user = request.user
        if user == None or not user.is_ta:
            return JsonResponse({"success": False, "error": "You are not authenticated"})
 
