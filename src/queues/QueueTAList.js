@@ -10,7 +10,6 @@ class QueueTaList extends Component {
   constructor(props) {
     super(props);
     this.fetchData = this.fetchData.bind(this);
-    this.logout = this.logout.bind(this);
     this.state = {
       isTA: false,
       queues: [],
@@ -22,12 +21,6 @@ class QueueTaList extends Component {
       WebSocketInstance.addCallbacks(this.update.bind(this))
     });
   }
-
-  logout() {
-    localStorage.removeItem('credentials');
-    this.props.history.push('/login');
-   }
-  
 
   waitForSocketConnection(callback) {
     const component = this;
@@ -129,9 +122,6 @@ class QueueTaList extends Component {
       if (screenWidth < 800) {
         return (
           <div>
-            <div class="top-right">
-              <button className="btn btn-primary" onClick={this.logout}>Log out</button>
-            </div>
             <div class="verticalList">
               {this.state.queues.map(function(queue, index){
                   return <div style={queueTableStyle} class="queue-table" ><QueueTA queue={queue}/></div>;
@@ -142,9 +132,6 @@ class QueueTaList extends Component {
       } else {
         return (
           <div>
-            <div class="top-right">
-              <button className="btn btn-primary btn-xl" onClick={this.logout}>Log out</button>
-            </div>
             <div class="horizontalList">
               {this.state.queues.map(function(queue, index){
                   return <div style={queueTableStyle} class="queue-table" ><QueueTA queue={queue}/></div>;

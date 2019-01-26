@@ -9,7 +9,6 @@ class QueueList extends React.Component {
 
   constructor(props) {
     super(props); 
-    this.logout = this.logout.bind(this);
     this.is_user_not_in_queues = this.is_user_not_in_queues.bind(this)
     this.state = {
       oh_link: ""
@@ -34,11 +33,6 @@ class QueueList extends React.Component {
       document.getElementsByTagName('head')[0].appendChild(link);
     });
   }
-
-  logout() {
-    localStorage.removeItem('credentials');
-    this.props.history.push('/login');
-   }
 
   is_user_not_in_queues(user_email) {
     for (var q in this.props.queues) {
@@ -76,18 +70,12 @@ class QueueList extends React.Component {
       if (this.state.oh_link.length == 0) {
         return (
           <div>
-            <div class="top-right">
-              <button className="btn btn-primary" onClick={this.logout}>Log out</button>
-            </div>
             <h2 class="center-screen">There are no office hours queues available</h2>
           </div>
         )
       } else {
         return (
           <div>
-            <div class="top-right">
-              <button className="btn btn-primary" onClick={this.logout}>Log out</button>
-            </div>
             <div class="center-screen">
             <h2 >There are no office hours queues available.</h2>
             <p><a href={this.state.oh_link}>Click Here for Office Hours Schedule</a></p>
@@ -100,9 +88,6 @@ class QueueList extends React.Component {
     if (screenWidth < 800) {
       return (
         <div>
-          <div class="top-right">
-            <button className="btn btn-primary" onClick={this.logout}>Log out</button>
-          </div>
           <div class="verticalList">
             {this.props.queues.map(function(queue, index){
                 return <div style={queueTableStyle} class="queue-table" >
@@ -114,9 +99,6 @@ class QueueList extends React.Component {
     } else {
       return (
         <div>
-          <div class="top-right">
-            <button className="btn btn-primary btn-xl" onClick={this.logout}>Log out</button>
-          </div>
           <div class="horizontalList">
             {this.props.queues.map(function(queue, index){
                 return <div style={queueTableStyle} class="queue-table" >
