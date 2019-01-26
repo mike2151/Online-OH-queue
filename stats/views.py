@@ -28,11 +28,7 @@ class SummaryList(generics.ListAPIView):
 
 class FrequentUserView(View):
     def get(self, request,  *args, **kwargs):
-        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-        if token_header == None or " " not in token_header:
-            return JsonResponse({"authenticated": False})
-        actual_token = token_header.split(" ")[1]
-        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        user = request.user
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
         
@@ -61,12 +57,7 @@ class FrequentUserView(View):
       
 class FrequentAnswerView(View):
     def get(self, request, *args, **kwargs):
-
-        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-        if token_header == None or " " not in token_header:
-            return JsonResponse({"authenticated": False})
-        actual_token = token_header.split(" ")[1]
-        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        user = request.user
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
 
@@ -96,11 +87,7 @@ class FrequentAnswerView(View):
 
 class UserTimeSeriesView(View):
     def get(self, request, *args, **kwargs):
-        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-        if token_header == None or " " not in token_header:
-            return JsonResponse({"authenticated": False})
-        actual_token = token_header.split(" ")[1]
-        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        user = request.user
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
 
@@ -121,11 +108,7 @@ class UserTimeSeriesView(View):
 
 class GetAllStudentsView(View):
     def get(self, request, *args, **kwargs):
-        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-        if token_header == None or " " not in token_header:
-            return JsonResponse({"authenticated": False, "value": []})
-        actual_token = token_header.split(" ")[1]
-        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        user = request.user
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False, "value": []})
 
@@ -137,11 +120,7 @@ class GetAllStudentsView(View):
 
 class GetTrafficTimesView(View):
     def get(self, request, *args, **kwargs):
-        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-        if token_header == None or " " not in token_header:
-            return JsonResponse({"authenticated": False})
-        actual_token = token_header.split(" ")[1]
-        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        user = request.user
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
 

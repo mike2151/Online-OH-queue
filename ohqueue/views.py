@@ -85,11 +85,7 @@ class OpenQueueExtended(View):
     @csrf_exempt
     def post(self, request,  *args, **kwargs):
        # get current TA
-       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-       if token_header == None or " " not in token_header:
-           return JsonResponse({"success": False, "error": "You are not authenticated"})
-       actual_token = token_header.split(" ")[1]
-       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       user = request.user
        if user == None or not user.is_ta:
            return JsonResponse({"success": False, "error": "You are not authenticated"})
 
@@ -124,11 +120,7 @@ class CloseQueue(View):
     @csrf_exempt
     def post(self, request,  *args, **kwargs):
        # get current TA
-       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-       if token_header == None or " " not in token_header:
-           return JsonResponse({"success": False, "error": "You are not authenticated"})
-       actual_token = token_header.split(" ")[1]
-       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       user = request.user
        if user == None or not user.is_ta:
            return JsonResponse({"success": False, "error": "You are not authenticated"})
 
