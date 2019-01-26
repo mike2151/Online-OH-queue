@@ -83,19 +83,11 @@ class App extends Component {
   }
 
   render() {
-    if(this.state.isLoggedIn) {
       return (
         <div>
           <QueueList queues={this.state.queues} user_email={this.state.user_email}/>
         </div>
       );
-    } else {
-      return (
-        <div id="landing-page">
-          <LandingPage/>
-        </div>
-      );
-    }
   }
 }
 
