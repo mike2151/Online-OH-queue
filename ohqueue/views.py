@@ -23,11 +23,7 @@ class OHQueueListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-       token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-       if token_header == None or " " not in token_header:
-           return OHQueue.objects.none()
-       actual_token = token_header.split(" ")[1]
-       user = StudentUser.objects.filter(auth_token=actual_token).first()
+       user = self.request.user
 
        all_queues = OHQueue.objects.all()
        active_queues_id = [o.id for o in all_queues if o.isQueueActive(user)]
@@ -52,12 +48,7 @@ class QuestionCreationView(generics.CreateAPIView):
 
     def get_serializer_context(self):
         ohqueuename = (self.kwargs["name"])
-        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-        if token_header == None:
-            return JsonResponse({"success": False, "error": "No authentication found"})
-        # seperate token from Token xyz
-        actual_token = token_header.split(" ")[1]
-        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        user = self.request.user
         return {'user': user.email, 'user-first-name': user.first_name, 'user-last-name': user.last_name, 'queue': ohqueuename}
 
 class QuestionEditView(generics.UpdateAPIView):
@@ -68,11 +59,7 @@ class QuestionEditView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         # get the object 
         question_id = (self.kwargs["questionid"])
-        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-        if token_header == None:
-            return JsonResponse({"success": False, "error": "No authentication found"})
-        actual_token = token_header.split(" ")[1]
-        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        user = request.user
         if user == None:
             return JsonResponse({"success": False, "error": "Not a valid user"}) 
         instance = Question.objects.filter(id=question_id).first()
