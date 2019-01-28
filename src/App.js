@@ -51,21 +51,32 @@ class App extends Component {
           // invalid token
         }
       } else {
-        // see if user is a TA
-        fetch('/api/v1/users/is_ta/', {
+        // see if needs update first 
+        fetch('/api/v1/users/needs_update/', {
           method: 'GET',
-          headers: {
-              "Authorization": "Token " + localStorage.getItem('credentials')
-            }
         }).then((response) => {
           return response.json();
         }).then((ta_body) => {
-          if (ta_body["is_ta"]) {
-            this.props.history.push('/answer');
+          if (ta_body["need_update"]) {
+            this.props.history.push('/userinfo');
           } else {
-            this.setState({user_email: ta_body["email"]});
-            this.setState({isLoggedIn: true});
-            this.setState({queues: body});
+            // see if user is a TA
+            fetch('/api/v1/users/is_ta/', {
+              method: 'GET',
+              headers: {
+                  "Authorization": "Token " + localStorage.getItem('credentials')
+                }
+            }).then((response) => {
+              return response.json();
+            }).then((ta_body) => {
+              if (ta_body["is_ta"]) {
+                this.props.history.push('/answer');
+              } else {
+                this.setState({user_email: ta_body["email"]});
+                this.setState({isLoggedIn: true});
+                this.setState({queues: body});
+              }
+            });
           }
         });
       }

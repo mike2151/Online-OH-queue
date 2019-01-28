@@ -35,6 +35,13 @@ class taAuthenticationView(View):
            return JsonResponse({"is_ta": False, "email": request.user.email})
        return JsonResponse({"is_ta": True})
 
+class NeedsUpdateView(View):
+    # return the email because some views also need the email of the TA
+    def get(self, request):
+       if request.user.first_name == "None" or request.user.last_name == "None":
+           return JsonResponse({"need_update": True})
+       return JsonResponse({"need_update": False}})
+
 class UpdateUserView(View):
     @csrf_exempt
     def post(self, request):
