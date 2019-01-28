@@ -97,4 +97,4 @@ class UserInfo extends React.Component {
     }
   }
 
-  export default withRouter(LoginForm);
+  export default withRouter(UserInfo);
