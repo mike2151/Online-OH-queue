@@ -8,6 +8,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.shortcuts import redirect
 from django.http import HttpResponse, JsonResponse
 from django.views import View
+import json
 from rest_framework.permissions import AllowAny
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
@@ -33,4 +34,18 @@ class taAuthenticationView(View):
        if not request.user.is_ta:
            return JsonResponse({"is_ta": False, "email": request.user.email})
        return JsonResponse({"is_ta": True})
+
+class UpdateUserView(View):
+    @csrf_exempt
+    def post(self, request):
+       user = request.user
+       if user == None:
+           return JsonResponse({"success": False, "error": "You are not authenticated"}) 
+       first_name = (json.loads(request.body.decode())["first_name"])
+       last_name = (json.loads(request.body.decode())["last_name"])
+       user.first_name = first_name
+       user.last_name = last_name
+       user.save()
+       return JsonResponse({"success": True}) 
+
 

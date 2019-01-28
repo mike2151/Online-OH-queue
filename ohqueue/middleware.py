@@ -1,5 +1,7 @@
 from users.models import StudentUser
 from django.contrib import auth
+from django.urls import reverse
+from django.shortcuts import redirect
 
 
 class ShibbolethMiddleware:
@@ -11,5 +13,7 @@ class ShibbolethMiddleware:
             user, _ = StudentUser.objects.get_or_create(username=username, defaults={"email":username, "first_name": "None", "last_name": "None"})
             request.user = user
             auth.login(request, user)
+            if user.first_name == "None" or user.last_name == "None":
+                return redirect(reverse('userinfo'))
         response = self.get_response(request)
         return response

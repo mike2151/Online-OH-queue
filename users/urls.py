@@ -4,4 +4,5 @@ from . import views
 
 urlpatterns = [
     path('is_ta/', views.taAuthenticationView.as_view(), name="is_ta"),
+    path('update/', views.UpdateUserView.as_view(), name="userinfo")
 ]
