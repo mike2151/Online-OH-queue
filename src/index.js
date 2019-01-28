@@ -6,6 +6,7 @@ import QueueEdit from './queues/QueueEdit';
 import QueueTaList from './queues/QueueTAList';
 import Summary from './stats/Summary';
 import Stats from './stats/Stats';
+import UserInfo from './register/userinfo';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 
@@ -15,6 +16,7 @@ ReactDOM.render((
             <Route exact path='/' component={App} />
             <Route exact path='/answer' component={QueueTaList} />
             <Route exact path='/summary' component={Summary} />
+            <Route exact path='/userinfo' component={UserInfo} />
             <Route exact path='/statistics' component={Stats} />
             <Route path="/:queue/ask" component={QueueAsk}/> 
             <Route path="/:questionid/edit" component={QueueEdit}/> 

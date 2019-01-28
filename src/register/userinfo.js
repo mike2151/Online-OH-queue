@@ -1,9 +1,8 @@
 import React from "react";
 import "../static/css/style.css";
-import swal from 'sweetalert';
 import {withRouter}  from 'react-router-dom';
 
-class LoginForm extends React.Component {
+class UserInfo extends React.Component {
     constructor(props) {
       super(props);
 
