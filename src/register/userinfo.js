@@ -35,8 +35,7 @@ class UserInfo extends React.Component {
 
     handleValidation(data) {
         var violationExists = false;
-        var message = "";
-  
+        var message = ""; 
         var last_name = data.get("last_name");
         var first_name = data.get("first_name");
         if (last_name.length === 0) {
