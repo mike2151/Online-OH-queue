@@ -57,10 +57,10 @@ class Summary extends Component {
           <center><h2>Office Hours Questions This Week:</h2></center>
           <table class="summary">
             <tr>
-                <th>Question</th><th>Queue</th><th>Answerer</th>
+                <th>Question</th><th>Queue</th><th>Asker</th><th>Answerer</th>
             </tr>
             {this.state.questions.map(function(question, index){
-                return <tr><td class="description">{index+1} - {question.description}</td><td class="answerer">{question.host_queue}</td><td class="answerer">{question.answerer_first_name} {question.answerer_last_name}</td></tr>
+                return <tr><td class="description">{index+1} - {question.description}</td><td class="answerer">{question.host_queue}</td><td class="answerer">{question.author_first_name} {question.author_last_name}</td></tr><td class="answerer">{question.answerer_first_name} {question.answerer_last_name}</td></tr>
             })}
           </table>
         </div>
