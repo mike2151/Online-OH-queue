@@ -116,11 +116,11 @@ line-height: inherit; }
 }
 
 .description {
-  width: 70%;
+  width: 64%;
 }
 
 .answerer {
-  width: 15%
+  width: 12%;
 }
 
 .summary tr:nth-child(even){background-color: #f2f2f2;}
