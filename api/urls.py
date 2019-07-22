@@ -8,6 +8,7 @@ from .views import GetThemeVariablesView
 
 urlpatterns = [
     path('users/', include('users.urls')),
+    path('feedback/', include('feedback.urls')),
     path('queue/', include('ohqueue.urls')),
     path('questions/', include('questions.urls')),
     path('summary/', SummaryList.as_view(), name="summary"),

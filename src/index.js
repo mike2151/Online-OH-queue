@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import QueueAsk from './queues/QueueAsk';
+import QueueFeedback from './queues/QueueFeedback';
 import QueueEdit from './queues/QueueEdit';
 import QueueTaList from './queues/QueueTAList';
 import SignUpForm from './signup-in/Signup';
@@ -19,6 +20,7 @@ ReactDOM.render((
             <Route exact path='/login' component={() => <LoginForm activated={false} />} />
             <Route exact path='/activated' component={() => <LoginForm activated={true} />} />
             <Route exact path='/answer' component={QueueTaList} />
+            <Route exact path='/feedback' component={QueueFeedback} />
             <Route exact path='/summary' component={Summary} />
             <Route exact path='/statistics' component={Stats} />
             <Route path="/:queue/ask" component={QueueAsk}/> 

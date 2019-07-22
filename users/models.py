@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.db import models
 
+
 class StudentUser(AbstractUser):
     email = models.EmailField(
         verbose_name='Penn Email Address',
@@ -12,6 +13,9 @@ class StudentUser(AbstractUser):
     last_name = models.CharField(max_length=32)
 
     is_ta = models.BooleanField(default=False, verbose_name="Teaching Assistant")
+
+    num_questions_asked = models.IntegerField(default=0)
+    most_recent_question = models.ForeignKey('questions.Question', unique=True, on_delete=models.CASCADE, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
 
