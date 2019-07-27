@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import SearchBar from './SearchBar';
+import TASearchBar from './TASearchBar';
 
 class Stats extends Component {
 
@@ -17,6 +18,7 @@ class Stats extends Component {
         var d1 = new Date();
         var d2 = new Date();
         d2.setDate(d1.getDate() - 7);
+        d1.setDate(d2.getDate() + 8);
         this.state={
             'mode': 'ask',
             'data': [],
@@ -25,6 +27,7 @@ class Stats extends Component {
             'slots': [],
             'timedata': [],
             'queryUser': '',
+            'queryTA': '',
             'askData': [],
             'answerData': [],
             'slotData': {},
@@ -41,7 +44,9 @@ class Stats extends Component {
         this.displayAskData = this.displayAskData.bind(this);
         this.displayAnswerData = this.displayAnswerData.bind(this);
         this.searchBarCallback = this.searchBarCallback.bind(this);
+        this.taSearchBarCallback = this.taSearchBarCallback.bind(this);
         this.displayUserQuestionData = this.displayUserQuestionData.bind(this);
+        this.displayFeedbackData = this.displayFeedbackData.bind(this);
     }
 
     startDateChange(date) {
@@ -220,6 +225,25 @@ class Stats extends Component {
         }
     }
 
+	getTAFeedbackData() {
+        if (this.state.queryTA) {
+            var d1 = this.state.startdate.toISOString().split('T')[0];
+            var d2 = this.state.enddate.toISOString().split('T')[0];
+            fetch('/api/v1/stats/' + this.state.queryTA + '/feedback/' + d1 + '/' + d2 + '/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Token ' + localStorage.getItem('credentials')
+                }
+            }).then((response) => {
+                return response.json();
+            }).then((body) => {
+                this.setState({'data': body, 'authenticated': body.authenticated});
+            });
+        } else {
+            this.setState({'data': undefined});
+        }
+    }
+
     displayUserQuestionData() {
         if (this.state.authenticated) {
             if (this.state.queryUser && this.state.data && this.state.data.questions) {
@@ -292,6 +316,88 @@ class Stats extends Component {
                             callback={this.searchBarCallback}
                         />
                         <p>Search a student's email to get started.</p>
+                    </div>
+                );
+            }
+        } else {
+            return (
+                <div>
+                    <p>You are not authenticated.</p>
+                </div>
+            )
+        }
+    }
+
+	displayFeedbackData() {
+        if (this.state.authenticated) {
+            if (this.state.queryTA && this.state.data && this.state.data.feedback) {
+                console.log(this.state.data);
+                var feedbackData = (this.state.data.feedback).map((dataObj) => {
+                    return (
+                        <tr>
+                            <td>{dataObj.ta_email}</td>
+                            <td>{dataObj.was_helpful}</td>
+                            <td>{dataObj.helpful_scale}</td>
+                            <td>{dataObj.comments}</td>
+                            <td>{dataObj.date}</td>
+                        </tr>
+                    );
+                });
+                return (
+                    <div>
+                        <div>
+                            <span>Date Range Beginning&nbsp;&nbsp;</span>
+                            <DatePicker
+                                selected={this.state.startdate}
+                                onChange={this.startDateChange}
+                            />
+                            <span>&nbsp;&nbsp;Date Range End&nbsp;&nbsp;</span>
+                            <DatePicker
+                                selected={this.state.enddate}
+                                onChange={this.endDateChange}
+                            /> <br />
+                            <TASearchBar 
+                                callback={this.taSearchBarCallback}
+                            />
+                        </div>
+                        <br />
+                        <br />
+                        <p>Feedback for {this.state.queryTA}</p>
+                        <div>
+                            <table className="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Was Helpful</th>
+                                        <th scope="col">Helpful Rating</th>
+                                        <th scope="col">Comments</th>
+                                        <th scope="col">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {feedbackData}
+                                </tbody>
+                        </table>
+                        </div>
+                    </div>
+                );
+            } else {
+                return (
+                    <div>
+                        <span>Date Range Beginning&nbsp;&nbsp;</span>
+                        <DatePicker
+                            selected={this.state.startdate}
+                            onChange={this.startDateChange}
+                        />
+                        <span>&nbsp;&nbsp;Date Range End&nbsp;&nbsp;</span>
+                        <DatePicker
+                            selected={this.state.enddate}
+                            onChange={this.endDateChange}
+                        /> <br />
+                        <TASearchBar 
+                            callback={this.taSearchBarCallback}
+                        />
+                        <p>Search TA by email...</p>
                     </div>
                 );
             }
@@ -391,6 +497,12 @@ class Stats extends Component {
         });
     }
 
+	taSearchBarCallback(event) {
+        this.setState({'queryTA': event.target.innerHTML}, () => {
+            this.getTAFeedbackData();
+        });
+    }
+
     componentDidMount() {
         document.title = 'Online OH Queue';
         this.getAskData();
@@ -406,7 +518,9 @@ class Stats extends Component {
             dataJSX = this.displayUserQuestionData();
         } else if (this.state.mode === 'traffic') {
             dataJSX = this.displayTrafficData();
-        }
+        } else if (this.state.mode === 'feedback') {
+			dataJSX = this.displayFeedbackData();
+		}
 
         var labelsJSX = (
             <div></div>
@@ -427,6 +541,9 @@ class Stats extends Component {
                         </label>
                         <label className={this.state.mode === 'userquestions' ? activeRadio : passiveRadio}>
                             <input type="radio" name="options" id="userquestions" autocomplete="off" onClick={this.radioClick} /> Time Series of User's Questions
+                        </label>
+						<label className={this.state.mode === 'feedback' ? activeRadio : passiveRadio}>
+                            <input type="radio" name="options" id="feedback" autocomplete="off" onClick={this.radioClick} /> TA feedback
                         </label>
                     </div>
                 </div>

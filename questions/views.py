@@ -42,6 +42,11 @@ class QuestionDeleteView(View):
        if question.author_email != user.email and not user.is_ta:
             return JsonResponse({"success": False, "error": "You are not authenticated"}) 
        question.delete()
+
+       user.num_questions_asked -= 1
+       user.most_recent_question = None
+       user.save()
+
        layer = get_channel_layer()
        async_to_sync(layer.group_send)(
             'ohqueue',

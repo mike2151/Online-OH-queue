@@ -1,6 +1,7 @@
 from django.views import View
 from users.models import StudentUser
 from ohqueue.models import OHQueue
+from feedback.models import Feedback
 from questions.models import Question
 from rest_framework import generics
 from .utils import dateLastStartOfWeek
@@ -85,6 +86,34 @@ class FrequentAnswerView(View):
         return_dictionary["authenticated"] = True
         return JsonResponse(return_dictionary)
 
+class TAFeedbackView(View):
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        if user == None or not user.is_superuser:
+            return JsonResponse({"authenticated": False})
+
+         start = datetime.datetime.strptime(self.kwargs["start"], '%Y-%m-%d')
+        end = datetime.datetime.strptime(self.kwargs["end"], '%Y-%m-%d')
+        ta_email = self.kwargs["email"]
+        all_feedback = Feedback.objects.filter(feedback_time__range=(start, end), ta_email=ta_email).order_by('-feedback_time')
+        if (len(all_feedback.values()) == 0):
+            return JsonResponse({"authenticated": True, "feedback": []})
+
+         feedback_res = []
+        for feedback in all_feedback.values():
+            element = {}
+            element['ta_email'] = feedback['ta_email']
+            element['was_helpful'] = str(feedback['was_helpful'])
+            element['date'] = feedback['feedback_time'].strftime('%Y/%m/%d %I:%M %p')
+            if len(feedback['comments']) > 0:
+                element['comments'] = feedback['comments']
+            if feedback["helpful_scale"] != 0:
+                element["helpful_scale"] = feedback['helpful_scale']
+            feedback_res.append(element)
+
+         response = {"authenticated": True, "feedback": feedback_res}
+        return JsonResponse(response)
+
 class UserTimeSeriesView(View):
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -117,6 +146,18 @@ class GetAllStudentsView(View):
         for student in users:
             students.append(student.email)
         return JsonResponse({"authenticated": True, 'value': students})
+
+class GetAllTasView(View):
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        if user == None or not user.is_superuser:
+            return JsonResponse({"authenticated": False, "value": []})
+
+         users = StudentUser.objects.filter(is_ta=True)
+        tas = []
+        for ta in users:
+            tas.append(ta.email)
+        return JsonResponse({"authenticated": True, 'value': tas})
 
 class GetTrafficTimesView(View):
     def get(self, request, *args, **kwargs):

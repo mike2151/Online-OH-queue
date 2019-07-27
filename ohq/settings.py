@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'ohqueue',
     'frontend',
     'stats',
+    'feedback',
 ]
 
 ASGI_APPLICATION = 'ohqueue.routing.application'

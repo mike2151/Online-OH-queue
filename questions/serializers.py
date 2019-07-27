@@ -5,6 +5,7 @@ from ohqueue.models import OHQueue
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from users.models import StudentUser
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -53,6 +54,12 @@ class QuestionSerializer(serializers.ModelSerializer):
 
         ohqueue.questions.add(question)
         ohqueue.save()
+
+	# add the question to the user level
+        user = StudentUser.objects.filter(email=user_email).first()
+        user.num_questions_asked += 1
+        user.most_recent_question = question
+        user.save()
         
         layer = get_channel_layer()
         async_to_sync(layer.group_send)(

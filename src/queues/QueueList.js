@@ -10,6 +10,7 @@ class QueueList extends React.Component {
   constructor(props) {
     super(props); 
     this.is_user_not_in_queues = this.is_user_not_in_queues.bind(this)
+    this.check_for_feedback = this.check_for_feedback.bind(this);
     this.state = {
       oh_link: ""
     };
@@ -32,7 +33,23 @@ class QueueList extends React.Component {
       link.href = body['favicon_url'];
       document.getElementsByTagName('head')[0].appendChild(link);
     });
+    this.check_for_feedback();
   }
+
+ check_for_feedback() {
+    fetch('/api/v1/feedback/needs_to_give_feedback/', {
+      method: 'GET',
+      headers: {
+          "Authorization": "Token " + localStorage.getItem('credentials')
+        }
+    }).then((response) => {
+      return response.json();
+    }).then((feedback_body) => {
+      if (feedback_body["needs_to_give_feedback"]) {
+        this.props.history.push('/feedback');
+      }
+    });
+ }
 
   is_user_not_in_queues(user_email) {
     for (var q in this.props.queues) {
@@ -48,6 +65,8 @@ class QueueList extends React.Component {
   } 
   
   render() {
+
+	this.check_for_feedback();
 
     var user_email = this.props.user_email;
 

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import QueueAsk from './queues/QueueAsk';
+import QueueFeedback from './queues/QueueFeedback';
 import QueueEdit from './queues/QueueEdit';
 import QueueTaList from './queues/QueueTAList';
 import Summary from './stats/Summary';
@@ -15,6 +16,7 @@ ReactDOM.render((
         <Switch>
             <Route exact path='/' component={App} />
             <Route exact path='/answer' component={QueueTaList} />
+            <Route exact path='/feedback' component={QueueFeedback} />
             <Route exact path='/summary' component={Summary} />
             <Route exact path='/userinfo' component={UserInfo} />
             <Route exact path='/statistics' component={Stats} />
