@@ -49,7 +49,7 @@ class QuestionDeleteView(View):
             return JsonResponse({"success": False, "error": "You are not authenticated"}) 
        question.delete()
 
-       user.num_questions_answered -= 1
+       user.num_questions_asked -= 1
        user.most_recent_question = None
        user.save()
 
