@@ -8,7 +8,7 @@ from users.models import StudentUser
 from rest_framework.permissions import IsAuthenticated
 
 
- class FeedbackCreationView(generics.CreateAPIView):
+class FeedbackCreationView(generics.CreateAPIView):
      queryset = Feedback.objects.all()
      serializer_class = FeedbackSerializer
      permission_classes = (IsAuthenticated,)
@@ -22,7 +22,7 @@ from rest_framework.permissions import IsAuthenticated
             base_dict["comments"] = self.request.POST.get("comments", "")
         return base_dict
 
- class NeedsToGiveFeedbackView(View):
+class NeedsToGiveFeedbackView(View):
     def get(self, request):
        user = self.request.user
        if user == None:
@@ -40,7 +40,7 @@ from rest_framework.permissions import IsAuthenticated
            return JsonResponse({"needs_to_give_feedback": False})
        return JsonResponse({"needs_to_give_feedback": True})
 
- class InfoForFeedback(View):
+class InfoForFeedback(View):
     def get(self, request):
        user = self.request.user
        if user == None:

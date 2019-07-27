@@ -4,7 +4,7 @@ from channels.layers import get_channel_layer
 from users.models import StudentUser
 
 
- class FeedbackSerializer(serializers.ModelSerializer):
+class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
          model = Feedback
          read_only_fields = ('ta_email', 'base_question', 'feedback_time',)

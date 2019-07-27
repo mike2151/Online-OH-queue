@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from users.models import StudentUser
 from questions.models import Question
 
- class Feedback(models.Model):
+class Feedback(models.Model):
     # 1 being too little help 10 more help
     helpful_scale = models.IntegerField(validators=[
             MaxValueValidator(10),

@@ -92,14 +92,14 @@ class TAFeedbackView(View):
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
 
-         start = datetime.datetime.strptime(self.kwargs["start"], '%Y-%m-%d')
+        start = datetime.datetime.strptime(self.kwargs["start"], '%Y-%m-%d')
         end = datetime.datetime.strptime(self.kwargs["end"], '%Y-%m-%d')
         ta_email = self.kwargs["email"]
         all_feedback = Feedback.objects.filter(feedback_time__range=(start, end), ta_email=ta_email).order_by('-feedback_time')
         if (len(all_feedback.values()) == 0):
             return JsonResponse({"authenticated": True, "feedback": []})
 
-         feedback_res = []
+        feedback_res = []
         for feedback in all_feedback.values():
             element = {}
             element['ta_email'] = feedback['ta_email']
@@ -111,7 +111,7 @@ class TAFeedbackView(View):
                 element["helpful_scale"] = feedback['helpful_scale']
             feedback_res.append(element)
 
-         response = {"authenticated": True, "feedback": feedback_res}
+        response = {"authenticated": True, "feedback": feedback_res}
         return JsonResponse(response)
 
 class UserTimeSeriesView(View):
@@ -153,7 +153,7 @@ class GetAllTasView(View):
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False, "value": []})
 
-         users = StudentUser.objects.filter(is_ta=True)
+        users = StudentUser.objects.filter(is_ta=True)
         tas = []
         for ta in users:
             tas.append(ta.email)
