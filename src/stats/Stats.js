@@ -30,6 +30,7 @@ class Stats extends Component {
             'queryTA': '',
             'askData': [],
             'answerData': [],
+            'allFeedbackData': [],
             'slotData': {},
             'authenticated': false,
             'startdate': d2,
@@ -41,8 +42,10 @@ class Stats extends Component {
         this.endDateChange = this.endDateChange.bind(this);
         this.getAskData = this.getAskData.bind(this);
         this.getAnswerData = this.getAnswerData.bind(this);
+        this.getAllFeedbackData = this.getAllFeedbackData.bind(this);
         this.displayAskData = this.displayAskData.bind(this);
         this.displayAnswerData = this.displayAnswerData.bind(this);
+        this.displayAllFeedbackData = this.displayAllFeedbackData.bind(this);
         this.searchBarCallback = this.searchBarCallback.bind(this);
         this.taSearchBarCallback = this.taSearchBarCallback.bind(this);
         this.displayUserQuestionData = this.displayUserQuestionData.bind(this);
@@ -55,7 +58,10 @@ class Stats extends Component {
                 this.getAskData();
             } else if (this.state.mode === 'answer') {
                 this.getAnswerData();
-            } else if (this.state.mode === 'traffic') {
+            } else if (this.state.mode === 'all_feedback') {
+                this.getAllFeedbackData();
+            } 
+            else if (this.state.mode === 'traffic') {
                 this.getTrafficData();
             }
         });
@@ -67,7 +73,9 @@ class Stats extends Component {
                 this.getAskData();
             } else if (this.state.mode === 'answer') {
                 this.getAnswerData();
-            } else if (this.state.mode === 'traffic') {
+            } else if (this.state.mode === 'all_feedback') {
+                this.getAllFeedbackData();
+            }  else if (this.state.mode === 'traffic') {
                 this.getTrafficData();
             }
         })
@@ -154,6 +162,21 @@ class Stats extends Component {
         });
     }
 
+    getAllFeedbackData() {
+        var d1 = this.state.startdate.toISOString().split('T')[0];
+        var d2 = this.state.enddate.toISOString().split('T')[0];
+        fetch('/api/v1/stats/all_feedback_data/' + d1 + '/' + d2 + '/', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Token ' + localStorage.getItem('credentials')
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((body) => {
+            this.setState({'allFeedbackData': body.value, 'authenticated': body.authenticated});
+        });
+    }
+
     displayAnswerData() {
         if (this.state.authenticated) {
             var answerDataJSX = (this.state.answerData).map((dataObj) => {
@@ -193,6 +216,61 @@ class Stats extends Component {
                         <tbody>
                             {answerDataJSX}
                         </tbody>
+                    </table>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <p>You are not authenticated.</p>
+                </div>
+            )
+        }
+    }
+
+    displayAllFeedbackData() {
+        if (this.state.authenticated) {
+            var feedbackDataJSX = (this.state.allFeedbackData).map((dataObj) => {
+                var rowStyle = {
+                    maxWidth: '15vw',
+                    wordWrap: 'break-word'
+                };
+                return (
+                    <tr>
+                        <td style={rowStyle}>{dataObj.ta_email}</td>
+                        <td style={rowStyle}>{dataObj.was_helpful === "True" ? "Yes" : "No"}</td>
+                        <td style={rowStyle}>{dataObj.helpful_scale}</td>
+                        <td style={rowStyle}>{dataObj.comments}</td>
+                        <td style={rowStyle}>{dataObj.date}</td>
+                    </tr>
+                );
+            });
+            
+            return (
+                <div>
+                    <span>Date Range Beginning&nbsp;&nbsp;</span>
+                    <DatePicker
+                        selected={this.state.startdate}
+                        onChange={this.startDateChange}
+                    />
+                    <span>&nbsp;&nbsp;Date Range End&nbsp;&nbsp;</span>
+                    <DatePicker
+                        selected={this.state.enddate}
+                        onChange={this.endDateChange}
+                    />
+                    <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Was Helpful</th>
+                                    <th scope="col">Helpful Rating</th>
+                                    <th scope="col">Comments</th>
+                                    <th scope="col">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {feedbackDataJSX}
+                            </tbody>
                     </table>
                 </div>
             );
@@ -331,18 +409,44 @@ class Stats extends Component {
     displayFeedbackData() {
         if (this.state.authenticated) {
             if (this.state.queryTA && this.state.data && this.state.data.feedback) {
-                console.log(this.state.data);
+                var rowStyle = {
+                    maxWidth: '15vw',
+                    wordWrap: 'break-word'
+                };
                 var feedbackData = (this.state.data.feedback).map((dataObj) => {
                     return (
                         <tr>
-                            <td>{dataObj.ta_email}</td>
-                            <td>{dataObj.was_helpful}</td>
-                            <td>{dataObj.helpful_scale}</td>
-                            <td>{dataObj.comments}</td>
-                            <td>{dataObj.date}</td>
+                            <td style={rowStyle}>{dataObj.ta_email}</td>
+                            <td style={rowStyle}>{dataObj.was_helpful === "True" ? "Yes" : "No"}</td>
+                            <td style={rowStyle}>{dataObj.helpful_scale}</td>
+                            <td style={rowStyle}>{dataObj.comments}</td>
+                            <td style={rowStyle}>{dataObj.date}</td>
                         </tr>
                     );
                 });
+                // calculate aggregate stats
+                var num_respondents = 0;
+                var sum_rating = 0;
+                var num_rating_given = 0;
+                var sum_was_helpful = 0;
+                (this.state.data.feedback).map((dataObj) => {
+                    num_respondents = num_respondents + 1;
+                    if (dataObj.was_helpful == "True") {
+                        sum_was_helpful = sum_was_helpful + 1;
+                    }
+                    if (dataObj.helpful_scale) {
+                        sum_rating = sum_rating + dataObj.helpful_scale;
+                        num_rating_given = num_rating_given + 1;
+                    }
+                });
+                var average_rating = 0;
+                if (num_rating_given != 0) {
+                    average_rating = sum_rating / num_rating_given
+                };
+                var percent_helpful = 0.0;
+                if (num_respondents != 0) {
+                    percent_helpful = 100.00 * (sum_was_helpful / num_respondents);
+                }
                 return (
                     <div>
                         <div>
@@ -362,8 +466,14 @@ class Stats extends Component {
                         </div>
                         <br />
                         <br />
-                        <p>Feedback for {this.state.queryTA}</p>
+                        <center><h4>Feedback for {this.state.queryTA}</h4></center>
                         <div>
+                            <h5>Aggregate Feedback</h5>
+                            <p>Num Respondents: {num_respondents}</p>
+                            <p>Percent Helpful: {percent_helpful} %</p> 
+                            <p>Average Helpful Rating: {average_rating}</p> 
+                            <br />
+                            <h5>Individual Feedback Reports</h5>
                             <table className="table table-hover">
                                 <thead>
                                     <tr>
@@ -483,6 +593,8 @@ class Stats extends Component {
                 this.getAskData();
             } else if (this.state.mode === 'answer') {
                 this.getAnswerData();
+            } else if (this.state.mode === 'all_feedback') {
+                this.getAllFeedbackData();
             } else if (this.state.mode === 'userquestions') {
                 this.getUserQuestionData();
             } else if (this.state.mode === 'traffic') {
@@ -520,6 +632,8 @@ class Stats extends Component {
             dataJSX = this.displayTrafficData();
         } else if (this.state.mode === 'feedback') {
             dataJSX = this.displayFeedbackData();
+        } else if (this.state.mode === 'all_feedback') {
+            dataJSX = this.displayAllFeedbackData();
         }
 
         var labelsJSX = (
@@ -543,7 +657,10 @@ class Stats extends Component {
                             <input type="radio" name="options" id="userquestions" autocomplete="off" onClick={this.radioClick} /> Time Series of User's Questions
                         </label>
                         <label className={this.state.mode === 'feedback' ? activeRadio : passiveRadio}>
-                            <input type="radio" name="options" id="feedback" autocomplete="off" onClick={this.radioClick} /> TA feedback
+                            <input type="radio" name="options" id="feedback" autocomplete="off" onClick={this.radioClick} /> Feedback For TA
+                        </label>
+                        <label className={this.state.mode === 'all_feedback' ? activeRadio : passiveRadio}>
+                            <input type="radio" name="options" id="all_feedback" autocomplete="off" onClick={this.radioClick} /> Feedback For All TAs
                         </label>
                     </div>
                 </div>
