@@ -101,7 +101,7 @@ class AllFeedbackView(View):
         feedback_res = []
         for feedback in all_feedback.values():
             element = {}
-	    base_question_id = feedback['base_question_id']
+            base_question_id = feedback['base_question_id']
             base_question = Question.objects.get(id=base_question_id)
             element['student_email'] = base_question.author_email
             element['question'] = base_question.description
@@ -132,7 +132,7 @@ class TAFeedbackView(View):
         feedback_res = []
         for feedback in all_feedback.values():
             element = {}
-	    base_question_id = feedback['base_question_id']
+            base_question_id = feedback['base_question_id']
             base_question = Question.objects.get(id=base_question_id)
             element['student_email'] = base_question.author_email
             element['question'] = base_question.description
