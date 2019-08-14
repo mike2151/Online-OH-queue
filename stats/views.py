@@ -88,11 +88,7 @@ class FrequentAnswerView(View):
 
 class AllFeedbackView(View):
     def get(self, request, *args, **kwargs):
-        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
-        if token_header == None or " " not in token_header:
-            return JsonResponse({"authenticated": False})
-        actual_token = token_header.split(" ")[1]
-        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        user = self.request.user
         if user == None or not user.is_superuser:
             return JsonResponse({"authenticated": False})
 
