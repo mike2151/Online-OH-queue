@@ -81,7 +81,7 @@ class UserInfo extends React.Component {
           <div class="login-page">
             <div class="userForm">
               <form class="login-form" onSubmit={this.handleSubmit}>
-                <h2 class="header-login"><center>Provide more information:</center></h2>
+                <h2 class="header-login"><center>Provide More Information:</center></h2>
                 <label htmlFor="first_name">First Name:</label>
                 <input id="first_name" name="first_name" maxLength={64} type="text" value={this.state.first_name} onChange={this.onChange} />  
                 <label htmlFor="last_name">Last Name:</label>

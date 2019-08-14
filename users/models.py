@@ -14,7 +14,7 @@ class StudentUser(AbstractUser):
     is_ta = models.BooleanField(default=False, verbose_name="Teaching Assistant")
 
     num_questions_asked = models.IntegerField(default=0)
-    most_recent_question = models.ForeignKey('questions.Question', unique=True, on_delete=models.CASCADE, null=True, blank=True)
+    most_recent_question = models.ForeignKey('questions.Question', unique=True, on_delete=models.SET_NULL, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
 

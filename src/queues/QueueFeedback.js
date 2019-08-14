@@ -11,7 +11,7 @@ import 'react-rangeslider/lib/index.css';
         is_valid: false,
         ta_name: "",
         question: "",
-        was_helpful: true,
+        was_helpful: "no_ans",
         help_scale: 0,
         primary_color: '#445B73',
         comments: ""
@@ -56,26 +56,30 @@ import 'react-rangeslider/lib/index.css';
 
      set_thumps_up(e) {
         e.preventDefault();
-        this.setState({was_helpful: true});
+        this.setState({was_helpful: "true"});
     }
 
      set_thumps_down(e) {
         e.preventDefault();
-        this.setState({was_helpful: false});
+        this.setState({was_helpful: "false"});
     }
 
      handleSubmit(event) {
         event.preventDefault();
-        var was_helpful = this.state.was_helpful;
+        if (!(this.state.was_helpful == "true" || this.state.was_helpful == "false")) {
+          document.getElementById("validationError").innerHTML = "You must indicate if the TA was helpful";
+          return;
+        }
+        var was_helpful = this.state.was_helpful == "true";
         var rating = this.state.help_scale;
         var additional_comments = this.state.comments;
         var json_body = {};
         json_body["was_helpful"] = was_helpful;
         if (rating != 0) {
-            json_body["rating"] = rating;
+            json_body["helpful_scale"] = rating;
         }
         if (additional_comments.length > 0) {
-            json_body["additional_comments"] = additional_comments;
+            json_body["comments"] = additional_comments;
         }
         var data = JSON.stringify(json_body);
         fetch('/api/v1/feedback/post_feedback/', {
@@ -102,7 +106,7 @@ import 'react-rangeslider/lib/index.css';
       var current_length = event.target.value.length;
       var remaining_chars = 280 - current_length;
       document.getElementById("comments_label").innerHTML =
-       "Optional Comments for the head TAs. <br /> Is there anything we need to know about this interaction? (" + remaining_chars.toString() + " Characters Remaining)";
+       "Optional Comments for the head TAs. <br /> Is there anything we need to know about this interaction? <br /> This will only be visible to the Head TAs, and can be used to report anything you'd like.  (" + remaining_chars.toString() + " Characters Remaining)";
       this.setState({[event.target.name]: event.target.value});
     }
 
@@ -117,14 +121,14 @@ import 'react-rangeslider/lib/index.css';
             var classNames = require('classnames');
             var btnGroupClassUp = classNames(
                 {
-                'answer-link': !this.state.was_helpful,
-                'answer-link-selected': this.state.was_helpful,
+                'answer-link': this.state.was_helpful == "no_ans" || this.state.was_helpful == "false",
+                'answer-link-selected': this.state.was_helpful == "true",
                 }
             );
             var btnGroupClassDown = classNames(
                 {
-                'answer-link-selected': !this.state.was_helpful,
-                'answer-link': this.state.was_helpful,
+                'answer-link-selected': this.state.was_helpful == "false",
+                'answer-link': this.state.was_helpful == "no_ans" || this.state.was_helpful == "true"
                 }
             );
             var btnStyle = {
@@ -154,7 +158,7 @@ import 'react-rangeslider/lib/index.css';
 
                                  </center>
                                 <p>
-                                <h5>{this.state.ta_name} was helpful and answered my question (Required): </h5><br />
+                                <h5>TA {this.state.ta_name} was helpful and answered my question (Required): </h5><br />
                                 <button onClick={(e) => set_thumps_up(e)} className={btnGroupClassUp} style={btnStyle}>Yes</button>
                                 <button onClick={(e) => set_thumps_down(e)} className={btnGroupClassDown} style={btnStyle}>No</button>
                                 <br /><br />
@@ -173,7 +177,7 @@ import 'react-rangeslider/lib/index.css';
                             /> 
                             <b>{help_scale}</b>
                             <br /><br /><br />
-                            <label class="dynamic-text" htmlFor="comments" id="comments_label">Optional Comments for the head TAs. <br />Is there anything we need to know about this interaction? (280 Characters Remaining):</label>
+                            <label class="dynamic-text" htmlFor="comments" id="comments_label">Optional Comments for the Head TAs. <br />Is there anything we need to know about this interaction?  <br /> This will only be visible to the head TAs, and can be used to report anything you'd like.  (280 Characters Remaining):</label>
                             <textarea maxlength="280" id="comments" name="comments"
                             value={this.state.comments} onChange={this.onChange} />
                             <button class="margin-top-button">submit</button>

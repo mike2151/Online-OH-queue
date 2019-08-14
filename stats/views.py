@@ -86,6 +86,36 @@ class FrequentAnswerView(View):
         return_dictionary["authenticated"] = True
         return JsonResponse(return_dictionary)
 
+class AllFeedbackView(View):
+    def get(self, request, *args, **kwargs):
+        token_header = (self.request.META.get('HTTP_AUTHORIZATION'))
+        if token_header == None or " " not in token_header:
+            return JsonResponse({"authenticated": False})
+        actual_token = token_header.split(" ")[1]
+        user = StudentUser.objects.filter(auth_token=actual_token).first()
+        if user == None or not user.is_superuser:
+            return JsonResponse({"authenticated": False})
+
+        start = self.kwargs["start"]
+        end = self.kwargs["end"]
+        all_feedback = Feedback.objects.filter(feedback_time__range=[start, end])
+        if (len(all_feedback.values()) == 0):
+            return JsonResponse({"authenticated": True, "value": []})
+
+        feedback_res = []
+        for feedback in all_feedback.values():
+            element = {}
+            element['ta_email'] = feedback['ta_email']
+            element['was_helpful'] = str(feedback['was_helpful'])
+            element['date'] = feedback['feedback_time'].astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))).strftime('%Y/%m/%d %I:%M %p')
+            if len(feedback['comments']) > 0:
+                element['comments'] = feedback['comments']
+            if feedback["helpful_scale"] != 0:
+                element["helpful_scale"] = feedback['helpful_scale']
+            feedback_res.append(element)
+        response = {"authenticated": True, "value": feedback_res}
+        return JsonResponse(response)
+
 class TAFeedbackView(View):
     def get(self, request, *args, **kwargs):
         user = self.request.user
@@ -104,7 +134,7 @@ class TAFeedbackView(View):
             element = {}
             element['ta_email'] = feedback['ta_email']
             element['was_helpful'] = str(feedback['was_helpful'])
-            element['date'] = feedback['feedback_time'].strftime('%Y/%m/%d %I:%M %p')
+            element['date'] = feedback['feedback_time'].astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))).strftime('%Y/%m/%d %I:%M %p')
             if len(feedback['comments']) > 0:
                 element['comments'] = feedback['comments']
             if feedback["helpful_scale"] != 0:
