@@ -101,6 +101,10 @@ class AllFeedbackView(View):
         feedback_res = []
         for feedback in all_feedback.values():
             element = {}
+	    base_question_id = feedback['base_question_id']
+            base_question = Question.objects.get(id=base_question_id)
+            element['student_email'] = base_question.author_email
+            element['question'] = base_question.description
             element['ta_email'] = feedback['ta_email']
             element['was_helpful'] = str(feedback['was_helpful'])
             element['date'] = feedback['feedback_time'].astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))).strftime('%Y/%m/%d %I:%M %p')
@@ -128,6 +132,10 @@ class TAFeedbackView(View):
         feedback_res = []
         for feedback in all_feedback.values():
             element = {}
+	    base_question_id = feedback['base_question_id']
+            base_question = Question.objects.get(id=base_question_id)
+            element['student_email'] = base_question.author_email
+            element['question'] = base_question.description
             element['ta_email'] = feedback['ta_email']
             element['was_helpful'] = str(feedback['was_helpful'])
             element['date'] = feedback['feedback_time'].astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))).strftime('%Y/%m/%d %I:%M %p')

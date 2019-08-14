@@ -106,7 +106,7 @@ import 'react-rangeslider/lib/index.css';
       var current_length = event.target.value.length;
       var remaining_chars = 280 - current_length;
       document.getElementById("comments_label").innerHTML =
-       "Optional Comments for the head TAs. <br /> Is there anything we need to know about this interaction? <br /> This will only be visible to the Head TAs, and can be used to report anything you'd like.  (" + remaining_chars.toString() + " Characters Remaining)";
+       "Optional Comments for the head TAs: <br /> Is there anything we need to know about this interaction? <br /> This will only be visible to the Head TAs, and can be used to report anything you'd like.  (" + remaining_chars.toString() + " Characters Remaining)";
       this.setState({[event.target.name]: event.target.value});
     }
 
@@ -141,6 +141,7 @@ import 'react-rangeslider/lib/index.css';
             const horizontalLabels = {
                 0: '0: Skip',
                 1: '1: No Help',
+                5: '5: Right Amount of Help',
                 10: '10: Too Much Help'
               }
             var set_thumps_up = this.set_thumps_up;
@@ -174,10 +175,11 @@ import 'react-rangeslider/lib/index.css';
                                 handleLabel={help_scale}
                                 labels={horizontalLabels}
                                 onChange={this.handleOnChange}
-                            /> 
+                            />
+                            <br />
                             <b>{help_scale}</b>
                             <br /><br /><br />
-                            <label class="dynamic-text" htmlFor="comments" id="comments_label">Optional Comments for the Head TAs. <br />Is there anything we need to know about this interaction?  <br /> This will only be visible to the head TAs, and can be used to report anything you'd like.  (280 Characters Remaining):</label>
+                            <label class="dynamic-text" htmlFor="comments" id="comments_label">Optional Comments for the Head TAs: <br />Is there anything we need to know about this interaction?  <br /> This will only be visible to the head TAs, and can be used to report anything you'd like.  (280 Characters Remaining):</label>
                             <textarea maxlength="280" id="comments" name="comments"
                             value={this.state.comments} onChange={this.onChange} />
                             <button class="margin-top-button">submit</button>
