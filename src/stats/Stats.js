@@ -230,14 +230,16 @@ class Stats extends Component {
 
     displayAllFeedbackData() {
         if (this.state.authenticated) {
+            var rowStyle = {
+                maxWidth: '10vw',
+                wordWrap: 'break-word'
+            };
             var feedbackDataJSX = (this.state.allFeedbackData).map((dataObj) => {
-                var rowStyle = {
-                    maxWidth: '15vw',
-                    wordWrap: 'break-word'
-                };
                 return (
                     <tr>
                         <td style={rowStyle}>{dataObj.ta_email}</td>
+                        <td style={rowStyle}>{dataObj.student_email}</td>
+                        <td style={rowStyle}>{dataObj.question}</td>
                         <td style={rowStyle}>{dataObj.was_helpful === "True" ? "Yes" : "No"}</td>
                         <td style={rowStyle}>{dataObj.helpful_scale}</td>
                         <td style={rowStyle}>{dataObj.comments}</td>
@@ -245,7 +247,29 @@ class Stats extends Component {
                     </tr>
                 );
             });
-            
+            // calculate aggregate stats
+            var num_respondents = 0;
+            var sum_rating = 0;
+            var num_rating_given = 0;
+            var sum_was_helpful = 0;
+            (this.state.allFeedbackData).map((dataObj) => {
+                num_respondents = num_respondents + 1;
+                if (dataObj.was_helpful == "True") {
+                    sum_was_helpful = sum_was_helpful + 1;
+                }
+                if (dataObj.helpful_scale) {
+                    sum_rating = sum_rating + dataObj.helpful_scale;
+                    num_rating_given = num_rating_given + 1;
+                }
+            });
+            var average_rating = 0;
+            if (num_rating_given != 0) {
+                average_rating = sum_rating / num_rating_given
+            };
+            var percent_helpful = 0.0;
+            if (num_respondents != 0) {
+                percent_helpful = 100.00 * (sum_was_helpful / num_respondents);
+            }
             return (
                 <div>
                     <span>Date Range Beginning&nbsp;&nbsp;</span>
@@ -258,14 +282,22 @@ class Stats extends Component {
                         selected={this.state.enddate}
                         onChange={this.endDateChange}
                     />
+                    <h5>Aggregate Feedback</h5>
+                    <p>Num Respondents: {num_respondents}</p>
+                    <p>Percent Helpful: {percent_helpful} %</p> 
+                    <p>Average Helpful Rating: {average_rating}</p> 
+                    <br />
+                    <h5>Individual Feedback Reports</h5>
                     <table className="table table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Was Helpful</th>
-                                    <th scope="col">Helpful Rating</th>
-                                    <th scope="col">Comments</th>
-                                    <th scope="col">Date</th>
+                                <th scope="col">TA Email</th>
+                                <th scope="col">Student Email</th>
+                                <th scope="col">Base Question</th>
+                                <th scope="col">Was Helpful</th>
+                                <th scope="col">Helpful Rating</th>
+                                <th scope="col">Comments</th>
+                                <th scope="col">Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -410,13 +442,15 @@ class Stats extends Component {
         if (this.state.authenticated) {
             if (this.state.queryTA && this.state.data && this.state.data.feedback) {
                 var rowStyle = {
-                    maxWidth: '15vw',
+                    maxWidth: '10vw',
                     wordWrap: 'break-word'
                 };
                 var feedbackData = (this.state.data.feedback).map((dataObj) => {
                     return (
                         <tr>
                             <td style={rowStyle}>{dataObj.ta_email}</td>
+                            <td style={rowStyle}>{dataObj.student_email}</td>
+                            <td style={rowStyle}>{dataObj.question}</td>
                             <td style={rowStyle}>{dataObj.was_helpful === "True" ? "Yes" : "No"}</td>
                             <td style={rowStyle}>{dataObj.helpful_scale}</td>
                             <td style={rowStyle}>{dataObj.comments}</td>
@@ -477,7 +511,9 @@ class Stats extends Component {
                             <table className="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Email</th>
+                                        <th scope="col">TA Email</th>
+                                        <th scope="col">Student Email</th>
+                                        <th scope="col">Base Question</th>
                                         <th scope="col">Was Helpful</th>
                                         <th scope="col">Helpful Rating</th>
                                         <th scope="col">Comments</th>

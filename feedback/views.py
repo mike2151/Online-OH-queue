@@ -69,6 +69,6 @@ class InfoForFeedback(View):
        if question.feedback_for_q != None:
            return JsonResponse({"is_valid": False, "ta_name": "", "question": ""})
        
-       ta_name = question.answerer_first_name
+       ta_name = question.answerer_first_name + " " + question.answerer_last_name
        question = question.description
        return JsonResponse({"is_valid": True, "ta_name": ta_name, "question": question})
