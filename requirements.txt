@@ -2,6 +2,7 @@ Django==2.1.4
 channels==2.1.6
 channels-redis==2.3.2
 asgi-redis==1.0.0
+asgiref==2.2.0
 psycopg2==2.7.6.1
 whitenoise==4.1.2
 pandas==0.23.0
