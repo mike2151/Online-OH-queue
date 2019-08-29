@@ -102,17 +102,20 @@ class AllFeedbackView(View):
         for feedback in all_feedback.values():
             element = {}
             base_question_id = feedback['base_question_id']
-            base_question = Question.objects.get(id=base_question_id)
-            element['student_email'] = base_question.author_email
-            element['question'] = base_question.description
-            element['ta_email'] = feedback['ta_email']
-            element['was_helpful'] = str(feedback['was_helpful'])
-            element['date'] = feedback['feedback_time'].astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))).strftime('%Y/%m/%d %I:%M %p')
-            if len(feedback['comments']) > 0:
-                element['comments'] = feedback['comments']
-            if feedback["helpful_scale"] != 0:
-                element["helpful_scale"] = feedback['helpful_scale']
-            feedback_res.append(element)
+            try:
+                base_question = Question.objects.get(id=base_question_id)
+                element['student_email'] = base_question.author_email
+                element['question'] = base_question.description
+                element['ta_email'] = feedback['ta_email']
+                element['was_helpful'] = str(feedback['was_helpful'])
+                element['date'] = feedback['feedback_time'].astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))).strftime('%Y/%m/%d %I:%M %p')
+                if len(feedback['comments']) > 0:
+                    element['comments'] = feedback['comments']
+                if feedback["helpful_scale"] != 0:
+                    element["helpful_scale"] = feedback['helpful_scale']
+                feedback_res.append(element)
+            except Question.DoesNotExist:
+                pass
         response = {"authenticated": True, "value": feedback_res}
         return JsonResponse(response)
 
@@ -133,18 +136,20 @@ class TAFeedbackView(View):
         for feedback in all_feedback.values():
             element = {}
             base_question_id = feedback['base_question_id']
-            base_question = Question.objects.get(id=base_question_id)
-            element['student_email'] = base_question.author_email
-            element['question'] = base_question.description
-            element['ta_email'] = feedback['ta_email']
-            element['was_helpful'] = str(feedback['was_helpful'])
-            element['date'] = feedback['feedback_time'].astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))).strftime('%Y/%m/%d %I:%M %p')
-            if len(feedback['comments']) > 0:
-                element['comments'] = feedback['comments']
-            if feedback["helpful_scale"] != 0:
-                element["helpful_scale"] = feedback['helpful_scale']
-            feedback_res.append(element)
-
+            try:
+                base_question = Question.objects.get(id=base_question_id)
+                element['student_email'] = base_question.author_email
+                element['question'] = base_question.description
+                element['ta_email'] = feedback['ta_email']
+                element['was_helpful'] = str(feedback['was_helpful'])
+                element['date'] = feedback['feedback_time'].astimezone(pytz.timezone(os.environ.get('QUEUE_TIME_ZONE','America/New_York'))).strftime('%Y/%m/%d %I:%M %p')
+                if len(feedback['comments']) > 0:
+                    element['comments'] = feedback['comments']
+                if feedback["helpful_scale"] != 0:
+                    element["helpful_scale"] = feedback['helpful_scale']
+                feedback_res.append(element)
+            except Question.DoesNotExist:
+                pass
         response = {"authenticated": True, "feedback": feedback_res}
         return JsonResponse(response)
 
