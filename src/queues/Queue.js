@@ -91,7 +91,7 @@ class Queue extends React.Component {
                   <a href={ '/' + question.id + "/edit/" } class="delete-link">Edit</a> 
                   </td></tr>
                 :
-                  <tr><td>{index+1} - {question.first_name} {question.last_name}</td></tr>
+                  <tr><td>{index+1} - Student</td></tr>
             })}
           </table></center>
         </div>
