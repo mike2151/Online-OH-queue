@@ -52,6 +52,7 @@ class Summary extends Component {
 
   render() {
     if(this.state.isTA) {
+      var questions_size = this.state.questions.length;
       return (
         <div>
           <center><h2>Office Hours Questions This Week:</h2></center>
@@ -61,7 +62,7 @@ class Summary extends Component {
             </tr>
             {this.state.questions.map(function(question, index){
                 var date = (question.ask_date.split(".")[0]).split("T")[0];
-                return <tr><td class="description">{index+1} - {question.description}</td><td class="answerer">{question.host_queue}</td><td class="answerer">{question.author_first_name} {question.author_last_name}</td><td class="answerer">{question.answerer_first_name} {question.answerer_last_name}</td><td class="answerer">{date}</td></tr>
+                return <tr><td class="description">{questions_size - index} - {question.description}</td><td class="answerer">{question.host_queue}</td><td class="answerer">{question.author_first_name} {question.author_last_name}</td><td class="answerer">{question.answerer_first_name} {question.answerer_last_name}</td><td class="answerer">{date}</td></tr>
             })}
           </table>
         </div>
