@@ -1,0 +1,8 @@
+{
+    "DOMAIN_NAME": "cis121ohqueue.com",
+    "DATABASE_URL": "postgres://ohq:ohq@localhost:5432/ohq",
+    "REDIS_URL": "redis://127.0.0.1:6379/0",
+    "START_OF_WEEK": "Tuesday",
+    "COURSE_TITLE": "CIS 121",
+    "OFFICE_HOURS_URL": "https://www.cis.upenn.edu/~cis121/current/schedule.html"
+}

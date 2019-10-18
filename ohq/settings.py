@@ -1,7 +1,19 @@
 import os
 import dj_database_url
+import json
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# read in environment variables
+with open(os.path.join(BASE_DIR, 'environment_variables.json')) as json_file:
+    json_data = json.load(json_file)
+
+DOMAIN_NAME = json_data["DOMAIN_NAME"]
+DATABASE_URL = json_data["DATABASE_URL"]
+REDIS_URL =  json_data["REDIS_URL"]
+START_OF_WEEK = json_data["START_OF_WEEK"]
+COURSE_TITLE = json_data["COURSE_TITLE"]
+OFFICE_HOURS_URL = json_data["OFFICE_HOURS_URL"]
 
 # Make this variable True if you wish to develop
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -10,7 +22,7 @@ DEBUG = False
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECREY_KEY', '9^*+s+=^vg17!!4q5l!n*#9(i1+65(x9)k1@zl&ub+=@$!b-#2')
 
-ALLOWED_HOSTS = (['127.0.0.1', 'localhost'] + [os.environ.get('DOMAIN_NAME','')])
+ALLOWED_HOSTS = (['127.0.0.1', 'localhost'] + [DOMAIN_NAME])
 
 USE_TZ = True
 TIME_ZONE = "UTC"
@@ -27,7 +39,6 @@ else:
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'build/static'),
     ]
-    #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Application definition
@@ -68,7 +79,7 @@ else:
         'default': {
             'BACKEND': 'channels_redis.core.RedisChannelLayer',
             'CONFIG': {
-                "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+                "hosts": [REDIS_URL],
             },
         }
     }
@@ -165,7 +176,7 @@ else:
             }
         }
     else:
-        db_url = os.environ.get('DATABASE_URL', 'postgres://...')
+        db_url = DATABASE_URL
         DATABASES = {"default": dj_database_url.config(default=db_url)}
 
 
